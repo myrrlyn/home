@@ -61,7 +61,8 @@ config :home, HomeWeb.Endpoint,
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/home_web/(live|views)/.*(ex)$",
-      ~r"lib/home_web/templates/.*(eex|haml|md)$"
+      ~r"lib/home_web/templates/.*(eex|haml|md)$",
+      ~r"priv/pages/.*md$"
     ]
   ]
 
