@@ -26,6 +26,19 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Configure Phoenix's template engines
+config :phoenix, :template_engines,
+  haml: PhoenixHaml.Engine,
+  md: PhoenixMarkdown.Engine
+
+# Configure Earmark markdown settings
+config :phoenix_markdown, :earmark, %{
+  gfm: true,
+  breaks: false,
+  code_class_prefix: "lang- language-",
+  smartypants: false
+}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

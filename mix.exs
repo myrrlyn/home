@@ -20,7 +20,7 @@ defmodule Home.MixProject do
   def application do
     [
       mod: {Home.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :timex, :yamerl]
     ]
   end
 
@@ -44,7 +44,12 @@ defmodule Home.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:phoenix_markdown, "~> 1.0"},
+      {:phoenix_haml, "~> 0.2"},
+      {:earmark, "~> 1.2"},
+      {:timex, "~> 2.1"},
+      {:yamerl, github: "yakaz/yamerl"}
     ]
   end
 
