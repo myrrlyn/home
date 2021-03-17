@@ -1,0 +1,33 @@
+!!! 5
+%html{lang: "en"}
+	%head
+		%meta{charset: "utf-8"}
+		%meta{http-equiv: "X-UA-Compatible", content: "IE=edge"}
+		%meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+		%title Home · Phoenix Framework
+		%link{rel: "stylesheet", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
+		%script{defer: "true", type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
+	%body
+		%header
+			Header image
+		%div#main
+			%div#content
+				%nav.navbar.navbar-expand-md
+					Navmenu goes here
+				%main.container{role: "main"}
+					%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
+					%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
+					= @inner_content
+			%aside#about
+				About
+		%footer.flex-wrapper.flex-cols
+			%span.flex-item.text-left Served with
+				%a{href="https://elixir-lang.org"}
+					Elixir
+					= System.version
+				and
+				%a{href="https://www.phoenixframework.org"} Phoenix
+			- year = DateTime.utc_now().year
+			- copy = "© 2012—#{year} Alexander «myrrlyn» Payne"
+			%span.flex-item.text-center= copy
+			%span.flex-item.text-right Hosted on DigitalOcean
