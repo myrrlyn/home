@@ -16,7 +16,8 @@ config :home, HomeWeb.Endpoint,
   secret_key_base: "RdrZGN6gmxbDqN6tShOxfQJPoU7gjaNAbk21hO6xn2QGSc9zhtPzwb25UFy+xbk5",
   render_errors: [view: HomeWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Home.PubSub,
-  live_view: [signing_salt: "HHhB0BmM"]
+  live_view: [signing_salt: "HHhB0BmM"],
+  static_url: [path: "/static"]
 
 # Configures Elixir's Logger
 config :logger, :console,

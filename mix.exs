@@ -20,7 +20,7 @@ defmodule Home.MixProject do
   def application do
     [
       mod: {Home.Application, []},
-      extra_applications: [:logger, :runtime_tools, :timex]
+      extra_applications: [:logger, :runtime_tools, :timex, :crypto]
     ]
   end
 
@@ -49,7 +49,8 @@ defmodule Home.MixProject do
       {:phoenix_haml, "~> 0.2"},
       {:earmark, "~> 1.4"},
       {:timex, "~> 3.6"},
-      {:yaml_elixir, "~> 2.6"}
+      {:yaml_elixir, "~> 2.6"},
+      {:gravatar, "~> 0.1"}
     ]
   end
 

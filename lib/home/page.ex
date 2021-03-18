@@ -49,6 +49,14 @@ defmodule Home.Page do
   end
 
   @doc """
+  Gets the Gravatar URL for an email address.
+  """
+  @spec gravatar(String.t(), Number) :: String.t()
+  def gravatar(email, size \\ 192) do
+    email |> Gravatar.new() |> Gravatar.secure() |> Gravatar.size(size) |> to_string
+  end
+
+  @doc """
   Splits an input file into its YAML frontmatter and Markdown main content.
 
   This expects a file of the following structure:

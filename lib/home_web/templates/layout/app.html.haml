@@ -4,30 +4,32 @@
 		%meta{charset: "utf-8"}
 		%meta{http-equiv: "X-UA-Compatible", content: "IE=edge"}
 		%meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
-		%title Home · Phoenix Framework
+		%title= @title || "myrrlyn.net"
 		%link{rel: "stylesheet", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
-		%script{defer: "true", type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
-	%body
-		%header
-			Header image
+		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
+	%body.wyz-bg-responsive
+		= render @view_module, "header.html", assigns
 		%div#main
 			%div#content
 				%nav.navbar.navbar-expand-md
-					Navmenu goes here
+					%div.container-fluid
+						%a.navbar-brand{href: "#"} Navbar
+						%button.navbar-toggler{type: "button", data-bs-toggle: "collapse", data-bs-target: "#navbar-supported-content", aria-controls: "navbar-supported-content", aria-expanded: "false", aria-label: "Toggle navigation"}
+							%span.navbar-toggler-icon
+						%div#navbar-supported-content.collapse.navbar-collapse
+							= render @view_module, "nav.html", assigns
 				%main.container{role: "main"}
 					%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
 					%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
 					= @inner_content
-			%aside#about
-				About
-		%footer.flex-wrapper.flex-cols
-			%span.flex-item.text-left Served with
-				%a{href="https://elixir-lang.org"}
-					Elixir
-					= System.version
-				and
-				%a{href="https://www.phoenixframework.org"} Phoenix
-			- year = DateTime.utc_now().year
-			- copy = "© 2012—#{year} Alexander «myrrlyn» Payne"
-			%span.flex-item.text-center= copy
-			%span.flex-item.text-right Hosted on DigitalOcean
+				%aside#about
+					%div.logo.gravatar
+						%a{href: "/"}
+							%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
+					= render @view_module, "about.html", assigns
+					%div#about-logos
+						%a{href: "https://archlinux.org"}
+							%img{src: "https://myrrlyn.net/images/arch-logo.png", alt: "Arch Linux", height: "32"}
+						%a{href: "https://www.w3.org/html/logo"}
+							%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "HTML5", height: 32}
+		= render "footer.html", assigns
