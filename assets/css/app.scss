@@ -79,64 +79,74 @@ h6::before {
 blockquote {
 	border: {
 		top: 2px solid transparent;
-		left: 4px solid $charcoal;
+		left: 4px solid var(--charcoal);
+		right: 4px solid transparent;
 		bottom: 2px solid transparent;
 	}
-	padding-left: 0.5em;
+	margin: {
+		left: 1em;
+		right: 2em;
+	}
+	padding-left: 1em;
 
 	:last-child {
 		margin-bottom: 0;
 	}
+}
 
-	&.bq-danger {
-		border-left-color: var(--safety-red);
-
-		&::after {
-			content: "DANGER";
-		}
+.iso7010 {
+	padding: {
+		top: 1em;
+		left: 1em;
+		right: 1em;
+		bottom: 1em;
 	}
-
-	&.bq-warning {
-		border-left-color: var(--safety-orange);
-
-		&::after {
-			content: "WARNING";
-		}
+	&.e003 {
+		@include iso7010("e003");
 	}
-
-	&.bq-caution {
-		border-left-color: var(--safety-yellow);
-
-		&::after {
-			content: "CAUTION";
-		}
+	&.e011 {
+		@include iso7010("e011");
 	}
-
-	&.bq-safety {
-		border-left-color: var(--safety-green);
-
-		&::after {
-			content: "HELP";
-		}
+	&.f005 {
+		@include iso7010("f005");
 	}
-
-	&.bq-mandatory {
-		border-left-color: var(--safety-blue);
-
-		&::after {
-			content: "NOTICE";
-		}
-		&::before {
-			background-image: url("/static/images/iso-7010/m002.svg");
-			content: " ";
-		}
+	&.m001 {
+		@include iso7010("m001");
 	}
-
-	&.bq-info {
-		border-left-color: var(--safety-purple);
-
-		&::after {
-			content: "TIP";
-		}
+	&.m002 {
+		@include iso7010("m002");
+	}
+	&.m005 {
+		@include iso7010("m005");
+	}
+	&.p001 {
+		@include iso7010("p001");
+	}
+	&.p010 {
+		@include iso7010("p010");
+	}
+	&.p015 {
+		@include iso7010("p015");
+	}
+	&.p025 {
+		@include iso7010("p025");
+	}
+	&.w001 {
+		@include iso7010("w001");
+	}
+	&.w003 {
+		@include iso7010("w003");
+	}
+	&.w004 {
+		@include iso7010("w004");
+	}
+	&.w005 {
+		@include iso7010("w005");
+	}
+	&.w021 {
+		@include iso7010("w021");
+	}
+	&.w027 {
+		@include iso7010("w027");
 	}
 }

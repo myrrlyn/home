@@ -3,7 +3,7 @@ $avi-rim: 8px;
 
 #gravatar {
 	background: {
-		color: var(--safety-yellow);
+		color: var(--ansi-yellow);
 	}
 	border: {
 		radius: ($avi-size + (2 * $avi-rim)) / 2;
@@ -25,6 +25,7 @@ $avi-height: $avi-size + (2 * $avi-rim);
 			width: $avi-size + (2 * $avi-rim);
 		}
 	}
+	/*
 	//  Get ready for some fuckery
 	@media all and (min-width: 1200px) {
 		.logo.gravatar a {
@@ -33,4 +34,5 @@ $avi-height: $avi-size + (2 * $avi-rim);
 		}
 		padding-top: ($avi-height / 2) - $header-border;
 	}
+	*/
 }

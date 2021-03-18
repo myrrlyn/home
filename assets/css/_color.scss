@@ -1,62 +1,62 @@
 // ANSI Z535
-$safety-red: #bd2024;
-$safety-orange: #ff7900;
-$safety-yellow: #ffe100;
-$safety-green: #159660;
-$safety-blue: #004488;
-$safety-purple: #6f2580;
+$ansi-red: #bd2024 !default;
+$ansi-orange: #ff7900 !default;
+$ansi-yellow: #ffe100 !default;
+$ansi-green: #159660 !default;
+$ansi-blue: #004488 !default;
+$ansi-purple: #6f2580 !default;
 
 // ISO 3864
-$signal-red: #9b2423;
-$signal-yellow: #f9a800;
-$signal-green: #237f52;
-$signal-blue: #005387;
-$signal-white: lighten(#ecece7, 8%);
-$signal-black: darken(#2b2b2c, 8%);
+$iso-red: #9b2423 !default;
+$iso-yellow: #f9a800 !default;
+$iso-green: #237f52 !default;
+$iso-blue: #005387 !default;
+$iso-white: lighten(#ecece7, 8%) !default;
+$iso-black: darken(#2b2b2c, 8%) !default;
 
-$intl-aero-orange: #ff4f00;
-$cyber-yellow: #ffd300;
+$intl-aero-orange: #ff4f00 !default;
+$cyber-yellow: #ffd300 !default;
 
 // https://coolors.co/9b5de5-f15bb5-fee440-00bbf9-00f5d4
-$amethyst: #9b5de5;
-$crayola-magenta: #f15bb5;
-$yellow-minion: #fee440;
+$amethyst: #9b5de5 !default;
+$crayola-magenta: #f15bb5 !default;
+$yellow-minion: #fee440 !default;
 // Keeping this
-$blue-capri: #00bbf9;
-$crayola-sea-green: #00f5d4;
+$blue-capri: #00bbf9 !default;
+$crayola-sea-green: #00f5d4 !default;
 
 // https://coolors.co/5f0f40-9a031e-fb8b24-e36414-0f4c5c
 // Light theme only
-$tyrian-purple: #5f0f40;
+$tyrian-purple: #5f0f40 !default;
 // Light theme only
-$green-midnight-eagle: #0f4c5c;
+$green-midnight-eagle: #0f4c5c !default;
 
 // https://coolors.co/1be7ff-6eeb83-e4ff1a-ffb800-ff5714
 // Lighter capri
-$crayola-sky-blue: #1be7ff;
+$crayola-sky-blue: #1be7ff !default;
 // Disposable
-$green-light: #6eeb83;
-$chartreuse: #e4ff1a;
+$green-light: #6eeb83 !default;
+$chartreuse: #e4ff1a !default;
 // Best yellow so far
-$yellow-selective: #ffb800;
+$yellow-selective: #ffb800 !default;
 
 // https://coolors.co/f6511d-ffb400-00a6ed-7fb800-0d2c54
 // Disposable
-$red-orange: #f6511d;
-$yellow-honey: #ffb400;
+$red-orange: #f6511d !default;
+$yellow-honey: #ffb400 !default;
 // Slightly darker capri
-$blue-carolina: #00a6ed;
-$green-apple: #7fb800;
+$blue-carolina: #00a6ed !default;
+$green-apple: #7fb800 !default;
 // Light only
-$blue-prussian: #0d2c54;
+$blue-prussian: #0d2c54 !default;
 
 // https://coolors.co/080705-40434e-702632-912f40-fffffa
-$black-rich-fogra-39: #080705;
-$charcoal: #40434e;
+$black-rich-fogra-39: #080705 !default;
+$charcoal: #40434e !default;
 // Light only
-$wine: #702632;
-$red-violet: #912f40;
-$baby-powder: #fffffa;
+$wine: #702632 !default;
+$red-violet: #912f40 !default;
+$baby-powder: #fffffa !default;
 
 @media (prefers-color-scheme: light) {
 	@import "color/light";
@@ -67,30 +67,56 @@ $baby-powder: #fffffa;
 }
 
 body {
-	background-color: var(--signal-black);
-	color: var(--signal-white);
+	background-color: var(--bg);
+	color: var(--text-fg);
+}
+
+blockquote {
+	&.bq-danger {
+		background-color: var(--iso-red-bg);
+		border-left-color: var(--iso-red);
+		border-right-color: var(--iso-red);
+	}
+
+	&.bq-warn {
+		background-color: var(--iso-yellow-bg);
+		border-left-color: var(--iso-yellow);
+		border-right-color: var(--iso-yellow);
+	}
+
+	&.bq-safe {
+		background-color: var(--iso-green-bg);
+		border-left-color: var(--iso-green);
+		border-right-color: var(--iso-green);
+	}
+
+	&.bq-info {
+		background-color: var(--iso-blue-bg);
+		border-left-color: var(--iso-blue);
+		border-right-color: var(--iso-blue);
+	}
 }
 
 h1 {
-	color: var(--signal-green);
+	color: var(--ansi-green);
 }
 
 h2 {
-	color: var(--signal-blue);
+	color: var(--ansi-blue);
 }
 
 h3 {
-	color: var(--safety-purple);
+	color: var(--ansi-purple);
 }
 
 h4 {
-	color: var(--safety-yellow);
+	color: var(--ansi-yellow);
 }
 
 h5 {
-	color: var(--safety-orange);
+	color: var(--ansi-orange);
 }
 
 h6 {
-	color: var(--safety-red);
+	color: var(--ansi-red);
 }

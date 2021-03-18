@@ -1,17 +1,41 @@
 :root {
-	--safety-red: #{lighten($safety-red, 10%)};
-	--safety-orange: #{$safety-orange};
-	--safety-yellow: #{$safety-yellow};
-	--safety-green: #{$safety-green};
-	--safety-blue: #{lighten($safety-blue, 15%)};
-	--safety-purple: #{lighten($safety-purple, 20%)};
+	$ansi-red: lighten($ansi-red, 10%);
+	--ansi-red: #{$ansi-red};
+	--ansi-red-bg: #{transparentize($ansi-red, 0.85)};
 
-	--signal-red: #{$signal-red};
-	--signal-yellow: #{$signal-yellow};
-	--signal-green: #{lighten($signal-green, 10%)};
-	--signal-blue: #{lighten($signal-blue, 20%)};
-	--signal-white: #{$signal-white};
-	--signal-black: #{$signal-black};
+	--ansi-orange: #{$ansi-orange};
+	--ansi-orange-bg: #{transparentize($ansi-orange, 0.85)};
+
+	--ansi-yellow: #{$ansi-yellow};
+	--ansi-yellow-bg: #{transparentize($ansi-yellow, 0.85)};
+
+	--ansi-green: #{$ansi-green};
+	--ansi-green-bg: #{transparentize($ansi-green, 0.85)};
+
+	$ansi-blue: lighten($ansi-blue, 15%);
+	--ansi-blue: #{$ansi-blue};
+	--ansi-blue-bg: #{transparentize($ansi-blue, 0.85)};
+
+	$ansi-purple: lighten($ansi-purple, 20%);
+	--ansi-purple: #{$ansi-purple};
+	--ansi-purple-bg: #{transparentize($ansi-purple, 0.85)};
+
+	--iso-red: #{$iso-red};
+	--iso-red-bg: #{transparentize($iso-red, 0.85)};
+
+	--iso-yellow: #{$iso-yellow};
+	--iso-yellow-bg: #{transparentize($iso-yellow, 0.85)};
+
+	$iso-green: lighten($iso-green, 10%);
+	--iso-green: #{$iso-green};
+	--iso-green-bg: #{transparentize($iso-green, 0.85)};
+
+	$iso-blue: lighten($iso-blue, 20%);
+	--iso-blue: #{$iso-blue};
+	--iso-blue-bg: #{transparentize($iso-blue, 0.85)};
+
+	--iso-white: #{$iso-white};
+	--iso-black: #{$iso-black};
 
 	--intl-aero-orange: #{$intl-aero-orange};
 
@@ -20,8 +44,10 @@
 
 	--crayola-sky-blue: #{$crayola-sky-blue};
 
-	--bg: var(--signal-black);
-	--text-fg: var(--signal-white);
+	--charcoal: #{lighten($charcoal, 10%)};
+
+	--bg: var(--iso-black);
+	--text-fg: var(--iso-white);
 }
 
 a {

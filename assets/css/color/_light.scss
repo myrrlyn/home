@@ -1,0 +1,47 @@
+:root {
+	--ansi-red: #{$ansi-red};
+	--ansi-red-bg: #{transparentize($ansi-red, 0.85)};
+
+	--ansi-orange: #{$ansi-orange};
+	--ansi-orange-bg: #{transparentize($ansi-orange, 0.85)};
+
+	--ansi-yellow: #{$ansi-yellow};
+	--ansi-yellow-bg: #{transparentize($ansi-yellow, 0.85)};
+
+	--ansi-green: #{$ansi-green};
+	--ansi-green-bg: #{transparentize($ansi-green, 0.85)};
+
+	$ansi-blue: lighten($ansi-blue, 10%);
+	--ansi-blue: #{$ansi-blue};
+	--ansi-blue-bg: #{transparentize($ansi-blue, 0.85)};
+
+	--ansi-purple: #{$ansi-purple};
+	--ansi-purple-bg: #{transparentize($ansi-purple, 0.85)};
+
+	--iso-red: #{$iso-red};
+	--iso-red-bg: #{transparentize($iso-red, 0.85)};
+
+	--iso-yellow: #{$iso-yellow};
+	--iso-yellow-bg: #{transparentize($iso-yellow, 0.85)};
+
+	--iso-green: #{$iso-green};
+	--iso-green-bg: #{transparentize($iso-green, 0.85)};
+
+	--iso-blue: #{$iso-blue};
+	--iso-blue-bg: #{transparentize($iso-blue, 0.85)};
+
+	--iso-white: #{$iso-white};
+	--iso-black: #{$iso-black};
+
+	--intl-aero-orange: #{$intl-aero-orange};
+
+	--blue-capri: #{$blue-capri};
+	--blue-carolina: #{$blue-carolina};
+
+	--crayola-sky-blue: #{$crayola-sky-blue};
+
+	--charcoal: #{lighten($charcoal, 10%)};
+
+	--bg: var(--iso-white);
+	--text-fg: var(--iso-black);
+}
