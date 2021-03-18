@@ -13,14 +13,6 @@ defmodule HomeWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  scope "/", HomeWeb do
-    pipe_through(:browser)
-
-    get("/", PageController, :home)
-
-    get("/:page", PageController, :other)
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", HomeWeb do
   #   pipe_through :api
@@ -40,5 +32,12 @@ defmodule HomeWeb.Router do
       pipe_through(:browser)
       live_dashboard("/dashboard", metrics: HomeWeb.Telemetry)
     end
+  end
+
+  scope "/", HomeWeb do
+    pipe_through(:browser)
+
+    get("/", PageController, :home)
+    get("/*page", PageController, :other)
   end
 end

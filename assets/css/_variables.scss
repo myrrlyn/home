@@ -1,0 +1,13 @@
+$content-width-max: 110em;
+
+$content-max-width: 48em;
+
+$header-height: 128px;
+$header-border: 4px;
+
+$footer-height: 32px;
+$footer-border: 2px;
+
+@function core-height() {
+	@return $header-height + $header-border + $footer-height + $footer-border;
+}

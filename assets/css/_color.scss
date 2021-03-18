@@ -1,0 +1,96 @@
+// ANSI Z535
+$safety-red: #bd2024;
+$safety-orange: #ff7900;
+$safety-yellow: #ffe100;
+$safety-green: #159660;
+$safety-blue: #004488;
+$safety-purple: #6f2580;
+
+// ISO 3864
+$signal-red: #9b2423;
+$signal-yellow: #f9a800;
+$signal-green: #237f52;
+$signal-blue: #005387;
+$signal-white: lighten(#ecece7, 8%);
+$signal-black: darken(#2b2b2c, 8%);
+
+$intl-aero-orange: #ff4f00;
+$cyber-yellow: #ffd300;
+
+// https://coolors.co/9b5de5-f15bb5-fee440-00bbf9-00f5d4
+$amethyst: #9b5de5;
+$crayola-magenta: #f15bb5;
+$yellow-minion: #fee440;
+// Keeping this
+$blue-capri: #00bbf9;
+$crayola-sea-green: #00f5d4;
+
+// https://coolors.co/5f0f40-9a031e-fb8b24-e36414-0f4c5c
+// Light theme only
+$tyrian-purple: #5f0f40;
+// Light theme only
+$green-midnight-eagle: #0f4c5c;
+
+// https://coolors.co/1be7ff-6eeb83-e4ff1a-ffb800-ff5714
+// Lighter capri
+$crayola-sky-blue: #1be7ff;
+// Disposable
+$green-light: #6eeb83;
+$chartreuse: #e4ff1a;
+// Best yellow so far
+$yellow-selective: #ffb800;
+
+// https://coolors.co/f6511d-ffb400-00a6ed-7fb800-0d2c54
+// Disposable
+$red-orange: #f6511d;
+$yellow-honey: #ffb400;
+// Slightly darker capri
+$blue-carolina: #00a6ed;
+$green-apple: #7fb800;
+// Light only
+$blue-prussian: #0d2c54;
+
+// https://coolors.co/080705-40434e-702632-912f40-fffffa
+$black-rich-fogra-39: #080705;
+$charcoal: #40434e;
+// Light only
+$wine: #702632;
+$red-violet: #912f40;
+$baby-powder: #fffffa;
+
+@media (prefers-color-scheme: light) {
+	@import "color/light";
+}
+
+@media (prefers-color-scheme: dark) {
+	@import "color/dark";
+}
+
+body {
+	background-color: var(--signal-black);
+	color: var(--signal-white);
+}
+
+h1 {
+	color: var(--signal-green);
+}
+
+h2 {
+	color: var(--signal-blue);
+}
+
+h3 {
+	color: var(--safety-purple);
+}
+
+h4 {
+	color: var(--safety-yellow);
+}
+
+h5 {
+	color: var(--safety-orange);
+}
+
+h6 {
+	color: var(--safety-red);
+}

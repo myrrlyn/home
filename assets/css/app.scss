@@ -1,36 +1,142 @@
 /* This file is for your main application css. */
 @import "~bootstrap";
 
+@import "variables";
+@import "color";
+
+@import "gravatar";
+
+#about {
+	max-width: 30em;
+}
+
 /* Alerts and form errors */
 .alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
 }
 .alert-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
 }
 .alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
+	color: #8a6d3b;
+	background-color: #fcf8e3;
+	border-color: #faebcc;
 }
 .alert-danger {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
 }
 .alert p {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 .alert:empty {
-  display: none;
+	display: none;
 }
 .invalid-feedback {
-  color: #a94442;
-  display: block;
-  margin: -1rem 0 2rem;
+	color: #a94442;
+	display: block;
+	margin: -1rem 0 2rem;
+}
+
+%text-mono {
+	font-family: "Iosevka";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@extend %text-mono;
+}
+
+h1::before {
+	content: "#";
+}
+h2::before {
+	content: "##";
+}
+h3::before {
+	content: "###";
+}
+h4::before {
+	content: "####";
+}
+h5::before {
+	content: "#####";
+}
+h6::before {
+	content: "######";
+}
+
+blockquote {
+	border: {
+		top: 2px solid transparent;
+		left: 4px solid $charcoal;
+		bottom: 2px solid transparent;
+	}
+	padding-left: 0.5em;
+
+	:last-child {
+		margin-bottom: 0;
+	}
+
+	&.bq-danger {
+		border-left-color: var(--safety-red);
+
+		&::after {
+			content: "DANGER";
+		}
+	}
+
+	&.bq-warning {
+		border-left-color: var(--safety-orange);
+
+		&::after {
+			content: "WARNING";
+		}
+	}
+
+	&.bq-caution {
+		border-left-color: var(--safety-yellow);
+
+		&::after {
+			content: "CAUTION";
+		}
+	}
+
+	&.bq-safety {
+		border-left-color: var(--safety-green);
+
+		&::after {
+			content: "HELP";
+		}
+	}
+
+	&.bq-mandatory {
+		border-left-color: var(--safety-blue);
+
+		&::after {
+			content: "NOTICE";
+		}
+		&::before {
+			background-image: url("/static/images/iso-7010/m002.svg");
+			content: " ";
+		}
+	}
+
+	&.bq-info {
+		border-left-color: var(--safety-purple);
+
+		&::after {
+			content: "TIP";
+		}
+	}
 }

@@ -1,0 +1,35 @@
+:root {
+	--safety-red: #{lighten($safety-red, 10%)};
+	--safety-orange: #{$safety-orange};
+	--safety-yellow: #{$safety-yellow};
+	--safety-green: #{$safety-green};
+	--safety-blue: #{lighten($safety-blue, 15%)};
+	--safety-purple: #{lighten($safety-purple, 20%)};
+
+	--signal-red: #{$signal-red};
+	--signal-yellow: #{$signal-yellow};
+	--signal-green: #{lighten($signal-green, 10%)};
+	--signal-blue: #{lighten($signal-blue, 20%)};
+	--signal-white: #{$signal-white};
+	--signal-black: #{$signal-black};
+
+	--intl-aero-orange: #{$intl-aero-orange};
+
+	--blue-capri: #{$blue-capri};
+	--blue-carolina: #{$blue-carolina};
+
+	--crayola-sky-blue: #{$crayola-sky-blue};
+
+	--bg: var(--signal-black);
+	--text-fg: var(--signal-white);
+}
+
+a {
+	color: var(--crayola-sky-blue);
+	&:hover {
+		color: var(--blue-carolina);
+	}
+	&:visited {
+		color: var(--blue-capri);
+	}
+}

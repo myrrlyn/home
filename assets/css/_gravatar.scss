@@ -1,0 +1,36 @@
+$avi-size: 192px;
+$avi-rim: 8px;
+
+#gravatar {
+	background: {
+		color: var(--safety-yellow);
+	}
+	border: {
+		radius: ($avi-size + (2 * $avi-rim)) / 2;
+	}
+	padding: $avi-rim;
+}
+
+$avi-height: $avi-size + (2 * $avi-rim);
+
+#about {
+	.logo {
+		margin: {
+			top: 16px;
+			left: auto;
+			right: auto;
+			bottom: 16px;
+		}
+		&.gravatar {
+			width: $avi-size + (2 * $avi-rim);
+		}
+	}
+	//  Get ready for some fuckery
+	@media all and (min-width: 1200px) {
+		.logo.gravatar a {
+			position: absolute;
+			top: $header-height - ($avi-height + $header-border) / 2;
+		}
+		padding-top: ($avi-height / 2) - $header-border;
+	}
+}
