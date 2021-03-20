@@ -27,6 +27,7 @@
 	--ansi-orange: #{$ansi-orange};
 	--ansi-orange-bg: #{transparentize($ansi-orange, 0.85)};
 
+	$ansi-yellow: darken($ansi-yellow, 4%);
 	--ansi-yellow: #{$ansi-yellow};
 	--ansi-yellow-bg: #{transparentize($ansi-yellow, 0.85)};
 

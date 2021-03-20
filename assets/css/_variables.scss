@@ -1,12 +1,19 @@
-$content-width-max: 110em;
+$avi-size: 192px;
+$avi-rim: 8px;
 
+// The max width of *all* content on the screen.
+$content-width-max: 110em;
+// The max width of a run of text.
 $content-max-width: 48em;
+// TODO(myrrlyn): Rename these.
 
 $header-height: 128px;
 $header-border: 4px;
 
 $footer-height: 32px;
 $footer-border: 2px;
+
+$vertical-border: 2px;
 
 $iso7010-image-size: 3em;
 
@@ -40,4 +47,19 @@ $iso7010-image-size: 3em;
 		width: $iso7010-image-size;
 		height: $iso7010-image-size;
 	}
+}
+
+@mixin flex-wrapper {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+//  Creates vendor-prefixed tab-size properties
+@mixin tab-size($size) {
+	tab-size: $size;
+	-o-tab-size: $size;
+	-moz-tab-size: $size;
 }

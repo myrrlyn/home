@@ -1,0 +1,125 @@
+//  Ensure that the body will always be rendered to the full height of the
+//  viewport, even if the content is short enough that the body would not
+//  ordinarily reach the bottom.
+html {
+	height: 100%;
+}
+body {
+	min-height: 100%;
+}
+
+.screen-only {
+	@media not screen {
+		display: none !important;
+	}
+}
+
+.flex-wrapper {
+	@include media-breakpoint-up(sm) {
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+	}
+}
+
+.flex-rows {
+	flex: {
+		direction: column;
+		wrap: wrap;
+	}
+}
+
+.flex-cols {
+	flex: {
+		direction: row;
+		wrap: wrap;
+	}
+}
+
+.flex-item {
+	flex: {
+		basis: 100%;
+	}
+}
+
+header {
+	background: {
+		color: $blue-capri;
+	}
+	border-bottom: {
+		color: $blue-prussian;
+		style: solid;
+		width: $header-border;
+	}
+	height: $header-height;
+}
+
+#main {
+	// flex: {
+	// 	grow: 1;
+	// 	shrink: 0;
+	// 	basis: auto;
+	// }
+	justify-content: center;
+	margin: {
+		left: auto;
+		right: auto;
+	}
+	max-width: $content-width-max;
+}
+
+#about {
+	@include media-breakpoint-up(sm) {
+		flex: 1.5 1 0%;
+	}
+	@include media-breakpoint-up(md) {
+		border-right: {
+			color: $blue-prussian;
+			style: solid;
+			width: $vertical-border;
+		}
+		order: 1;
+	}
+	//  Get ready for some fuckery
+	@include media-breakpoint-up(md) {
+		$avi-height: $avi-size + (2 * $avi-rim);
+
+		.logo.gravatar a {
+			position: absolute;
+			top: $header-height - ($avi-height + $header-border) / 2;
+		}
+		padding-top: ($avi-height / 2) - $header-border;
+	}
+}
+
+#content.flex-item {
+	@include media-breakpoint-up(md) {
+		flex: 4 0 0%;
+		order: 2;
+	}
+}
+
+footer {
+	border-top: {
+		color: $blue-prussian;
+		style: solid;
+		width: $footer-border;
+	}
+
+	.flex-item {
+		flex: 1 0 0%;
+		height: 1em;
+	}
+}
+
+body.hide-panels {
+	#about,
+	#nav,
+	#anchor-wrap,
+	header,
+	footer {
+		display: none;
+	}
+}

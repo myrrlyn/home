@@ -1,4 +1,5 @@
 !!! 5
+= render "c0da.html"
 %html{lang: "en"}
 	%head
 		%meta{charset: "utf-8"}
@@ -9,10 +10,11 @@
 		%link{rel: "stylesheet", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
 	%body
-		= render @view_module, "header.html", assigns
-		%div#main
-			%div#content
-				%nav.navbar.navbar-expand-md
+		%header.screen-only
+			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
+		%div#main.flex-wrapper.flex-cols.hide-scroll
+			%div#content.flex-item
+				%nav.navbar.navbar-expand-md.screen-only
 					%div.container-fluid
 						%a.navbar-brand{href: "#"} Navbar
 						%button.navbar-toggler{type: "button", data-bs-toggle: "collapse", data-bs-target: "#navbar-supported-content", aria-controls: "navbar-supported-content", aria-expanded: "false", aria-label: "Toggle navigation"}
@@ -23,15 +25,28 @@
 					%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
 					%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
 					= @inner_content
-				%aside#about
-					%div.logo.gravatar
-						%a{href: "/"}
-							%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
-					%div.contents
-						= render @view_module, "about.html", assigns
-					%div#about-logos
-						%a{href: "https://archlinux.org"}
-							%img{src: "https://myrrlyn.net/images/arch-logo.png", alt: "Arch Linux", height: "32"}
-						%a{href: "https://www.w3.org/html/logo"}
-							%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "HTML5", height: 32}
-		= render "footer.html", assigns
+			%aside#about.container.flex-item.screen-only
+				%div.logo.gravatar
+					%a{href: "/"}
+						%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
+				%div.contents
+					= render @view_module, "about.html", assigns
+				%div#about-logos
+					%a{href: "https://archlinux.org"}
+						%img{src: "https://myrrlyn.net/images/arch-logo.png", alt: "Arch Linux", height: "32"}
+					%a{href: "https://www.w3.org/html/logo"}
+						%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "HTML5", height: 32}
+		%footer.flex-wrapper.flex-cols.screen-only
+			%span.flex-item.text-left Served with
+				%a{href="https://elixir-lang.org"}
+					Elixir
+					= System.version
+				and
+				%a{href="https://www.phoenixframework.org"}
+					Phoenix
+					- vsn = :application.get_key(:phoenix, :vsn) |> elem(1) |> to_string()
+					= vsn
+			- year = DateTime.utc_now().year
+			- copy = "© 2012—#{year} Alexander «myrrlyn» Payne"
+			%span.flex-item.text-center= copy
+			%span.flex-item.text-right Hosted on DigitalOcean
