@@ -19,13 +19,13 @@ site, in order to provide quick visual testing of the overall theme.
 
 > This is an ordinary blockquote with no semantic information attached.
 >
-> > Rack em
+> > For undecorated blockquotes, nesting should introduce new margin indicators.
 
 <!-- -->
 
 > This is a danger blockquote.
 >
-> > It even has a second danger blockquote!
+> > This is a nested blockquote that has a level indicator as well as an image.
 > {:.bq-danger .iso7010 .p015}
 {:.bq-danger .iso7010 .p010}
 
@@ -33,25 +33,27 @@ site, in order to provide quick visual testing of the overall theme.
 
 > This is a warning blockquote.
 >
-> > Mixing class indicators is bad, actually
-> {:.bq-danger .iso7010 .p025}
+> > This is a nested blockquote with an image, but it does not have a level
+> > indicator.
+> {:.iso7010 .p025}
 {:.bq-warn .iso7010 .w027}
 
 <!-- -->
 
 > This is a safety blockquote.
 >
-> > Stack em
+> > Nesting blockquotes with *different* level indicators is rough.
+> {:.bq-info .iso7010 .e011}
 {:.bq-safe .iso7010 .e003}
 
 <!-- -->
 
 > This is an informational blockquote.
 >
-> > Call me a bird
-> {: .iso7010 .m001}
-> > because I love bulding nests
-> {: .iso7010 .m005}
+> > Second level, no level marker.
+> > > third level, heterogenous level marker.
+> > {:.bq-safe .iso7010 .m005}
+> {:.iso7010 .m001}
 {:.bq-info .iso7010 .m002}
 
 This is **bold**, *italic*, and `inline code` text.

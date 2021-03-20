@@ -106,13 +106,11 @@ blockquote {
 		margin-bottom: 0;
 	}
 
-	blockquote {
+	blockquote.iso7010 {
 		border: none;
 		margin: 0 0;
-		&.iso7010 {
-			padding-left: 0;
-			padding-right: 0;
-		}
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
