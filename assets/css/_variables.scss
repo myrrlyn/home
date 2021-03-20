@@ -14,6 +14,15 @@ $iso7010-image-size: 3em;
 	@return $header-height + $header-border + $footer-height + $footer-border;
 }
 
+@mixin left-chevron($color, $lr-width: 4px, $tb-width: 2px) {
+	border: {
+		top: $tb-width solid transparent;
+		left: $lr-width solid $color;
+		bottom: $tb-width solid transparent;
+	}
+	padding-left: 1em;
+}
+
 @mixin iso7010($file) {
 	&::before {
 		background: {

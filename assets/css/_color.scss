@@ -71,6 +71,12 @@ body {
 	color: var(--text-fg);
 }
 
+pre {
+	code {
+		color: var(--text-fg);
+	}
+}
+
 blockquote {
 	&.bq-danger {
 		background-color: var(--iso-red-bg);

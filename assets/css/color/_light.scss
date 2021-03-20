@@ -1,3 +1,25 @@
+// @import "~highlight.js/scss/atelier-cave-light";
+// @import "~highlight.js/scss/a11y-light";
+// @import "~highlight.js/scss/atelier-forest-light";
+// @import "~highlight.js/scss/atelier-heath-light";
+// @import "~highlight.js/scss/atelier-seaside-light";
+// @import "~highlight.js/scss/atelier-sulphurpool-light";
+// @import "~highlight.js/scss/atom-one-light";
+// @import "~highlight.js/scss/github";
+// @import "~highlight.js/scss/idea";
+// @import "~highlight.js/scss/isbl-editor-light";
+// @import "~highlight.js/scss/lightfair";
+// @import "~highlight.js/scss/nnfx";
+// @import "~highlight.js/scss/paraiso-light";
+// @import "~highlight.js/scss/stackoverflow-light";
+// @import "~highlight.js/scss/tomorrow";
+@import "~highlight.js/scss/vs";
+// @import "~highlight.js/scss/xcode";
+
+.codeblock-text {
+	@import "~highlight.js/scss/gradient-light";
+}
+
 :root {
 	--ansi-red: #{$ansi-red};
 	--ansi-red-bg: #{transparentize($ansi-red, 0.85)};

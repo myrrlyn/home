@@ -5,9 +5,10 @@
 		%meta{http-equiv: "X-UA-Compatible", content: "IE=edge"}
 		%meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
 		%title= @title || "myrrlyn.net"
+		%link{rel: "shortcut icon", href: "#{Routes.static_path(@conn, "/favicon.png")}", type="image/png"}
 		%link{rel: "stylesheet", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
-	%body.wyz-bg-responsive
+	%body
 		= render @view_module, "header.html", assigns
 		%div#main
 			%div#content
@@ -26,7 +27,8 @@
 					%div.logo.gravatar
 						%a{href: "/"}
 							%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
-					= render @view_module, "about.html", assigns
+					%div.contents
+						= render @view_module, "about.html", assigns
 					%div#about-logos
 						%a{href: "https://archlinux.org"}
 							%img{src: "https://myrrlyn.net/images/arch-logo.png", alt: "Arch Linux", height: "32"}

@@ -4,7 +4,10 @@
 			Elixir
 			= System.version
 		and
-		%a{href="https://www.phoenixframework.org"} Phoenix
+		%a{href="https://www.phoenixframework.org"}
+			Phoenix
+			- vsn = :application.get_key(:phoenix, :vsn) |> elem(1) |> to_string()
+			= vsn
 	- year = DateTime.utc_now().year
 	- copy = "© 2012—#{year} Alexander «myrrlyn» Payne"
 	%span.flex-item.text-center= copy
