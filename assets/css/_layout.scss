@@ -44,6 +44,18 @@ body {
 	}
 }
 
+.grid-wrapper {
+	display: -moz-grid;
+	display: -ms-grid;
+	display: grid;
+}
+
+@include media-breakpoint-up(sm) {
+	.grid-cols {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
 header {
 	background: {
 		color: $blue-capri;
