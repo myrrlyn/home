@@ -106,6 +106,10 @@ header {
 	}
 }
 
+#about-logos {
+	margin-top: 1em;
+}
+
 #content.flex-item {
 	@include media-breakpoint-up(md) {
 		flex: 4 0 0%;

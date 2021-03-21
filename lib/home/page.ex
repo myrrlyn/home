@@ -3,6 +3,8 @@ defmodule Home.Page do
     defexception [:message, :yaml]
   end
 
+  @type toc_entry :: {String.t(), String, t, [toc_entry]}
+
   defstruct title: nil,
             date: nil,
             slug: nil,
@@ -10,6 +12,7 @@ defmodule Home.Page do
             category: nil,
             summary: nil,
             yaml: %{},
+            toc: [],
             content: nil
 
   @type t :: %__MODULE__{
@@ -20,6 +23,7 @@ defmodule Home.Page do
           category: String.t() | nil,
           summary: String.t() | nil,
           yaml: %{},
+          toc: [toc_entry],
           content: String.t()
         }
 
@@ -34,7 +38,7 @@ defmodule Home.Page do
   def compile(file) do
     {yaml, text} = Path.join(["priv", "pages", file]) |> File.read!() |> split
     {:ok, yaml} = yaml |> parse_yaml()
-    {:ok, html, _warns} = text |> earmark()
+    {{:ok, html, _warns}, toc} = text |> Elixir.Home.Markdown.render(3)
 
     %__MODULE__{
       title: yaml |> get_title!,
@@ -44,8 +48,28 @@ defmodule Home.Page do
       category: nil,
       summary: "",
       yaml: yaml |> Map.delete("title") |> Map.delete("date"),
+      # Discard `<h1>` from the ToC
+      toc:
+        toc
+        |> Enum.flat_map(fn {_, _, h2} -> h2 end),
       content: html
     }
+  end
+
+  def render_toc([]), do: ""
+
+  def render_toc(hs) do
+    list =
+      hs
+      |> Enum.map(fn {show, anchor, children} ->
+        """
+        <li><a href="#{anchor}">#{show} #{children |> render_toc}</a></li>
+        """
+        |> String.trim()
+      end)
+      |> Enum.join("")
+
+    "<ol>#{list}</ol>"
   end
 
   @doc """
@@ -89,23 +113,6 @@ defmodule Home.Page do
           {:ok, %{String.t() => any}} | {:error, YamlElixir.ParsingError.t()}
   def parse_yaml(yaml) do
     yaml |> YamlElixir.read_from_string()
-  end
-
-  @doc """
-  Compiles a Markdown content body into HTML.
-  """
-  @spec earmark(String.t()) ::
-          {:error, String.t(), list} | {:ok, String.t(), list}
-  def earmark(md) do
-    opts = %Earmark.Options{
-      gfm: true,
-      breaks: false,
-      code_class_prefix: "lang- language-",
-      smartypants: false,
-      postprocessor: &__MODULE__.transform/1
-    }
-
-    md |> Earmark.as_html(opts)
   end
 
   @spec get_title!(%{}) :: String.t()
@@ -176,39 +183,23 @@ defmodule Home.Page do
   @spec transform(Earmark.ast()) :: Earmark.ast()
   def transform(ast)
 
-  # Attaches a `codeblock-LANG` class to `<pre>` tags that contain a tagged
-  # `<code>` block.
-  def transform({"pre", attrs, [{"code", code_attrs, _, _}] = inner, tail}) do
-    code_classes = code_attrs |> List.keyfind("class", 0, {"class", ""}) |> elem(1)
+  def transform({"h1", attrs, [text], meta} = ast)
+      when is_binary(text) do
+    if text |> String.length() == 0 do
+      ast
+    else
+      ast |> inspect |> IO.puts()
 
-    code_lang =
-      code_classes
-      |> extract_lang
-
-    {classes, rest} =
-      case attrs |> List.keytake("class", 0) do
+      case attrs |> List.keytake("id", 0) do
+        # No identifier was found, insert our own
         nil ->
-          {[], attrs}
+          anchor = text |> String.downcase() |> String.replace(~r/\s+/, "-")
+          {"h1", [{"id", anchor} | attrs], [text], meta}
 
-        {{"class", classes}, rest} ->
-          {classes |> String.split(), rest}
+        # An identifier was found; do nothing
+        _ ->
+          ast
       end
-
-    classes =
-      ["codeblock" | ["codeblock-#{code_lang}" | classes]] |> Enum.uniq() |> Enum.join(" ")
-
-    {"pre", [{"class", classes} | rest], inner, tail}
-  end
-
-  def transform(ast) do
-    # ast |> inspect |> IO.puts()
-    ast
-  end
-
-  def extract_lang(classes) do
-    classes
-    |> String.split()
-    |> Enum.find("language-text", fn lang -> lang |> String.starts_with?("language-") end)
-    |> String.trim_leading("language-")
+    end
   end
 end

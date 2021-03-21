@@ -1,27 +1,48 @@
 ---
-title: "~myrrlyn"
+title: "~myrrlyn/"
 ---
 
-# Home
+# Alexander `Payne`
 
-I’m Alexander Payne, a programmer and lifelong Boy Scout. I currently live in
-Arlington, Virginia, where I work as a software development engineer at Amazon
-Web Services and volunteer as an assistant scoutmaster with a local troop.
+## Introduction
 
-When I’m away from the keyboard, I am likely to be doing one or more of
-trekking, driving across the continent, rewilding my lawn, woodworking, or
-diving. Sometimes I take pictures of landscapes I think are pretty, and use
-those for the site banners.
+I’m a programmer and Boy Scout currently living in Arlington, VA. When I’m not
+at work or in the wilderness, I like to [write Rust][crates], SCUBA dive,
+carpent, tell my cat how good he is, drive across the continent, and listen to
+way, way too much girlpop.
 
-<!--
-I also believe in trying to make more normal the use of cryptography in ordinary
-communication between people. As such, in addition to only serving this site
-over HTTPS, I also provide cryptographic signatures for every served resource.
-If you have my PGP public key or my Keybase identity, you can use those to
-verify any page against its signature file. There are buttons to retrieve the
-signature on every page.
+I’m currently employed as a software development engineer at Amazon Web
+Services, where I work on bringing Rust to embedded devices. I volunteer with a
+local Scout troop, teaching aquatics and wilderness travel.
 
-This provides little value in and of itself, but now you’re slightly more aware
-of the idea of cryptographic signatures and their use in ordinary life, which is
-worthwhile in my opinion.
--->
+### Girlpop
+
+I’m a bigger Taylor Swift fan than you.
+
+## Contact Info
+
+Feel free to reach me through any of the methods listed here. My phone number,
+like that of most Americans, is relentlessly spammed so I don’t broadcast it
+anymore. You are welcome, but by no means required, to use my public key. It’s
+a good idea but an irritating practice.
+
+- [Email][email]
+- [Twitter][twitter]
+- [GitHub][gh]
+- [Reddit][reddit]
+- [Instagram][ig]
+- [Snapchat][snap]
+- [LinkedIn][linkedin]
+- [Keybase][kb]
+- [Public Key][pubkey]
+
+[crates]: /crates
+[email]: mailto:self@myrrlyn.dev
+[gh]: https://github.com/myrrlyn
+[ig]: https://instagr.am/myrrlyn
+[kb]: https://keybase.io/myrrlyn
+[linkedin]: https:linkedin.com/in/myrrlyn
+[pubkey]: /static/myrrlyn.asc
+[reddit]: https://reddit.com/u/myrrlyn
+[snap]: https://snapchat.com/add/myrrlyn
+[twitter]: https://twitter.com/myrrlyn

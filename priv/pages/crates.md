@@ -8,6 +8,8 @@ This is a summary of Rust projects I have written.
 
 ## `bitvec`
 
+{:.no-toc}
+
 [More details](/crates/bitvec)
 
 `bitvec` is a version of the Rust linear-sequence collections (`[bool]`,
@@ -29,6 +31,8 @@ only one exception.
 
 ## `tap`
 
+{:.no-toc}
+
 [More details](/crates/tap)
 
 `tap` provides three utility traits that exist as base-object methods or
@@ -45,6 +49,8 @@ language features elsewhere:
   type, with `.conv::<T>()`, which can.
 
 ## `calm_io`
+
+{:.no-toc}
 
 [More details](/crates/calm_io)
 
@@ -65,6 +71,8 @@ a crash.
 
 ## `wyz`
 
+{:.no-toc}
+
 [More details](/crates/wyz)
 
 This is my general-purpose utility library. It contains little snippets of code
@@ -72,6 +80,8 @@ I think are worth reüsing, but are not yet worth publishing as standalone
 crates.
 
 ## `lilliput`
+
+{:.no-toc}
 
 [More details](/crates/lilliput)
 

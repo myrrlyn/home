@@ -14,13 +14,6 @@
 			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
 		%div#main.flex-wrapper.flex-cols.hide-scroll
 			%div#content.flex-item
-				%nav.navbar.navbar-expand-md.screen-only
-					%div.container-fluid
-						%a.navbar-brand{href: "#"} Navbar
-						%button.navbar-toggler{type: "button", data-bs-toggle: "collapse", data-bs-target: "#navbar-supported-content", aria-controls: "navbar-supported-content", aria-expanded: "false", aria-label: "Toggle navigation"}
-							%span.navbar-toggler-icon
-						%div#navbar-supported-content.collapse.navbar-collapse
-							= render @view_module, "nav.html", assigns
 				%main.container{role: "main"}
 					%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
 					%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
@@ -31,11 +24,35 @@
 						%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
 				%div.contents
 					= render @view_module, "about.html", assigns
+				%nav
+					Sitemap
+					%ul
+						- for {show, path, subfiles, toc} <- @navtree do
+							%li
+								%a{href: "#{path}"}= show |> raw
+								- if subfiles != [] do
+									%ul
+										- for {show, path, [], toc} <- subfiles do
+											%li
+												%a{href: "#{path}"}= show |> raw
+								- if subfiles != [] && toc != "" do
+									%hr
+								- if toc != "" do
+									= toc |> raw
+				%small
+					This site is a continual work in progress. I would greatly appreciate bug
+					reports, and also your patience as I build it.
 				%div#about-logos
-					%a{href: "https://archlinux.org"}
-						%img{src: "https://myrrlyn.net/images/arch-logo.png", alt: "Arch Linux", height: "32"}
-					%a{href: "https://www.w3.org/html/logo"}
-						%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "HTML5", height: 32}
+					%p.text-center
+						%span
+							%a{href: "https://www.w3.org/html/logo"}
+								%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "Written to HTML5/CSS3", title: "Written to HTML5/CSS3", height: 32}
+					%p.text-center
+						%span
+							%a{href: "https://elixir-lang.org"}
+								%img{src: "#{Routes.static_path(@conn, "/images/elixir-square.png")}", alt: "Served by Elixir", title: "Served by Elixir", height: 32}
+							%a{href: "https://www.phoenixframework.org"}
+								%img{src: "#{Routes.static_path(@conn, "/images/poweredby-phoenix-badge1-02.png")}", alt: "Built by Phoenix", title: "Built by Phoenix", height: 32}
 		%footer.grid-wrapper.grid-cols.screen-only
 			%span.grid-item.text-center Served with
 				%a{href="https://elixir-lang.org"}
