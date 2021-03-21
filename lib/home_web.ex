@@ -58,6 +58,10 @@ defmodule HomeWeb do
     end
   end
 
+  def page_listing do
+    HomeWeb.PageController.page_listing()
+  end
+
   defp view_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)

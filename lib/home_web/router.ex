@@ -38,6 +38,7 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :home)
+    get("/sitemap.xml", PageController, :sitemap)
     get("/*page", PageController, :other)
   end
 end

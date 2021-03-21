@@ -36,6 +36,7 @@ defmodule Home.Page do
   """
   @spec compile(String.t()) :: __MODULE__.t()
   def compile(file) do
+    # TODO(myrrlyn): Ensure PageController catches file-not-found exns
     {yaml, text} = Path.join(["priv", "pages", file]) |> File.read!() |> split
     {:ok, yaml} = yaml |> parse_yaml()
     {{:ok, html, _warns}, toc} = text |> Elixir.Home.Markdown.render(3)

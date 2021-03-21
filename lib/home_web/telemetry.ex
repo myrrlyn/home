@@ -30,13 +30,6 @@ defmodule HomeWeb.Telemetry do
         unit: {:native, :millisecond}
       ),
 
-      # Database Metrics
-      summary("home.repo.query.total_time", unit: {:native, :millisecond}),
-      summary("home.repo.query.decode_time", unit: {:native, :millisecond}),
-      summary("home.repo.query.query_time", unit: {:native, :millisecond}),
-      summary("home.repo.query.queue_time", unit: {:native, :millisecond}),
-      summary("home.repo.query.idle_time", unit: {:native, :millisecond}),
-
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
       summary("vm.total_run_queue_lengths.total"),

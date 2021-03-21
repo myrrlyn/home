@@ -1,0 +1,6 @@
+!!!
+%urlset{xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9"}
+	- for {_, url, _} <- HomeWeb.page_listing do
+		%url
+			%loc= ["https://myrrlyn.net", url] |> Path.join
+			%priority 0.7

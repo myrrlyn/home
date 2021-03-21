@@ -8,8 +8,19 @@ defmodule HomeWeb.PageController do
 
   def other(conn, params) do
     path = params["page"] |> Path.join()
-    page = Home.Page.compile("#{path}.md")
-    conn |> build(params, "/#{path}", page)
+
+    try do
+      page = Home.Page.compile("#{path}.md")
+      conn |> build(params, "/#{path}", page)
+    rescue
+      _ ->
+        conn |> render("404.html")
+    end
+  end
+
+  def sitemap(conn, _) do
+    {:safe, out} = Phoenix.View.render(HomeWeb.PageView, "sitemap.xml", [])
+    conn |> put_resp_content_type("text/xml") |> resp(200, out |> List.flatten() |> Enum.join())
   end
 
   defp build(conn, _params, path, page) do
@@ -17,7 +28,7 @@ defmodule HomeWeb.PageController do
     |> render("page.html",
       title: page.title,
       page: page,
-      navtree: make_nav(path, page.toc),
+      navtree: make_nav(path),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev")
     )
   end
@@ -28,33 +39,24 @@ defmodule HomeWeb.PageController do
     {"Crates", "/crates",
      [
        {"<code>bitvec</code>", "/crates/bitvec", []},
+       {"<code>radium</code>", "/crates/radium", []},
        {"<code>tap</code>", "/crates/tap", []},
        {"<code>calm_io</code>", "/crates/calm_io", []},
        {"<code>wyz</code>", "/crates/wyz", []},
        {"<code>lilliput</code>", "/crates/lilliput", []}
      ]},
     {"Portfolio", "/portfolio", []},
-    {"Workbench", "/uses", []},
-    {"Résumé", "/résumé", []}
+    {"Résumé", "/résumé", []},
+    {"Workbench", "/uses", []}
   ]
 
-  def make_nav(path, toc) do
+  def page_listing do
     @pages
-    |> Enum.map(fn {n, p, s} ->
-      {n, p, s |> apply_toc(path, toc)}
-    end)
-    |> apply_toc(path, toc)
+    |> Enum.map(fn {name, path, children} -> [{name, path, []} | children] end)
+    |> List.flatten()
   end
 
-  def apply_toc(seq, path, toc) do
-    seq
-    |> Enum.map(fn {n, p, s} ->
-      {n, p, s,
-       if p == path do
-         toc |> Home.Page.render_toc()
-       else
-         ""
-       end}
-    end)
+  def make_nav(_) do
+    @pages
   end
 end

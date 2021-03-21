@@ -63,7 +63,7 @@ defmodule Home.Markdown do
   def walker(ast), do: ast
 
   # Attach an anchoring identifier and inform the supervisor about it.
-  def process_header({header, attrs, inner, meta} = ast) do
+  def process_header({header, attrs, inner, meta}) do
     {anchor, rest} =
       case attrs |> List.keytake("id", 0) do
         # No `id` attr yet; create one from the text contents
@@ -77,13 +77,21 @@ defmodule Home.Markdown do
           {anchor, rest}
       end
 
+    {classes, rest} =
+      case rest |> List.keytake("class", 0) do
+        nil -> {[], rest}
+        {{"class", classes}, rest} -> {classes |> String.split(), rest}
+      end
+
+    classes = ["title" | classes] |> Enum.uniq()
+    attrs = [{"class", classes |> Enum.join(" ")} | rest]
+
     case anchor do
       "" ->
-        ast
+        {header, attrs, inner, meta}
 
       anchor ->
-        # Send {header, text, anchor} to the collector
-        {header, [{"id", anchor} | rest], inner, meta}
+        {header, [{"id", anchor} | attrs], inner, meta}
     end
   end
 
@@ -125,11 +133,11 @@ defmodule Home.Markdown do
     |> flatten
     |> Enum.filter(fn rec -> keep_headings(rec, threshold) end)
     |> Enum.filter(fn {_, attrs, _, _} ->
-      attrs
-      |> List.keyfind("class", 0, {"class", ""})
-      |> elem(1)
-      |> String.split()
-      |> Enum.any?(fn cls -> cls == "no-toc" end)
+      !(attrs
+        |> List.keyfind("class", 0, {"class", ""})
+        |> elem(1)
+        |> String.split()
+        |> Enum.any?(fn cls -> cls == "no-toc" end))
     end)
     |> Enum.map(fn {tag, attrs, html, _} ->
       {tag |> heading_to_rank, attrs |> List.keyfind("id", 0, {"id", ""}) |> elem(1), html}

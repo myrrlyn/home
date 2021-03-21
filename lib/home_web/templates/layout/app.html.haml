@@ -13,11 +13,10 @@
 		%header.screen-only
 			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
 		%div#main.flex-wrapper.flex-cols.hide-scroll
-			%div#content.flex-item
-				%main.container{role: "main"}
-					%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
-					%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
-					= @inner_content
+			%main.container.flex-item{role: "main"}
+				%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
+				%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
+				= @inner_content
 			%aside#about.container.flex-item.screen-only
 				%div.logo.gravatar
 					%a{href: "/"}
@@ -25,20 +24,26 @@
 				%div.contents
 					= render @view_module, "about.html", assigns
 				%nav
-					Sitemap
+					- if @page.toc != [] do
+						Table of Contents
+						%ol
+							- for {show, ident, h3} <- @page.toc do
+								%li
+									%a{href: "##{ident}"}= show |> raw
+									%ol
+										-for {show, ident, []} <- h3 do
+											%li
+												%a{href: "##{ident}"}= show |> raw
+					%code $ ~/ tree -L 1
 					%ul
-						- for {show, path, subfiles, toc} <- @navtree do
+						- for {show, path, subfiles} <- @navtree do
 							%li
 								%a{href: "#{path}"}= show |> raw
 								- if subfiles != [] do
 									%ul
-										- for {show, path, [], toc} <- subfiles do
+										- for {show, path, []} <- subfiles do
 											%li
 												%a{href: "#{path}"}= show |> raw
-								- if subfiles != [] && toc != "" do
-									%hr
-								- if toc != "" do
-									= toc |> raw
 				%small
 					This site is a continual work in progress. I would greatly appreciate bug
 					reports, and also your patience as I build it.
