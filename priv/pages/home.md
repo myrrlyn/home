@@ -2,7 +2,7 @@
 title: "~myrrlyn/"
 ---
 
-# Alexander `Payne`
+# Alexander Payne
 
 ## Introduction
 
@@ -14,10 +14,6 @@ way, way too much girlpop.
 I’m currently employed as a software development engineer at Amazon Web
 Services, where I work on bringing Rust to embedded devices. I volunteer with a
 local Scout troop, teaching aquatics and wilderness travel.
-
-### Girlpop
-
-I’m a bigger Taylor Swift fan than you.
 
 ## Contact Info
 
