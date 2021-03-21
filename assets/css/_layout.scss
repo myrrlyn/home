@@ -58,10 +58,10 @@ body {
 
 header {
 	background: {
-		color: $blue-capri;
+		color: var(--header-color);
 	}
 	border-bottom: {
-		color: $blue-prussian;
+		color: var(--border-color);
 		style: solid;
 		width: $header-border;
 	}
@@ -88,7 +88,7 @@ header {
 	}
 	@include media-breakpoint-up(md) {
 		border-right: {
-			color: $blue-prussian;
+			color: var(--border-color);
 			style: solid;
 			width: $vertical-border;
 		}
@@ -110,7 +110,7 @@ header {
 	margin-top: 1em;
 }
 
-#content.flex-item {
+main.flex-item {
 	@include media-breakpoint-up(md) {
 		flex: 4 0 0%;
 		order: 2;
@@ -119,7 +119,7 @@ header {
 
 footer {
 	border-top: {
-		color: $blue-prussian;
+		color: var(--border-color);
 		style: solid;
 		width: $footer-border;
 	}
@@ -137,5 +137,19 @@ body.hide-panels {
 	header,
 	footer {
 		display: none;
+	}
+}
+
+@include media-breakpoint-up(md) {
+	@media only screen and (min-height: 800px) {
+		body:not(.hide-panels) #main {
+			// not sure where the extra 12px are coming from
+			height: calc(100vh - #{core-height()} + 12px);
+		}
+		main,
+		#about {
+			overflow-y: auto;
+			height: inherit;
+		}
 	}
 }

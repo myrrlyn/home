@@ -145,6 +145,9 @@ pre {
 	&.e003 {
 		@include iso7010("e003");
 	}
+	&.e004 {
+		@include iso7010("e004");
+	}
 	&.e011 {
 		@include iso7010("e011");
 	}
@@ -172,8 +175,14 @@ pre {
 	&.p025 {
 		@include iso7010("p025");
 	}
+	&.p029 {
+		@include iso7010("p029");
+	}
 	&.w001 {
 		@include iso7010("w001");
+	}
+	&.w002 {
+		@include iso7010("w002");
 	}
 	&.w003 {
 		@include iso7010("w003");
@@ -184,10 +193,19 @@ pre {
 	&.w005 {
 		@include iso7010("w005");
 	}
+	&.w009 {
+		@include iso7010("w009");
+	}
+	&.w013 {
+		@include iso7010("w013");
+	}
 	&.w021 {
 		@include iso7010("w021");
 	}
 	&.w027 {
 		@include iso7010("w027");
+	}
+	&.w028 {
+		@include iso7010("w028");
 	}
 }

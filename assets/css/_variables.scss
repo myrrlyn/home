@@ -30,22 +30,28 @@ $iso7010-image-size: 3em;
 	padding-left: 1em;
 }
 
+%iso7010-image {
+	background: {
+		repeat: no-repeat;
+		size: $iso7010-image-size $iso7010-image-size;
+	}
+	content: "";
+	display: block;
+	float: left;
+	margin: {
+		// top: -0.75em;
+		right: 0.75em;
+	}
+	width: $iso7010-image-size;
+	height: $iso7010-image-size;
+}
+
 @mixin iso7010($file) {
 	&::before {
 		background: {
 			image: url("/static/images/iso-7010/#{$file}.svg");
-			repeat: no-repeat;
-			size: $iso7010-image-size $iso7010-image-size;
 		}
-		content: "";
-		display: block;
-		float: left;
-		margin: {
-			top: -0.75em;
-			right: 0.75em;
-		}
-		width: $iso7010-image-size;
-		height: $iso7010-image-size;
+		@extend %iso7010-image;
 	}
 }
 

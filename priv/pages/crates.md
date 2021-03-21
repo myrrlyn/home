@@ -1,5 +1,6 @@
 ---
 title: Crates by myrrlyn
+category: projects
 ---
 
 # Crates
@@ -28,6 +29,17 @@ able to use `&BitSlice` references to exactly match the standard idioms and APIs
 that demand *references* to a memory region, rather than *handles* to it. This
 functionality allows `bitvec` to be drop-in compatible with existing code, with
 only one exception.
+
+### `radium`
+
+{:.no-toc}
+
+[More details](/crates/radium)
+
+`radium` is an abstraction over `Atomic` and `Cell<>` types that allows users to
+be generic over thread-safety. It enables graceful degredation of portable code
+across processors with varying levels of atomic support, or compile-time
+switches of single- vs multi- threaded shared mutation capability.
 
 ## `tap`
 
