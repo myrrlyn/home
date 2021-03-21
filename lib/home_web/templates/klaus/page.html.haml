@@ -1,0 +1,3 @@
+%article
+	%span= DateTime.utc_now |> Calendar.strftime("%A, %B %d, %Y")
+	= @page.content |> raw

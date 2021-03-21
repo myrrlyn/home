@@ -2,12 +2,8 @@
 = render "c0da.html"
 %html{lang: "en"}
 	%head
-		%meta{charset: "utf-8"}
-		%meta{http-equiv: "X-UA-Compatible", content: "IE=edge"}
-		%meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
-		%title= @title || "myrrlyn.net"
-		%link{rel: "shortcut icon", href: "#{Routes.static_path(@conn, "/favicon.png")}", type="image/png"}
-		%link{rel: "stylesheet", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
+		= render("head.html", conn: @conn, title: @page.title)
+		%link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
 	%body
 		%header.screen-only
@@ -22,53 +18,10 @@
 					%a{href: "/"}
 						%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
 				%div.contents
+					= render("nav.html", conn: @conn, page: @page, navtree: @navtree)
 					= render @view_module, "about.html", assigns
-				%nav
-					- if @page.toc != [] do
-						Table of Contents
-						%ol
-							- for {show, ident, h3} <- @page.toc do
-								%li
-									%a{href: "##{ident}"}= show |> raw
-									%ol
-										-for {show, ident, []} <- h3 do
-											%li
-												%a{href: "##{ident}"}= show |> raw
-					%code $ ~/ tree -L 1
-					%ul
-						- for {show, path, subfiles} <- @navtree do
-							%li
-								%a{href: "#{path}"}= show |> raw
-								- if subfiles != [] do
-									%ul
-										- for {show, path, []} <- subfiles do
-											%li
-												%a{href: "#{path}"}= show |> raw
 				%small
 					This site is a continual work in progress. I would greatly appreciate bug
 					reports, and also your patience as I build it.
-				%div#about-logos
-					%p.text-center
-						%span
-							%a{href: "https://www.w3.org/html/logo"}
-								%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "Written to HTML5/CSS3", title: "Written to HTML5/CSS3", height: 32}
-					%p.text-center
-						%span
-							%a{href: "https://elixir-lang.org"}
-								%img{src: "#{Routes.static_path(@conn, "/images/elixir-square.png")}", alt: "Served by Elixir", title: "Served by Elixir", height: 32}
-							%a{href: "https://www.phoenixframework.org"}
-								%img{src: "#{Routes.static_path(@conn, "/images/poweredby-phoenix-badge1-02.png")}", alt: "Built by Phoenix", title: "Built by Phoenix", height: 32}
-		%footer.grid-wrapper.grid-cols.screen-only
-			%span.grid-item.text-center Served with
-				%a{href="https://elixir-lang.org"}
-					Elixir
-					= System.version
-				and
-				%a{href="https://www.phoenixframework.org"}
-					Phoenix
-					- vsn = :application.get_key(:phoenix, :vsn) |> elem(1) |> to_string()
-					= vsn
-			- year = DateTime.utc_now().year
-			- copy = "© 2012—#{year} Alexander «myrrlyn» Payne"
-			%span.grid-item.text-center= copy
-			%span.grid-item.text-center Hosted on DigitalOcean
+				= render("logos.html", conn: @conn)
+		= render("footer.html", conn: @conn)

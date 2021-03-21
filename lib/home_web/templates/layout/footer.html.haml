@@ -1,5 +1,5 @@
-%footer.flex-wrapper.flex-cols
-	%span.flex-item.text-left Served with
+%footer.grid-wrapper.grid-cols.screen-only
+	%span.grid-item.text-center Served with
 		%a{href="https://elixir-lang.org"}
 			Elixir
 			= System.version
@@ -10,5 +10,5 @@
 			= vsn
 	- year = DateTime.utc_now().year
 	- copy = "© 2012—#{year} Alexander «myrrlyn» Payne"
-	%span.flex-item.text-center= copy
-	%span.flex-item.text-right Hosted on DigitalOcean
+	%span.grid-item.text-center= copy
+	%span.grid-item.text-center Hosted on DigitalOcean

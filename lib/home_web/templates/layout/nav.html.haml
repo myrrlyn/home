@@ -1,0 +1,21 @@
+%nav
+	- if @page.toc != [] do
+		Table of Contents
+		%ol
+			- for {show, ident, h3} <- @page.toc do
+				%li
+					%a{href: "##{ident}"}= show |> raw
+					%ol
+						-for {show, ident, []} <- h3 do
+							%li
+								%a{href: "##{ident}"}= show |> raw
+	%code $ ~/ tree -L 1
+	%ul
+		- for {show, path, subfiles} <- @navtree do
+			%li
+				%a{href: "#{path}"}= show |> raw
+				- if subfiles != [] do
+					%ul
+						- for {show, path, []} <- subfiles do
+							%li
+								%a{href: "#{path}"}= show |> raw

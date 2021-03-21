@@ -1,0 +1,11 @@
+%div#about-logos
+	%p.text-center
+		%span
+			%a{href: "https://www.w3.org/html/logo"}
+				%img{src: "https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png", alt: "Written to HTML5/CSS3", title: "Written to HTML5/CSS3", height: 32}
+	%p.text-center
+		%span
+			%a{href: "https://elixir-lang.org"}
+				%img{src: "#{Routes.static_path(@conn, "/images/elixir-square.png")}", alt: "Served by Elixir", title: "Served by Elixir", height: 32}
+			%a{href: "https://www.phoenixframework.org"}
+				%img{src: "#{Routes.static_path(@conn, "/images/poweredby-phoenix-badge1-02.png")}", alt: "Built by Phoenix", title: "Built by Phoenix", height: 32}

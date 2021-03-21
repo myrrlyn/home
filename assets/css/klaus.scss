@@ -1,0 +1,118 @@
+@import "~bootstrap";
+
+@import "variables";
+
+main > article {
+	max-width: 60em;
+	margin: 0 auto;
+	padding: 0.25em 0.5em;
+	border: 1px solid navy;
+}
+
+.img {
+	padding: 4px 8px;
+	max-width: 100%;
+}
+
+.portrait {
+	@media all and (max-width: 500px) {
+		max-width: 50%;
+	}
+	@media all and (min-width: 500px) {
+		max-width: 250px;
+	}
+}
+
+#casual {
+	position: relative;
+	top: -3em;
+}
+
+#img-gallery {
+	padding: 0;
+	margin: 0;
+	div {
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		display: inline-block;
+	}
+}
+$inblpad: 4px;
+#klaus-lamp {
+	background-image: url("/static/images/klaus/lamp.png");
+}
+#klaus-clock {
+	background-image: url("/static/images/klaus/clock.jpg");
+}
+#klaus-logos {
+	background-image: url("/static/images/klaus/logos.jpg");
+}
+$width-thin: 22.6;
+$width-thick: 54.8;
+@media all and (min-width: 60em) {
+	#klaus-lamp {
+		height: calc(calc(#{$width-thin / 100} * 60em - #{$inblpad}) * 1.37686567164179);
+		width: calc(#{$width-thin}% - #{$inblpad});
+	}
+	#klaus-clock {
+		height: calc(calc(#{$width-thin / 100} * 60em - #{$inblpad}) * 1.37686567164179);
+		width: calc(#{$width-thin}% - #{$inblpad});
+	}
+	#klaus-logos {
+		height: calc(calc(#{$width-thick / 100} * 60em - #{$inblpad}) * 0.563);
+		width: calc(#{$width-thick}% - #{$inblpad});
+	}
+}
+@media all and (min-width: 600px) and (max-width: 60em) {
+	#klaus-lamp {
+		height: calc(calc(#{$width-thin}vw - #{$inblpad}) * 1.37686567164179);
+		width: calc(#{$width-thin}% - #{$inblpad});
+	}
+	#klaus-clock {
+		height: calc(calc(#{$width-thin}vw - #{$inblpad}) * 1.37686567164179);
+		width: calc(#{$width-thin}% - #{$inblpad});
+	}
+	#klaus-logos {
+		height: calc(calc(#{$width-thick}vw - #{$inblpad}) * 0.563);
+		width: calc(#{$width-thick}% - #{$inblpad});
+	}
+}
+@media all and (max-width: 599px) {
+	#klaus-lamp {
+		height: calc(calc(50vw - #{$inblpad}) * 1.37686567164179);
+		width: calc(50% - #{$inblpad});
+	}
+	#klaus-clock {
+		height: calc(calc(50vw - #{$inblpad}) * 1.37686567164179);
+		width: calc(50% - #{$inblpad});
+	}
+	#klaus-logos {
+		height: calc(calc(100vw - #{$inblpad}) * 0.563);
+		width: 100%;
+	}
+}
+
+.small-caps {
+	font-variant: small-caps;
+}
+
+@media screen and (max-width: 599px) {
+	.img {
+		float: none;
+		clear: both;
+		margin: 0 auto;
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	@media only screen and (min-height: 800px) {
+		body:not(.hide-panels) #flex-focus,
+		body #flex-focus {
+			height: 100%;
+		}
+		main {
+			overflow-y: auto;
+			height: inherit;
+		}
+	}
+}

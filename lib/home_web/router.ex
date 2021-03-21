@@ -39,6 +39,7 @@ defmodule HomeWeb.Router do
 
     get("/", PageController, :home)
     get("/sitemap.xml", PageController, :sitemap)
+    get("/klaus", KlausController, :page)
     get("/*page", PageController, :other)
   end
 end

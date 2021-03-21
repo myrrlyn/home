@@ -1,0 +1,12 @@
+!!! 5
+%html{lang: "en"}
+	%head
+		= render("head.html", conn: @conn, title: @page.title)
+		%meta{name: "robots", content: "noindex"}
+		%link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/klaus.css")}"}
+		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/klaus.js")}"}
+	%body
+		%div#main.flex-wrapper.flex-rows
+			%main.container.flex-item{role: "main"}.flex-cols
+				= @inner_content
+		%script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_SVG"}
