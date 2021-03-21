@@ -7,9 +7,6 @@
 # General application configuration
 use Mix.Config
 
-config :home,
-  ecto_repos: [Home.Repo]
-
 # Configures the endpoint
 config :home, HomeWeb.Endpoint,
   url: [host: "localhost"],
