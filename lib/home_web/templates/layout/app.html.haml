@@ -18,7 +18,7 @@
 					%a{href: "/"}
 						%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
 				%div.contents
-					= render("nav.html", conn: @conn, page: @page, navtree: @navtree)
+					= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "")
 					= render @view_module, "about.html", assigns
 				%small
 					This site is a continual work in progress. I would greatly appreciate bug

@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :home, HomeWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  url: [host: "localhost", port: 1312],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -23,7 +23,7 @@ config :logger, level: :info
 #
 #     config :home, HomeWeb.Endpoint,
 #       ...
-#       url: [host: "example.com", port: 443],
+#       url: [host: "myrrlyn.net", port: 443],
 #       https: [
 #         port: 443,
 #         cipher_suite: :strong,

@@ -29,22 +29,17 @@ defmodule HomeWeb.PageController do
       title: page.title,
       page: page,
       navtree: make_nav(path),
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev")
+      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      scope: ""
     )
   end
 
   @pages [
     {"Home", "/", []},
     {"About", "/about", []},
-    {"Crates", "/crates",
-     [
-       {"<code>bitvec</code>", "/crates/bitvec", []},
-       {"<code>radium</code>", "/crates/radium", []},
-       {"<code>tap</code>", "/crates/tap", []},
-       {"<code>calm_io</code>", "/crates/calm_io", []},
-       {"<code>wyz</code>", "/crates/wyz", []},
-       {"<code>lilliput</code>", "/crates/lilliput", []}
-     ]},
+    {"Blog", "/blog", []},
+    {"Crates", "/crates", []},
+    {"Oeuvre", "/oeuvre", []},
     {"Portfolio", "/portfolio", []},
     {"Résumé", "/résumé", []},
     {"Workbench", "/uses", []}

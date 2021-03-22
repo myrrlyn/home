@@ -1,6 +1,10 @@
 defmodule Home.Page do
-  defmodule Home.Page.Exception do
-    defexception [:message, :yaml]
+  defmodule Home.Page.NotFoundException do
+    defexception [:message, plug_status: 404]
+  end
+
+  defmodule Home.Page.BadContentException do
+    defexception [:message, plug_status: 500]
   end
 
   @type toc_entry :: {String.t(), String, t, [toc_entry]}
@@ -35,9 +39,18 @@ defmodule Home.Page do
   object suitable for rendering.
   """
   @spec compile(String.t()) :: __MODULE__.t()
-  def compile(file) do
-    # TODO(myrrlyn): Ensure PageController catches file-not-found exns
-    {yaml, text} = Path.join(["priv", "pages", file]) |> File.read!() |> split
+  def compile(path) do
+    # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
+    text = path |> load
+
+    {yaml, text} =
+      try do
+        text
+        |> split
+      rescue
+        _ -> raise __MODULE__.BadContentException
+      end
+
     {:ok, yaml} = yaml |> parse_yaml()
     {{:ok, html, _warns}, toc} = text |> Elixir.Home.Markdown.render(3)
 
@@ -55,6 +68,14 @@ defmodule Home.Page do
         |> Enum.flat_map(fn {_, _, h2} -> h2 end),
       content: html
     }
+  end
+
+  def load(path) do
+    ["priv", "pages", path] |> Path.join() |> File.read!()
+  end
+
+  def get_yaml(path) do
+    path |> load |> split |> elem(0) |> parse_yaml |> elem(1)
   end
 
   def render_toc([]), do: ""
