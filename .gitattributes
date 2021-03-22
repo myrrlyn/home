@@ -1,3 +1,6 @@
+.ttf filter=lfs diff=lfs merge=lfs -text
+.woff filter=lfs diff=lfs merge=lfs -text
+.woff2 filter=lfs diff=lfs merge=lfs -text
 *.exs filter=lfs diff=lfs merge=lfs -text
 *.gitignore filter=lfs diff=lfs merge=lfs -text
 *.gitmodules filter=lfs diff=lfs merge=lfs -text
@@ -16,6 +19,9 @@
 *.lock filter=lfs diff=lfs merge=lfs -text
 *.po filter=lfs diff=lfs merge=lfs -text
 *.pot filter=lfs diff=lfs merge=lfs -text
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.woff filter=lfs diff=lfs merge=lfs -text
+*.woff2 filter=lfs diff=lfs merge=lfs -text
 *.md !text !filter !merge !diff
 .gitignore !text !filter !merge !diff
 .gitmodules !text !filter !merge !diff
