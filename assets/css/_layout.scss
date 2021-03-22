@@ -80,6 +80,21 @@ header {
 		right: auto;
 	}
 	max-width: $content-width-max;
+	@include media-breakpoint-up(md) {
+		border: {
+			left: {
+				color: var(--border-color);
+				style: solid; width: $vertical-border;
+			}
+			right: {
+				color: var(--border-color);
+				style: solid; width: $vertical-border;
+			}
+		}
+		article {
+			max-width: 60em;
+		}
+	}
 }
 
 #about {
@@ -93,6 +108,7 @@ header {
 			width: $vertical-border;
 		}
 		order: 1;
+		max-width: 25em;
 	}
 	//  Get ready for some fuckery
 	@include media-breakpoint-up(md) {

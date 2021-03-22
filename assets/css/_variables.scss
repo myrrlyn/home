@@ -25,6 +25,7 @@ $iso7010-image-size: 3em;
 	border: {
 		top: $tb-width solid transparent;
 		left: $lr-width solid $color;
+		right: $lr-width solid transparent;
 		bottom: $tb-width solid transparent;
 	}
 	padding-left: 1em;

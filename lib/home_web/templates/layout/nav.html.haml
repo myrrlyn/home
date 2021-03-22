@@ -9,7 +9,8 @@
 						-for {show, ident, []} <- h3 do
 							%li
 								%a{href: "##{ident}"}= show |> raw
-	%code $ ~/ tree -L 1
+	- text = "$ ~/#{@scope} tree -L 1"
+	%code= text
 	%ul
 		- for {show, path, subfiles} <- @navtree do
 			%li

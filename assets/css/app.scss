@@ -2,6 +2,7 @@
 @import "~bootstrap";
 
 @import "variables";
+@import "font";
 @import "color";
 
 @import "layout";
@@ -51,32 +52,6 @@
 	margin: -1rem 0 2rem;
 }
 
-%text-mono {
-	font-family: "Iosevka";
-}
-
-%text-sans {
-	font-family: "Roboto";
-}
-
-%text-serif {
-	font-family: "Roboto Slab";
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	@extend %text-mono;
-}
-
-p,
-span {
-	@extend %text-sans;
-}
-
 h1::before {
 	content: "#";
 }
@@ -105,13 +80,6 @@ blockquote {
 
 	:last-child {
 		margin-bottom: 0;
-	}
-
-	blockquote.iso7010 {
-		border: none;
-		margin: 0 0;
-		padding-left: 0;
-		padding-right: 0;
 	}
 }
 
@@ -142,70 +110,29 @@ pre {
 		right: 1em;
 		bottom: 1em;
 	}
-	&.e003 {
-		@include iso7010("e003");
-	}
-	&.e004 {
-		@include iso7010("e004");
-	}
-	&.e011 {
-		@include iso7010("e011");
-	}
-	&.f005 {
-		@include iso7010("f005");
-	}
-	&.m001 {
-		@include iso7010("m001");
-	}
-	&.m002 {
-		@include iso7010("m002");
-	}
-	&.m005 {
-		@include iso7010("m005");
-	}
-	&.p001 {
-		@include iso7010("p001");
-	}
-	&.p010 {
-		@include iso7010("p010");
-	}
-	&.p015 {
-		@include iso7010("p015");
-	}
-	&.p025 {
-		@include iso7010("p025");
-	}
-	&.p029 {
-		@include iso7010("p029");
-	}
-	&.w001 {
-		@include iso7010("w001");
-	}
-	&.w002 {
-		@include iso7010("w002");
-	}
-	&.w003 {
-		@include iso7010("w003");
-	}
-	&.w004 {
-		@include iso7010("w004");
-	}
-	&.w005 {
-		@include iso7010("w005");
-	}
-	&.w009 {
-		@include iso7010("w009");
-	}
-	&.w013 {
-		@include iso7010("w013");
-	}
-	&.w021 {
-		@include iso7010("w021");
-	}
-	&.w027 {
-		@include iso7010("w027");
-	}
-	&.w028 {
-		@include iso7010("w028");
+
+	@each $pfx, $nums in (
+		"e": (
+			"003", "004", "011",
+		),
+		"f": (
+			"005",
+		),
+		"m": (
+			"001", "002", "005",
+		),
+		"p": (
+			"001", "010", "015", "025", "029",
+		),
+		"w": (
+			"001", "002", "003", "004", "005", "009", "013", "021", "027", "028",
+		),
+	) {
+		@each $num in $nums {
+			$ident: "#{$pfx}#{$num}";
+			&.#{$pfx}#{$num} {
+				@include iso7010($ident);
+			}
+		}
 	}
 }
