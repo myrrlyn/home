@@ -16,6 +16,13 @@ defmodule HomeWeb.Endpoint do
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
+  # Certain static files are expected at the site root.
+  plug Plug.Static,
+    at: "/",
+    from: :home,
+    gzip: false,
+    only: ~w(favicon.ico favicon.png robots.txt)
+
   # Serve at "/static" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
@@ -23,8 +30,8 @@ defmodule HomeWeb.Endpoint do
   plug Plug.Static,
     at: "/static",
     from: :home,
-    gzip: false,
-    only: ~w(css fonts images js favicon.ico favicon.png robots.txt)
+    gzip: true,
+    only: ~w(css fonts images js)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
