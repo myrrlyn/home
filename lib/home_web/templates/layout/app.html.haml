@@ -25,3 +25,8 @@
 					reports, and also your patience as I build it.
 				= render("logos.html", conn: @conn)
 		= render("footer.html", conn: @conn)
+	- banner = Routes.static_path(@conn, "/images/banners/#{@banner}")
+:css
+	header {
+		background-image: url("#{banner}");
+	}

@@ -59,6 +59,9 @@ body {
 header {
 	background: {
 		color: var(--header-color);
+		position: center center;
+		repeat: no-repeat;
+		size: cover;
 	}
 	border-bottom: {
 		color: var(--border-color);
@@ -69,11 +72,6 @@ header {
 }
 
 #main {
-	// flex: {
-	// 	grow: 1;
-	// 	shrink: 0;
-	// 	basis: auto;
-	// }
 	justify-content: center;
 	margin: {
 		left: auto;
@@ -81,18 +79,22 @@ header {
 	}
 	max-width: $content-width-max;
 	@include media-breakpoint-up(md) {
+		article {
+			max-width: 60em;
+		}
+	}
+	@include media-breakpoint-up(xl) {
 		border: {
 			left: {
 				color: var(--border-color);
-				style: solid; width: $vertical-border;
+				style: solid;
+				width: $vertical-border;
 			}
 			right: {
 				color: var(--border-color);
-				style: solid; width: $vertical-border;
+				style: solid;
+				width: $vertical-border;
 			}
-		}
-		article {
-			max-width: 60em;
 		}
 	}
 }

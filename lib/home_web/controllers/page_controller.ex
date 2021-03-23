@@ -27,6 +27,7 @@ defmodule HomeWeb.PageController do
     conn
     |> render("page.html",
       title: page.title,
+      banner: "2017-01-28T08-50-37.jpg",
       page: page,
       navtree: make_nav(path),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),

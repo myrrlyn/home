@@ -46,16 +46,17 @@
 	}
 }
 
+body {
+	@extend %text-serif;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-	@extend %text-mono;
-}
-
-p,
-span {
-	@extend %text-sans;
+	&::before {
+		@extend %text-mono;
+	}
 }
