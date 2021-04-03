@@ -52,6 +52,18 @@
 	margin: -1rem 0 2rem;
 }
 
+article img {
+	&:not(.unset) {
+		min-width: 200px;
+		width: 33%;
+		max-width: 800px;
+	}
+
+	&.right {
+		float: right;
+	}
+}
+
 h1::before {
 	content: "#";
 }

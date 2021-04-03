@@ -20,12 +20,12 @@ defmodule HomeWeb.BlogController do
     )
   end
 
-  def page(conn, %{"path" => req_url} = _params) do
-    req_url = [@root | req_url] |> Path.join()
+  def page(conn, %{"path" => [category, page]} = _params) do
+    req_url = [@root, category, page] |> Path.join()
 
     page =
-      HomeWeb.BlogController.get_articles()
-      |> Enum.map(fn {file, yml} = pair -> {file, yml, HomeWeb.BlogController.make_link(pair)} end)
+      get_articles()
+      |> Enum.map(fn {file, yml} = pair -> {file, yml, make_link(pair)} end)
       |> Enum.find(fn {_, _, url} -> url == req_url end)
       |> elem(0)
       |> Home.Page.compile()
@@ -46,6 +46,15 @@ defmodule HomeWeb.BlogController do
       end),
       scope: @root
     )
+  end
+
+  def page(conn, %{"path" => [_, folder, resource]} = _params) do
+    path = ["priv", "pages", "blog", folder, resource] |> Path.join()
+    if path |> File.regular? do
+      conn |> send_file(200, path)
+    else
+      conn |> send_resp(404, "Resource not found")
+    end
   end
 
   def by_year(conn, _params, _year, _rest) do
