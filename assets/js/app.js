@@ -21,6 +21,9 @@ import hljs from 'highlight.js';
  * snippet.
  */
 let lang_dict = {
+	c: "C code",
+	cpp: "C++ code",
+	erlang: "Erlang code",
 	rust: "Rust code",
 	sh: "Shell session",
 	text: "Plain text",

@@ -34,7 +34,7 @@ $iso7010-image-size: 3em;
 %iso7010-image {
 	background: {
 		repeat: no-repeat;
-		size: $iso7010-image-size $iso7010-image-size;
+		size: contain;
 	}
 	content: "";
 	display: block;

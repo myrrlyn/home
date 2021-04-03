@@ -77,8 +77,9 @@ pre {
 	}
 }
 
+main aside,
 blockquote {
-	&.bq-danger {
+	&.bq-harm {
 		background-color: var(--iso-red-bg);
 		border-left-color: var(--iso-red);
 		border-right-color: var(--iso-red);
@@ -125,4 +126,9 @@ h5 {
 
 h6 {
 	color: var(--ansi-red);
+}
+
+hr {
+	border-top-color: var(--text-fg);
+	color: var(--text-fg);
 }
