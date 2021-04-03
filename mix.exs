@@ -48,7 +48,8 @@ defmodule Home.MixProject do
       {:earmark, "~> 1.4"},
       {:timex, "~> 3.6"},
       {:yaml_elixir, "~> 2.6"},
-      {:gravatar, "~> 0.1"}
+      {:gravatar, "~> 0.1"},
+      {:statistics, "~> 0.6"}
     ]
   end
 

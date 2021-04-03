@@ -10,6 +10,9 @@
 			header {
 				background-image: url("#{banner}");
 			}
+			img#gravatar {
+				transform: rotate(#{Home.rotate_avi()}deg);
+			}
 	%body
 		%header{role: "banner"}.screen-only
 			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
