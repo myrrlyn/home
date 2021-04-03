@@ -6,15 +6,20 @@ defmodule HomeWeb.PageController do
     |> build(params, "/", Home.Page.compile("home.md"))
   end
 
-  def other(conn, params) do
-    path = params["page"] |> Path.join()
+  def page(conn, params) do
+    path = params["path"] |> Path.join()
 
     try do
       page = Home.Page.compile("#{path}.md")
       conn |> build(params, "/#{path}", page)
     rescue
       _ ->
-        conn |> render("404.html")
+        conn
+        |> resp(
+          307,
+          "This page is not yet implemented on the new site. Use old.myrrlyn.net in the meantime."
+        )
+        |> put_resp_header("location", ["https://old.myrrlyn.net", path] |> Path.join())
     end
   end
 
@@ -35,20 +40,23 @@ defmodule HomeWeb.PageController do
     )
   end
 
+  def favicon_ico(conn, _) do
+    conn |> resp(307, "") |> put_resp_header("location", "/favicon.png")
+  end
+
   @pages [
-    {"Home", "/", []},
-    {"About", "/about", []},
-    {"Blog", "/blog", []},
-    {"Crates", "/crates", []},
-    {"Oeuvre", "/oeuvre", []},
-    {"Portfolio", "/portfolio", []},
-    {"Résumé", "/résumé", []},
-    {"Workbench", "/uses", []}
+    {"Home", "/", "-r--"},
+    {"About", "/about", "-r--"},
+    {"Blog", "/blog", "dr-x"},
+    {"Crates", "/crates", "dr-x"},
+    {"Oeuvre", "/oeuvre", "dr-x"},
+    {"Portfolio", "/portfolio", "-r--"},
+    {"Résumé", "/résumé", "-r--"},
+    {"Workbench", "/uses", "-r--"}
   ]
 
   def page_listing do
     @pages
-    |> Enum.map(fn {name, path, children} -> [{name, path, []} | children] end)
     |> List.flatten()
   end
 

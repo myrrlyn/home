@@ -1,2 +1,7 @@
 %article
+	%h1#title= @page.title
+	%p
+		Published on
+		- d = Timex.format!(@page.date, "{YYYY}, {Mshort} {D}")
+		= d
 	= @page.content |> raw

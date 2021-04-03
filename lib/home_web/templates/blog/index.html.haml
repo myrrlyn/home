@@ -1,7 +1,8 @@
 %article
 	= @page.content |> raw
-	%h2 Listing
-	%ol
-	- for {title, url} <- HomeWeb.BlogController.page_listing do
-		%li
-			%a{href: "#{url}"}= title
+	- for {name, group} <- HomeWeb.BlogController.grouped_by_category() do
+		%h2= name
+		%ol
+			- for {title, url, _} <- group do
+				%li
+					%a{href: "#{url}"}= title

@@ -1,4 +1,4 @@
-%nav
+%nav{role: "navigation"}
 	- if @page.toc != [] do
 		Table of Contents
 		%ol
@@ -9,14 +9,10 @@
 						-for {show, ident, []} <- h3 do
 							%li
 								%a{href: "##{ident}"}= show |> raw
-	- text = "$ ~/#{@scope} tree -L 1"
+	- text = "$ ls ~#{@scope}"
 	%code= text
-	%ul
-		- for {show, path, subfiles} <- @navtree do
+	%ul{style: "list-style-type: none; padding-left: 0;"}
+		- for {show, url, perm} <- @navtree do
 			%li
-				%a{href: "#{path}"}= show |> raw
-				- if subfiles != [] do
-					%ul
-						- for {show, path, []} <- subfiles do
-							%li
-								%a{href: "#{path}"}= show |> raw
+				%code.inline= perm
+				%a{href: "#{url}"}= show |> raw

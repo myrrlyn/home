@@ -5,8 +5,13 @@
 		= render("head.html", conn: @conn, title: @page.title)
 		%link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
+		- banner = Routes.static_path(@conn, "/images/banners/#{@banner}")
+		:css
+			header {
+				background-image: url("#{banner}");
+			}
 	%body
-		%header.screen-only
+		%header{role: "banner"}.screen-only
 			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
 		%div#main.flex-wrapper.flex-cols.hide-scroll
 			%main.container.flex-item{role: "main"}
@@ -21,12 +26,10 @@
 					= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "")
 					= render @view_module, "about.html", assigns
 				%small
-					This site is a continual work in progress. I would greatly appreciate bug
-					reports, and also your patience as I build it.
+					This site is a continual work in progress. I would greatly appreciate
+					bug reports, and also your patience as I build it. Lots of old links
+					are broken! You can access the old site at
+					%a{href: "//old.myrrlyn.net"}
+						%code old.myrrlyn.net
 				= render("logos.html", conn: @conn)
 		= render("footer.html", conn: @conn)
-	- banner = Routes.static_path(@conn, "/images/banners/#{@banner}")
-:css
-	header {
-		background-image: url("#{banner}");
-	}
