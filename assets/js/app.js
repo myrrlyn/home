@@ -27,6 +27,7 @@ let lang_dict = {
 	rust: "Rust code",
 	sh: "Shell session",
 	text: "Plain text",
+	term: "Text diagram",
 };
 
 setTimeout(mark_codeblocks, 1);
@@ -44,6 +45,14 @@ function mark_codeblocks() {
 			let text = lang_dict[lang];
 			if (text !== undefined) {
 				let codespan = node.firstElementChild;
+				if (lang === "term") {
+					for (let klass of ["term", "lang-term", "language-term"]) {
+						codespan.classList.remove(klass);
+					}
+					for (let klass of ["text", "lang-text", "language-text"]) {
+						codespan.classList.add(klass);
+					}
+				}
 				hljs.highlightBlock(codespan);
 				let marker = document.createElement("div");
 				marker.classList.add("lang-marker");

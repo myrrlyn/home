@@ -16,7 +16,8 @@
 @import "~highlight.js/scss/vs";
 // @import "~highlight.js/scss/xcode";
 
-.codeblock-text {
+.codeblock-text,
+.codeblock-term {
 	@import "~highlight.js/scss/gradient-light";
 }
 

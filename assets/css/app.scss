@@ -114,9 +114,17 @@ pre {
 		clear: both;
 	}
 
-	code,
-	code span {
-		@extend %text-mono;
+	&:not(.codeblock-term) {
+		code,
+		code span {
+			@extend %text-mono;
+		}
+	}
+	&.codeblock-term {
+		code,
+		code span {
+			@extend %text-term;
+		}
 	}
 }
 
@@ -145,9 +153,12 @@ pre {
 				"m": (
 					"001",
 					"002",
+					"004",
 					"005",
 					"006",
+					"009",
 					"011",
+					"014",
 					"055",
 				),
 				"p": (
@@ -166,10 +177,12 @@ pre {
 					"005",
 					"007",
 					"009",
+					"011",
 					"012",
 					"013",
 					"020",
 					"021",
+					"022",
 					"027",
 					"028",
 				)
