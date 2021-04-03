@@ -4,4 +4,8 @@
 		Published on
 		- d = Timex.format!(@page.date, "{YYYY}, {Mshort} {D}")
 		= d
+	- case @page.summary |> Home.Markdown.render() do
+		- {{:ok, summary, _}, _} ->
+			%p= summary |> raw
+			%hr
 	= @page.content |> raw

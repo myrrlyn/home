@@ -26,8 +26,8 @@ site, in order to provide quick visual testing of the overall theme.
 > This is a danger blockquote.
 >
 > > This is a nested blockquote that has a level indicator as well as an image.
-> {:.bq-danger .iso7010 .p015}
-{:.bq-danger .iso7010 .p010}
+> {:.bq-harm .iso7010 .p015}
+{:.bq-harm .iso7010 .p010}
 
 <!-- -->
 

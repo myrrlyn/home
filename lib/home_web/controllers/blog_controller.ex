@@ -11,58 +11,44 @@ defmodule HomeWeb.BlogController do
       banner: "2017-01-28T08-50-37.jpg",
       page: page,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      navtree:
-        [
-          {"<code>.</code> <small>(Blog index)</small>", "#{@root}", "dr-x"},
-          {"<code>..</code> <small>(Site index)</small>", "/", "dr-x"}
-        ] ++ page_listing(),
+      navtree: page_listing(),
       scope: "#{@root}"
     )
   end
 
+  # Map categorized pages correctly.
   def page(conn, %{"path" => [category, page]} = _params) do
     req_url = [@root, category, page] |> Path.join()
 
-    page =
-      get_articles()
-      |> Enum.map(fn {file, yml} = pair -> {file, yml, make_link(pair)} end)
-      |> Enum.find(fn {_, _, url} -> url == req_url end)
-      |> elem(0)
-      |> Home.Page.compile()
+    case get_articles()
+         |> Enum.map(fn {file, yml} = pair -> {file, yml, make_link(pair)} end)
+         |> Enum.find(fn {_, _, url} -> url == req_url end) do
+      {p, _, _} ->
+        page = p |> Home.Page.compile()
 
-    conn
-    |> render("page.html",
-      banner: "2017-01-28T08-50-37.jpg",
-      page: page,
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      navtree: page_listing() |> Enum.map(fn {name, url, date} ->
-        name =
-        if url == req_url do
-          "👉 " <> name <> " 👈"
-        else
-          name
-        end
-        {name, url, date}
-      end),
-      scope: @root
-    )
+        conn
+        |> render("page.html",
+          banner: "2017-01-28T08-50-37.jpg",
+          page: page,
+          gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+          navtree: page_listing(req_url),
+          scope: @root
+        )
+
+      nil ->
+        conn |> send_resp(404, "Article not found")
+    end
   end
 
+  # Map nested resources correctly.
   def page(conn, %{"path" => [_, folder, resource]} = _params) do
     path = ["priv", "pages", "blog", folder, resource] |> Path.join()
-    if path |> File.regular? do
+
+    if path |> File.regular?() do
       conn |> send_file(200, path)
     else
       conn |> send_resp(404, "Resource not found")
     end
-  end
-
-  def by_year(conn, _params, _year, _rest) do
-    conn
-  end
-
-  def by_category(conn, _params, _category, _rest) do
-    conn
   end
 
   def grouped_by_category() do
@@ -92,14 +78,29 @@ defmodule HomeWeb.BlogController do
   @doc """
   Satisfies the directory listing demanded by the `nav` layout
   """
-  def page_listing do
-    get_articles()
-    |> Enum.map(fn {_, yml} = pair ->
-      {yml["title"], pair |> make_link(), pair |> Home.Blog.get_date_for()}
-    end)
+  def page_listing(current \\ nil) do
+    [
+      {"<code>.</code> <small>(Blog index)</small>", "#{@root}", "dr-x"},
+      {"<code>..</code> <small>(Site index)</small>", "/", "dr-x"}
+    ] ++
+      (get_articles(current)
+       |> Stream.map(fn {_, yml} = pair ->
+         {yml["title"], pair |> make_link(), pair |> Home.Blog.get_date_for()}
+       end)
+       |> Stream.map(fn {name, url, date} ->
+         name =
+           if url == current do
+             "👉 " <> name <> " 👈"
+           else
+             name
+           end
+
+         {name, url, date}
+       end)
+       |> Enum.to_list())
   end
 
-  def get_articles do
+  def get_articles(current \\ nil) do
     ["priv", "pages", "blog"]
     |> Path.join()
     |> File.ls!()
@@ -112,7 +113,7 @@ defmodule HomeWeb.BlogController do
     end)
     |> Stream.filter(fn p -> ["priv", "pages", p] |> Path.join() |> File.regular?() end)
     |> Stream.map(fn p -> {p, Home.Page.get_yaml(p)} end)
-    |> Stream.reject(fn {_, yml} -> yml |> Map.get("published", false) end)
+    |> Stream.filter(fn {_, yml} -> yml |> Map.get("published", true) end)
     |> Enum.to_list()
     |> Enum.sort_by(&Home.Blog.get_date_for/1)
   end

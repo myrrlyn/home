@@ -5,6 +5,10 @@
 		= render("head.html", conn: @conn, title: @page.title)
 		%link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
+		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/mathjax.js")}"}
+		%script{src: "https://polyfill.io/v3/polyfill.min.js?features=es6"}
+		%script#MathJax-script{async: "true", src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"}
+		%script{type: "text/javascript", async: "1", src: "https://platform.twitter.com/widgets.js", charset: "utf-8"}
 		- banner = Routes.static_path(@conn, "/images/banners/#{@banner}")
 		:css
 			header {

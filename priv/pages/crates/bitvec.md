@@ -116,7 +116,7 @@ describe *any* region of memory as a [`BitSlice`].
 > level, and both the standard library and I reserve the right to modify the
 > layout at any time without causing an API breaking change.
 > {:.iso7010 .p015}
-{:.bq-danger}
+{:.bq-harm}
 
 Once I established an encoding of element address, starting bit, and bit count
 into a standard Rust slice pointer, I was able to use the full idiomatic API and

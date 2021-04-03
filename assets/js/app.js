@@ -22,12 +22,15 @@ import hljs from 'highlight.js';
  */
 let lang_dict = {
 	c: "C code",
+	cosmos: "COSMOS interface definition",
 	cpp: "C++ code",
 	erlang: "Erlang code",
+	elixir: "Elixir code",
 	rust: "Rust code",
 	sh: "Shell session",
 	text: "Plain text",
 	term: "Text diagram",
+	toml: "TOML configuration",
 };
 
 setTimeout(mark_codeblocks, 1);
@@ -45,8 +48,8 @@ function mark_codeblocks() {
 			let text = lang_dict[lang];
 			if (text !== undefined) {
 				let codespan = node.firstElementChild;
-				if (lang === "term") {
-					for (let klass of ["term", "lang-term", "language-term"]) {
+				if (lang === "term" || lang == "cosmos") {
+					for (let klass of [`${lang}`, `lang-${lang}`, `language-${lang}`]) {
 						codespan.classList.remove(klass);
 					}
 					for (let klass of ["text", "lang-text", "language-text"]) {

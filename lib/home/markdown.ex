@@ -6,12 +6,12 @@ defmodule Home.Markdown do
     smartypants: false,
     postprocessor: &Home.Markdown.walker/1
   }
-  def render(markdown, threshold \\ 6) do
+  def render(markdown, tocs \\ 1..6) do
     # Run Earmark in a separate task and collect events from it to build up the
     # ToC tree.
 
     {status, ast, msgs} = markdown |> Earmark.postprocessed_ast(@opts)
-    toc_tree = Task.async(fn -> ast |> build_toc(threshold) end)
+    toc_tree = Task.async(fn -> ast |> build_toc(tocs) end)
     html = Task.async(fn -> ast |> ast_to_html() |> restore_tags() end)
 
     {{status, html |> Task.await(), msgs}, toc_tree |> Task.await()}
@@ -126,7 +126,8 @@ defmodule Home.Markdown do
       text
       |> String.trim()
       |> String.downcase()
-      |> String.replace(~r/\s+/, "-")
+      |> String.replace(~r/\s+/u, "-")
+      |> String.replace(~r/[^\w-]/u, "")
       |> String.trim("-")
 
   def extract_lang(classes),
@@ -136,20 +137,21 @@ defmodule Home.Markdown do
       |> Enum.find("language-text", fn lang -> lang |> String.starts_with?("language-") end)
       |> String.trim_leading("language-")
 
-  def build_toc(ast, threshold \\ 6) do
+  def build_toc(ast, tocs \\ 1..6) do
     ast
-    |> flatten
-    |> Enum.filter(fn rec -> keep_headings(rec, threshold) end)
-    |> Enum.filter(fn {_, attrs, _, _} ->
+    |> flatten()
+    |> Stream.filter(fn rec -> keep_headings(rec, tocs) end)
+    |> Stream.filter(fn {_, attrs, _, _} ->
       !(attrs
         |> List.keyfind("class", 0, {"class", ""})
         |> elem(1)
         |> String.split()
         |> Enum.any?(fn cls -> cls == "no-toc" end))
     end)
-    |> Enum.map(fn {tag, attrs, html, _} ->
+    |> Stream.map(fn {tag, attrs, html, _} ->
       {tag |> heading_to_rank, attrs |> List.keyfind("id", 0, {"id", ""}) |> elem(1), html}
     end)
+    |> Enum.to_list()
     |> toc_tree()
   end
 
@@ -167,10 +169,10 @@ defmodule Home.Markdown do
 
   @doc """
   Discards all nodes in an `Earmark.ast` that are not headings of lower rank
-  than `threshold`.
+  than `tocs`.
   """
-  def keep_headings({tag, _, _, _}, threshold \\ 6) do
-    tag |> heading_to_rank <= threshold
+  def keep_headings({tag, _, _, _}, tocs \\ 1..6) do
+    Enum.member?(tocs, tag |> heading_to_rank)
   end
 
   def ast_to_html(ast), do: Earmark.Transform.transform(ast, @opts)
@@ -180,21 +182,26 @@ defmodule Home.Markdown do
 
   This is not aware of context, and replaces *all* escaped tag instances.
   """
-  def restore_tags html do
+  def restore_tags(html) do
     tags = [
+      "cite",
+      "code",
       "del",
+      "dfn",
       "ins",
-      "math",
-      "mfrac",
-      "mi",
-      "mo",
-      "mn",
-      "msub",
-      "msup",
+      # "math",
+      # "mfrac",
+      # "mi",
+      # "mo",
+      # "mn",
+      # "msub",
+      # "msup",
       "sub",
-      "sup",
+      "sup"
     ]
+
     re = ~r/&lt;(?<c>\/)?(?<t>#{tags |> Enum.join("|")})&gt;/
+
     Regex.replace(
       re,
       html,
