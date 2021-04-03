@@ -1,0 +1,7 @@
+%article
+	= @page.content |> raw
+	%h2 Listing
+	%ol
+	- for {title, url} <- HomeWeb.BlogController.page_listing do
+		%li
+			%a{href: "#{url}"}= title

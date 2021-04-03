@@ -12,13 +12,21 @@ defmodule Home.Markdown do
 
     {status, ast, msgs} = markdown |> Earmark.postprocessed_ast(@opts)
     toc_tree = Task.async(fn -> ast |> build_toc(threshold) end)
-    html = Task.async(fn -> ast |> ast_to_html end)
+    html = Task.async(fn -> ast |> ast_to_html() |> restore_tags() end)
 
     {{status, html |> Task.await(), msgs}, toc_tree |> Task.await()}
   end
 
   # A callback invoked as Earmark walks down the tree.
   def walker(ast)
+
+  # Translate <blockquote role="complementary"> into <aside>
+  def walker({"blockquote", attrs, inner, meta} = bq) do
+    case attrs |> List.keytake("role", 0) do
+      {{"role", "complementary"}, rest} -> {"aside", rest, inner, meta}
+      _ -> bq
+    end
+  end
 
   # <h1> receives a .title class
   def walker({"h1", attrs, inner, meta}) do
@@ -166,6 +174,33 @@ defmodule Home.Markdown do
   end
 
   def ast_to_html(ast), do: Earmark.Transform.transform(ast, @opts)
+
+  @doc """
+  Un-escapes certain tags. Does not support attributes in those tags.
+
+  This is not aware of context, and replaces *all* escaped tag instances.
+  """
+  def restore_tags html do
+    tags = [
+      "del",
+      "ins",
+      "math",
+      "mfrac",
+      "mi",
+      "mo",
+      "mn",
+      "msub",
+      "msup",
+      "sub",
+      "sup",
+    ]
+    re = ~r/&lt;(?<c>\/)?(?<t>#{tags |> Enum.join("|")})&gt;/
+    Regex.replace(
+      re,
+      html,
+      "<\\1\\2>"
+    )
+  end
 
   @doc """
   Converts `"<hN>"` to `N`

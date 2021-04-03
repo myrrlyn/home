@@ -124,8 +124,8 @@ defmodule Home.Page do
   """
   @spec split(String.t()) :: {String.t(), String.t()}
   def split(text) do
-    [head, tail] = text |> String.split(~r/\n-{3,}\n+/, parts: 2)
-    {head |> String.replace(~r/-{3,}\n/, ""), tail}
+    [head, tail] = text |> String.split(~r/\r?\n-{3,}(\r?\n)+/, parts: 2)
+    {head |> String.replace(~r/-{3,}\r?\n/, ""), tail}
   end
 
   @doc """

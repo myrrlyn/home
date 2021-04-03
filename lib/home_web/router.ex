@@ -18,6 +18,14 @@ defmodule HomeWeb.Router do
   #   pipe_through :api
   # end
 
+  scope "/blog", HomeWeb do
+    pipe_through :browser
+
+    get("/", BlogController, :index)
+
+    get("/*path", BlogController, :page)
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -38,8 +46,9 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :home)
+    get("/favicon.ico", PageController, :favicon_ico)
     get("/sitemap.xml", PageController, :sitemap)
     get("/klaus", KlausController, :page)
-    get("/*page", PageController, :other)
+    get("/*path", PageController, :page)
   end
 end
