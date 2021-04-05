@@ -2,13 +2,15 @@ defmodule HomeWeb.BlogController do
   use HomeWeb, :controller
 
   @root "/blog"
+  @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _params) do
     page = Home.Page.compile("blog/index.md")
 
     conn
     |> render("index.html",
-      banner: "2017-01-28T08-50-37.jpg",
+      flavor: "app",
+      banner: "banners/2017-01-28T08-50-37.jpg",
       page: page,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       navtree: page_listing(),
@@ -28,7 +30,8 @@ defmodule HomeWeb.BlogController do
 
         conn
         |> render("page.html",
-          banner: "2017-01-28T08-50-37.jpg",
+          flavor: "app",
+          banner: "banners/2017-01-28T08-50-37.jpg",
           page: page,
           gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
           navtree: page_listing(req_url),
@@ -83,7 +86,7 @@ defmodule HomeWeb.BlogController do
       {"<code>.</code> <small>(Blog index)</small>", "#{@root}", "dr-x"},
       {"<code>..</code> <small>(Site index)</small>", "/", "dr-x"}
     ] ++
-      (get_articles(current)
+      (get_articles()
        |> Stream.map(fn {_, yml} = pair ->
          {yml["title"], pair |> make_link(), pair |> Home.Blog.get_date_for()}
        end)
@@ -100,18 +103,15 @@ defmodule HomeWeb.BlogController do
        |> Enum.to_list())
   end
 
-  def get_articles(current \\ nil) do
-    ["priv", "pages", "blog"]
-    |> Path.join()
+  def get_articles() do
+    @dir
     |> File.ls!()
+    |> Stream.filter(fn p -> Path.join(@dir, p) |> File.regular?() end)
     |> Stream.filter(fn p -> Path.extname(p) == ".md" end)
     |> Stream.reject(fn p ->
       p |> Path.basename() |> Path.rootname() |> String.match?(~r/(index|README)/)
     end)
-    |> Stream.map(fn a ->
-      ["blog", a] |> Path.join()
-    end)
-    |> Stream.filter(fn p -> ["priv", "pages", p] |> Path.join() |> File.regular?() end)
+    |> Stream.map(fn p -> ["blog", p] |> Path.join() end)
     |> Stream.map(fn p -> {p, Home.Page.get_yaml(p)} end)
     |> Stream.filter(fn {_, yml} -> yml |> Map.get("published", true) end)
     |> Enum.to_list()

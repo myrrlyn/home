@@ -7,11 +7,7 @@
 
 @import "layout";
 @import "gravatar";
-
-#about > .contents {
-	margin: 0 auto;
-	max-width: 30em;
-}
+@import "style";
 
 /* Alerts and form errors */
 .alert {
@@ -50,23 +46,6 @@
 	color: #a94442;
 	display: block;
 	margin: -1rem 0 2rem;
-}
-
-article img {
-	&:not(.unset) {
-		min-width: 200px;
-		width: 33%;
-		max-width: 800px;
-	}
-
-	&.fullwidth {
-		max-width: 100%;
-		width: 100%;
-	}
-
-	&.right {
-		float: right;
-	}
 }
 
 h1::before {

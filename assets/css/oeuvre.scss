@@ -1,0 +1,117 @@
+@import "~bootstrap";
+
+@import "variables";
+@import "font";
+@import "color";
+
+$avi-rim: 0;
+
+:root {
+	--header-color: #{$amethyst};
+	--border-color: #{$amaranth};
+}
+
+@import "layout";
+@import "gravatar";
+@import "style";
+
+$T1: hsla(000, 00%, 20%, 0.38);
+
+main article {
+	// border-right: 2px solid var(--border-color);
+	@include media-breakpoint-up(md) {
+		max-width: 46em;
+		padding-right: 1em;
+	}
+}
+
+main aside,
+blockquote {
+	@include left-chevron(var(--charcoal));
+	&.handwriting {
+		background: {
+			color: $parchment;
+		}
+	}
+	border: {
+		top-right-radius: 1em;
+		bottom-right-radius: 1em;
+	}
+	padding: {
+		top: 1px;
+		left: 5px;
+		right: 2px;
+		bottom: 1px;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		text: {
+			align: center;
+		}
+	}
+
+	margin: {
+		left: 1em;
+		right: 2em;
+	}
+
+	&.special-font {
+		&:not(:hover, :active) {
+			blockquote {
+				display: none;
+			}
+		}
+		&:hover,
+		&:active {
+			@extend %text-serif;
+			blockquote {
+				display: block;
+			}
+		}
+	}
+}
+
+.handwriting {
+	font-family: "Skyrim Handwriting";
+	font-size: 1.2em;
+	letter-spacing: 0.05ch;
+}
+
+.translation,
+.transliteration {
+	@extend %text-serif;
+}
+
+@mixin font($name, $file: $name) {
+	@font-face {
+		font-family: $name;
+		src: url("/static/fonts/oeuvre/#{$file}.ttf");
+	}
+}
+
+@include font("Skyrim Handwriting", "Skyrim-Books-Hand");
+@include font("Dovah");
+@include font("Dwemer");
+
+%inline-lang {
+	color: var(--text-fg);
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+@mixin lang($href, $font) {
+	a[href$="##{$href}"],
+	.#{$href} {
+		@extend %inline-lang;
+		font-family: $font;
+	}
+}
+
+@include lang("dovah", "Dovah");
+@include lang("dwemer", "Dwemer");
+@include lang("ehlnofex", "Mage");

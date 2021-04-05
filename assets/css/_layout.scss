@@ -78,11 +78,6 @@ header {
 		right: auto;
 	}
 	max-width: $content-width-max;
-	@include media-breakpoint-up(md) {
-		article {
-			max-width: 60em;
-		}
-	}
 	@include media-breakpoint-up(xl) {
 		border: {
 			left: {
@@ -122,16 +117,28 @@ header {
 		}
 		padding-top: ($avi-height / 2) - $header-border;
 	}
+
+	> .contents {
+		margin: 0 auto;
+		max-width: 30em;
+	}
 }
 
 #about-logos {
 	margin-top: 1em;
 }
 
-main.flex-item {
+main {
 	@include media-breakpoint-up(md) {
-		flex: 4 0 0%;
-		order: 2;
+		article {
+			max-width: 60em;
+		}
+	}
+	&.flex-item {
+		@include media-breakpoint-up(md) {
+			flex: 4 0 0%;
+			order: 2;
+		}
 	}
 }
 

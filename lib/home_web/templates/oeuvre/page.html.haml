@@ -1,0 +1,14 @@
+%article
+	%h1#title= @page.title
+	%p
+		%a{href="//old.reddit.com/r/teslore/comments/#{@page.yaml["reddit"]}"}
+			Originally published to /r/teslore
+		on
+		- d = Timex.format!(@page.date, "{YYYY}, {Mshort} {D} at {h24}:{m}")
+		= d
+	= @page.about |> raw
+	- if @page.toc != [] do
+		%nav{aria-label: "Table of Contents"}
+			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
+	%hr
+	= @page.content |> raw

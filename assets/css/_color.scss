@@ -28,7 +28,6 @@ $crayola-sea-green: #00f5d4 !default;
 // https://coolors.co/5f0f40-9a031e-fb8b24-e36414-0f4c5c
 // Light theme only
 $tyrian-purple: #5f0f40 !default;
-// Light theme only
 $green-midnight-eagle: #0f4c5c !default;
 
 // https://coolors.co/1be7ff-6eeb83-e4ff1a-ffb800-ff5714
@@ -57,6 +56,9 @@ $charcoal: #40434e !default;
 $wine: #702632 !default;
 $red-violet: #912f40 !default;
 $baby-powder: #fffffa !default;
+
+$amaranth: #a72a2a;
+$parchment: hsl(042.4, 048.2%, 83.3%);
 
 @media (prefers-color-scheme: light) {
 	@import "color/light";

@@ -1,0 +1,6 @@
+- if @toc != [] do
+	%ol
+		- for {show, href, children} <- @toc do
+			%li
+				%a{href: "##{href}"}= show |> raw
+				= render("toc.html", toc: children)

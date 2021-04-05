@@ -2,28 +2,26 @@
 = render "c0da.html"
 %html{lang: "en"}
 	%head
-		= render("head.html", conn: @conn, title: @page.title)
-		%link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/app.css")}"}
-		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/app.js")}"}
+		= render("head.html", conn: @conn, title: @page.title, flavor: @flavor)
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/mathjax.js")}"}
 		%script{src: "https://polyfill.io/v3/polyfill.min.js?features=es6"}
 		%script#MathJax-script{async: "true", src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"}
 		%script{type: "text/javascript", async: "1", src: "https://platform.twitter.com/widgets.js", charset: "utf-8"}
-		- banner = Routes.static_path(@conn, "/images/banners/#{@banner}")
+		- banner = Routes.static_path(@conn, "/images/#{@banner}")
 		:css
 			header {
 				background-image: url("#{banner}");
 			}
-			img#gravatar {
-				transform: rotate(#{Home.rotate_avi()}deg);
-			}
+		- if @flavor == "app" do
+			:css
+				img#gravatar {
+					transform: rotate(#{Home.rotate_avi()}deg);
+				}
 	%body
 		%header{role: "banner"}.screen-only
 			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
 		%div#main.flex-wrapper.flex-cols.hide-scroll
 			%main.container.flex-item{role: "main"}
-				%p.alert.alert-info{role: "alert"}= get_flash(@conn, :info)
-				%p.alert.alert-danger{role: "alert"}= get_flash(@conn, :error)
 				= @inner_content
 			%aside#about.container.flex-item.screen-only
 				%div.logo.gravatar

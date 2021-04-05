@@ -3,3 +3,5 @@
 %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
 %title= @title || "myrrlyn.net"
 %link{rel: "shortcut icon", href: "/favicon.png", type="image/png"}
+%link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/" <> @flavor <> ".css")}"}
+%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/" <> @flavor <> ".js")}"}

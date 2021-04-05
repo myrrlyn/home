@@ -7,6 +7,7 @@ defmodule HomeWeb.KlausController do
     conn
     |> render("page.html",
       layout: {HomeWeb.LayoutView, "plain.html"},
+      flavor: "klaus",
       page: page,
       title: page.title
     )
