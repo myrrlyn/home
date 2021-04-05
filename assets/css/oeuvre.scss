@@ -17,7 +17,12 @@ $avi-rim: 0;
 
 $T1: hsla(000, 00%, 20%, 0.38);
 
-main article {
+hr.afterword {
+	border-top-color: var(--border-color);
+}
+
+main article,
+main section {
 	// border-right: 2px solid var(--border-color);
 	@include media-breakpoint-up(md) {
 		max-width: 46em;
@@ -30,12 +35,13 @@ blockquote {
 	@include left-chevron(var(--charcoal));
 	&.handwriting {
 		background: {
-			color: $parchment;
+			color: var(--parchment);
 		}
 	}
 	border: {
 		top-right-radius: 1em;
 		bottom-right-radius: 1em;
+		right: none !important;
 	}
 	padding: {
 		top: 1px;
@@ -73,6 +79,79 @@ blockquote {
 			}
 		}
 	}
+	&.piano-key {
+		&:not(.last),
+		blockquote {
+			margin: {
+				bottom: 0;
+			}
+		}
+		blockquote {
+			margin: {
+				left: 0.25em;
+			}
+		}
+		p {
+			margin: {
+				bottom: 0;
+			}
+		}
+		&.aedra {
+			&,
+			blockquote,
+			blockquote blockquote {
+				border-left-color: var(--white);
+			}
+		}
+		&.daedra.cothot {
+			&,
+			blockquote {
+				border-left-color: var(--black);
+			}
+		}
+		&.daedra:not(.cothot) {
+			border-left-color: var(--grey);
+		}
+	}
+	&.scourge {
+		border-left-color: $tyrian-purple;
+	}
+	&.spellbreaker {
+		border-left-color: $yellow-selective;
+	}
+}
+
+table#color-table tbody {
+	@mixin row($num) {
+		tr:nth-of-type(#{$num}) {
+			background-color: hsl(($num - 3) * 15, 75%, 50%);
+		}
+	}
+	@include row(1);
+	@include row(2);
+	@include row(3);
+	@include row(4);
+	@include row(5);
+	@include row(6);
+	@include row(7);
+	@include row(8);
+	@include row(9);
+	@include row(10);
+	@include row(11);
+	@include row(12);
+	@include row(13);
+	@include row(14);
+	@include row(15);
+	@include row(16);
+	@include row(17);
+	@include row(18);
+	@include row(19);
+	@include row(20);
+	@include row(21);
+	@include row(22);
+	@include row(23);
+	@include row(24);
+	@include row(25);
 }
 
 .handwriting {

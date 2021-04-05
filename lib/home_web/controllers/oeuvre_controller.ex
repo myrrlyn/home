@@ -7,20 +7,20 @@ defmodule HomeWeb.OeuvreController do
   def index(conn, _params) do
     page = Home.Page.compile("oeuvre/index.md")
 
-    build(conn, "index.html", nil, page)
+    conn |> assign(:tagset, by_tags()) |> build("index.html", nil, page)
   end
 
   def page(conn, %{"path" => [page]} = _params) do
     req_url = [@root, page] |> Path.join()
 
     case get_fanfic()
-         |> Enum.find(fn {file, _} -> "/#{file |> Path.rootname()}" == req_url end) do
+         |> Enum.find(fn {file, _} ->
+           file |> Path.rootname() == req_url |> String.trim_leading("/")
+         end) do
       {f, _} ->
-        IO.puts("Found #{f}")
         build(conn, "page.html", req_url, f |> Home.Page.compile())
 
       nil ->
-        IO.puts("Failed to find at #{req_url}")
         conn |> send_resp(404, "Fanfic not found")
     end
   end
@@ -44,9 +44,18 @@ defmodule HomeWeb.OeuvreController do
       banner: "oeuvre/#{banner}.jpg",
       page: page,
       gravatar: Home.Page.gravatar("myrrlyn@outlook.com"),
-      navtree: page_listing(),
+      navtree: page_listing(url),
       scope: @root
     )
+  end
+
+  def by_tags() do
+    get_fanfic()
+    |> Stream.flat_map(fn {p, yml} ->
+      yml |> Map.get("tags", ["untagged"]) |> Stream.map(fn t -> {t, {yml["title"], p}} end)
+    end)
+    |> Enum.group_by(fn {tag, _} -> tag end, fn {_, {title, url}} -> {title, "/#{url |> Path.rootname()}"} end)
+    |> Enum.sort_by(fn {_, ps} -> ps |> length() end, :desc)
   end
 
   def page_listing(current \\ nil) do
@@ -58,7 +67,9 @@ defmodule HomeWeb.OeuvreController do
        |> Stream.map(fn {path, yml} ->
          {:ok, date} = yml["date"] |> Home.Page.multiparse_date()
          {:ok, date} = date |> Timex.format("{ISOdate}")
-         {"<span class=\"title\">" <> yml["title"] <> "</span>", path |> Path.rootname(), date}
+
+         {"<span class=\"title\">" <> yml["title"] <> "</span>", "/#{path |> Path.rootname()}",
+          date}
        end)
        |> Stream.map(fn {name, url, date} ->
          name =

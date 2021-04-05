@@ -130,7 +130,8 @@ header {
 
 main {
 	@include media-breakpoint-up(md) {
-		article {
+		article,
+		section {
 			max-width: 60em;
 		}
 	}

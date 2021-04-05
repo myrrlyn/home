@@ -60,12 +60,24 @@ $baby-powder: #fffffa !default;
 $amaranth: #a72a2a;
 $parchment: hsl(042.4, 048.2%, 83.3%);
 
+:root {
+	--white: white;
+	--black: black;
+	--grey: gray;
+}
+
 @media (prefers-color-scheme: light) {
 	@import "color/light";
+	:root {
+		--parchment: #{$parchment};
+	}
 }
 
 @media (prefers-color-scheme: dark) {
 	@import "color/dark";
+	:root {
+		--parchment: #{darken($parchment, 25%)};
+	}
 }
 
 body {

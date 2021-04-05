@@ -26,6 +26,7 @@ let lang_dict = {
 	cpp: "C++ code",
 	erlang: "Erlang code",
 	elixir: "Elixir code",
+	irc: "IRC log",
 	rust: "Rust code",
 	sh: "Shell session",
 	text: "Plain text",
@@ -48,7 +49,7 @@ function mark_codeblocks() {
 			let text = lang_dict[lang];
 			if (text !== undefined) {
 				let codespan = node.firstElementChild;
-				if (lang === "term" || lang == "cosmos") {
+				if (lang === "term" || lang == "cosmos" || lang == "irc") {
 					for (let klass of [`${lang}`, `lang-${lang}`, `language-${lang}`]) {
 						codespan.classList.remove(klass);
 					}

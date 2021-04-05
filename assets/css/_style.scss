@@ -1,4 +1,5 @@
 article img {
+	display: block;
 	&:not(.unset) {
 		min-width: 200px;
 		width: 33%;
@@ -8,6 +9,16 @@ article img {
 	&.fullwidth {
 		max-width: 100%;
 		width: 100%;
+	}
+
+	&.halfwidth {
+		min-width: 100px;
+		width: 20%;
+		max-width: 400px;
+	}
+
+	&.ctr {
+		margin: 0 auto;
 	}
 
 	&.right {

@@ -82,8 +82,8 @@ defmodule Home.Markdown do
   # <h1> receives a .title class
   def walker({"h1", attrs, inner, meta}, collector) do
     classes = attrs |> List.keyfind("class", 0, {"class", ""}) |> elem(1) |> String.split()
-    classes = ["title" | classes] |> Enum.uniq()
-    attrs = attrs |> List.keyreplace("class", 0, {"class", classes})
+    classes = ["title" | classes] |> Enum.uniq() |> Enum.join(" ")
+    attrs = attrs |> List.keystore("class", 0, {"class", classes})
     process_header({"h1", attrs, inner, meta}, collector)
   end
 
