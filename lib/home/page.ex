@@ -1,13 +1,13 @@
 defmodule Home.Page do
-  defmodule Home.Page.NotFoundException do
+  defmodule NotFoundException do
     defexception [:message, plug_status: 404]
   end
 
-  defmodule Home.Page.BadContentException do
+  defmodule BadContentException do
     defexception [:message, plug_status: 500]
   end
 
-  @type toc_entry :: {String.t(), String, t, [toc_entry]}
+  @type toc_entry :: {String.t(), String.t(), [toc_entry]}
 
   defstruct title: nil,
             date: nil,
@@ -15,6 +15,7 @@ defmodule Home.Page do
             tags: [],
             category: nil,
             summary: nil,
+            about: nil,
             yaml: %{},
             toc: [],
             content: nil
@@ -26,6 +27,7 @@ defmodule Home.Page do
           tags: [String.t()],
           category: String.t() | nil,
           summary: String.t() | nil,
+          about: String.t() | nil,
           yaml: %{},
           toc: [toc_entry],
           content: String.t()
@@ -38,8 +40,8 @@ defmodule Home.Page do
   structured article (YAML frontmatter, Markdown main content), and returns an
   object suitable for rendering.
   """
-  @spec compile(String.t()) :: __MODULE__.t()
-  def compile(path) do
+  @spec compile(String.t(), Range.t()) :: __MODULE__.t()
+  def compile(path, toc_filter \\ 2..3) do
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
     text = path |> load
 
@@ -52,13 +54,21 @@ defmodule Home.Page do
       end
 
     {:ok, yaml} = yaml |> parse_yaml()
-    {{:ok, html, _warns}, toc} = text |> Elixir.Home.Markdown.render(2..3)
+    {{:ok, html, _warns}, toc} = text |> Elixir.Home.Markdown.render(toc_filter)
 
     {title, yaml} = yaml |> get_title!()
     {date, yaml} = yaml |> get_date()
     {summary, yaml} = yaml |> Map.pop("summary", "")
+
+    {about, yaml} =
+      case yaml |> Map.pop("about") do
+        {nil, yaml} -> {nil, yaml}
+        {about, yaml} -> {about |> String.replace("\n", "\n\n") |> Earmark.as_html!(), yaml}
+      end
+
     {tags, yaml} = yaml |> Map.pop("tags", [])
     {category, yaml} = yaml |> Map.pop("category")
+    {use_toc, yaml} = yaml |> Map.pop("toc", true)
 
     %__MODULE__{
       title: title,
@@ -66,9 +76,15 @@ defmodule Home.Page do
       slug: nil,
       tags: tags,
       category: category,
-      summary: summary,
+      summary: summary |> Earmark.as_html!(),
+      about: about,
       yaml: yaml,
-      toc: toc,
+      toc:
+        if use_toc do
+          toc
+        else
+          []
+        end,
       content: html
     }
   end
@@ -153,7 +169,7 @@ defmodule Home.Page do
     end
   end
 
-  @spec get_date(%{}) :: nil | DateTime.t()
+  @spec get_date(%{}) :: {nil | DateTime.t(), %{String.t() => any}}
   def get_date(yaml) do
     case yaml |> Map.pop("date") do
       {nil, rest} ->
@@ -185,7 +201,9 @@ defmodule Home.Page do
         {:ok, d}
 
       {:error, _} ->
-        case date |> Timex.parse("{RFC3339}") do
+        # I currently put a space between the seconds and the TZ, which is not
+        # to spec but is IMO more readable.
+        case date |> String.replace(" ", "") |> Timex.parse("{RFC3339}") do
           {:ok, d} ->
             {:ok, d}
 
