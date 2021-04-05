@@ -1,6 +1,6 @@
 article img {
-	display: block;
 	&:not(.unset) {
+		display: block;
 		min-width: 200px;
 		width: 33%;
 		max-width: 800px;
@@ -33,4 +33,53 @@ article img {
 
 .clearfix {
 	clear: both;
+}
+
+pre {
+	@include left-chevron(var(--charcoal));
+	&.codeblock-c {
+		border-left-color: $lang-c;
+	}
+	&.codeblock-cpp {
+		border-left-color: $lang-cpp;
+	}
+	&.codeblock-elixir {
+		border-left-color: $lang-elixir;
+	}
+	&.codeblock-js {
+		border-left-color: $lang-js;
+	}
+	&.codeblock-rust {
+		border-left-color: $lang-rust;
+	}
+	&.codeblock-sh,
+	&.codeblock-shell {
+		border-left-color: $lang-shell;
+	}
+	&.codeblock-toml {
+		border-left-color: $lang-toml;
+	}
+	& > .lang-marker {
+		color: var(--text-fg);
+		display: block;
+		float: left;
+		margin-bottom: 0.25em;
+	}
+
+	& > .code-container {
+		clear: both;
+	}
+
+	&:not(.codeblock-term) {
+		code,
+		code span {
+			@extend %text-mono;
+		}
+	}
+	&.codeblock-term {
+		code,
+		code span {
+			@extend %text-term;
+		}
+	}
 }

@@ -84,34 +84,6 @@ blockquote {
 	}
 }
 
-pre {
-	@include left-chevron(var(--charcoal));
-
-	& > .lang-marker {
-		color: var(--text-fg);
-		display: block;
-		float: left;
-		margin-bottom: 0.25em;
-	}
-
-	& > .code-container {
-		clear: both;
-	}
-
-	&:not(.codeblock-term) {
-		code,
-		code span {
-			@extend %text-mono;
-		}
-	}
-	&.codeblock-term {
-		code,
-		code span {
-			@extend %text-term;
-		}
-	}
-}
-
 .iso7010 {
 	padding: {
 		top: 1em;

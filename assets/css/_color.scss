@@ -60,6 +60,8 @@ $baby-powder: #fffffa !default;
 $amaranth: #a72a2a;
 $parchment: hsl(042.4, 048.2%, 83.3%);
 
+@import "color/langs";
+
 :root {
 	--white: white;
 	--black: black;
