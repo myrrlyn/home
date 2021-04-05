@@ -7,7 +7,8 @@ defmodule Home.Page do
     defexception [:message, plug_status: 500]
   end
 
-  @type toc_entry :: {String.t(), String.t(), [toc_entry]}
+  @type toc :: [__MODULE__.toc_entry()]
+  @type toc_entry :: {String.t(), String.t(), __MODULE__.toc()}
 
   defstruct title: nil,
             date: nil,
@@ -23,13 +24,13 @@ defmodule Home.Page do
   @type t :: %__MODULE__{
           title: String.t(),
           date: DateTime.t() | nil,
-          slug: String.t(),
+          slug: String.t() | nil,
           tags: [String.t()],
           category: String.t() | nil,
           summary: String.t() | nil,
           about: String.t() | nil,
-          yaml: %{},
-          toc: [toc_entry],
+          yaml: %{String.t() => any},
+          toc: __MODULE__.toc(),
           content: String.t()
         }
 
@@ -54,7 +55,7 @@ defmodule Home.Page do
       end
 
     {:ok, yaml} = yaml |> parse_yaml()
-    {{:ok, html, _warns}, toc} = text |> Elixir.Home.Markdown.render(toc_filter)
+    {:ok, html, toc, _warns} = text |> Elixir.Home.Markdown.render(toc_filter)
 
     {title, yaml} = yaml |> get_title!()
     {date, yaml} = yaml |> get_date()
@@ -89,28 +90,20 @@ defmodule Home.Page do
     }
   end
 
+  @doc """
+  Loads a file from `priv/pages` into memory.
+  """
+  @spec load(String.t()) :: String.t()
   def load(path) do
     ["priv", "pages", path] |> Path.join() |> File.read!()
   end
 
+  @doc """
+  Extracts the YAML frontmatter from a file in `priv/pages`.
+  """
+  @spec get_yaml(String.t()) :: %{String.t() => any}
   def get_yaml(path) do
     path |> load() |> split() |> elem(0) |> parse_yaml |> elem(1)
-  end
-
-  def render_toc([]), do: ""
-
-  def render_toc(hs) do
-    list =
-      hs
-      |> Enum.map(fn {show, anchor, children} ->
-        """
-        <li><a href="#{anchor}">#{show} #{children |> render_toc}</a></li>
-        """
-        |> String.trim()
-      end)
-      |> Enum.join("")
-
-    "<ol>#{list}</ol>"
   end
 
   @doc """
@@ -151,16 +144,21 @@ defmodule Home.Page do
   Parses a frontmatter section (without the delimiters) as YAML.
   """
   @spec parse_yaml(String.t()) ::
-          {:ok, %{String.t() => any}} | {:error, YamlElixir.ParsingError.t()}
+          {:ok, %{String.t() => any}} | {:error, any}
   def parse_yaml(yaml) do
     yaml |> YamlElixir.read_from_string()
   end
 
+  @doc """
+  Extracts the contents of the `title` key from YAML.
+
+  The `title` key is mandatory. Raises an exception if it is missing.
+  """
   @spec get_title!(%{}) :: {String.t(), %{String.t() => any}}
   def get_title!(yaml) do
     case yaml |> Map.pop("title") do
-      {nil, rest} ->
-        raise Home.Page.Exception,
+      {nil, _} ->
+        raise Home.Page.NotFoundException,
           message: "YAML frontmatter must have a `title`: key",
           yaml: yaml
 
@@ -169,6 +167,9 @@ defmodule Home.Page do
     end
   end
 
+  @doc """
+  Extracts the contents of the `date` key from YAML.
+  """
   @spec get_date(%{}) :: {nil | DateTime.t(), %{String.t() => any}}
   def get_date(yaml) do
     case yaml |> Map.pop("date") do
@@ -177,7 +178,7 @@ defmodule Home.Page do
 
       {d, rest} ->
         case d |> multiparse_date do
-          {:error, msg} -> raise Home.Page.Exception, message: msg, yaml: yaml
+          {:error, msg} -> raise Home.Page.BadContentException, message: msg, yaml: yaml
           {:ok, d} -> {d, rest}
         end
     end
@@ -194,6 +195,9 @@ defmodule Home.Page do
     Path.join(date ++ [name])
   end
 
+  @doc """
+  Applies multiple possible timestamp parsers to a value
+  """
   @spec multiparse_date(String.t()) :: {:ok, DateTime.t()} | {:error, String.t()}
   def multiparse_date(date) do
     case date |> Timex.parse("{RFC3339z}") do
