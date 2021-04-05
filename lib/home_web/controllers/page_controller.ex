@@ -23,6 +23,10 @@ defmodule HomeWeb.PageController do
     end
   end
 
+  def refuse(conn, _ \\ nil) do
+    HomeWeb.Boycott.refuse(conn, nil)
+  end
+
   def sitemap(conn, _) do
     {:safe, out} = Phoenix.View.render(HomeWeb.PageView, "sitemap.xml", [])
     conn |> put_resp_content_type("text/xml") |> resp(200, out |> List.flatten() |> Enum.join())

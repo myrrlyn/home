@@ -3,6 +3,7 @@ defmodule HomeWeb.Router do
 
   pipeline :browser do
     plug(:accepts, ["html"])
+    plug(HomeWeb.Boycott, nil)
     plug(:fetch_session)
     plug(:fetch_flash)
     plug(:protect_from_forgery)
@@ -19,7 +20,7 @@ defmodule HomeWeb.Router do
   # end
 
   scope "/blog", HomeWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
     get("/", BlogController, :index)
 
@@ -27,7 +28,7 @@ defmodule HomeWeb.Router do
   end
 
   scope "/oeuvre", HomeWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
     get("/", OeuvreController, :index)
 
@@ -54,6 +55,7 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :home)
+    get("/hn", PageController, :refuse)
     get("/favicon.ico", PageController, :favicon_ico)
     get("/sitemap.xml", PageController, :sitemap)
     get("/klaus", KlausController, :page)
