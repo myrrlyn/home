@@ -1,15 +1,14 @@
 ---
 title: bitvec
-category: projects
 ---
 
 # `bitvec`
 
-[![Crate](https://img.shields.io/crates/v/bitvec.svg "Crate version")](https://crates.io/crates/bitvec "Crate")
-[![Documentation](https://docs.rs/bitvec/badge.svg "Crate docs)](https://docs.rs/bitvec/ "Documentation")
-[![License](https://img.shields.io/crates/l/bitvec.svg "Crate license")](https://github.com/bitvecto-rs/bitvec/blob/develop/LICENSE.txt "License")
-[![Downloads](https://img.shields.io/crates/dv/bitvec.svg "Crate downloads")](https://crates.io/crates/bitvec "Crate")
-[![Lines of Code](https://tokei.rs/b1/github/bitvecto-rs/bitvec?category=code "Crate size")](https://github.com/bitvecto-rs/bitvec "Repository")
+[![Crate](https://img.shields.io/crates/v/bitvec.svg "Crate version"){:.unset}](https://crates.io/crates/bitvec "Crate")
+[![Documentation](https://docs.rs/bitvec/badge.svg "Crate docs){:.unset}](https://docs.rs/bitvec/ "Documentation")
+[![License](https://img.shields.io/crates/l/bitvec.svg "Crate license"){:.unset}](https://github.com/bitvecto-rs/bitvec/blob/develop/LICENSE.txt "License")
+[![Downloads](https://img.shields.io/crates/dv/bitvec.svg "Crate downloads"){:.unset}](https://crates.io/crates/bitvec "Crate")
+[![Lines of Code](https://tokei.rs/b1/github/bitvecto-rs/bitvec?category=code "Crate size"){:.unset}](https://github.com/bitvecto-rs/bitvec "Repository")
 
 - [Source code](https://github.com/bitvecto-rs/bitvec)
 

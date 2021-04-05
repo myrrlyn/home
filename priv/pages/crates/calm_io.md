@@ -1,15 +1,14 @@
 ---
 title: Calm IO
-category: projects
 ---
 
 # Calm I/O
 
-[![Crate](https://img.shields.io/crates/v/calm_io.svg "Crate Version Display")](https://crates.io/crates/calm_io "Crate Link")
-[![Documentation](https://docs.rs/calm_io/badge.svg "Documentation Display")](https://docs.rs/calm_io "Documentation Link")
-[![License](https://img.shields.io/crates/l/calm_io.svg "License Display")](https://github.com/myrrlyn/calm_io/blob/master/LICENSE.txt "License")
-[![Crate Downloads](https://img.shields.io/crates/dv/calm_io.svg "Download Counter")](https://crates.io/crates/calm_io "Crate Link")
-[![Crate Size](https://tokei.rs/b1/github/myrrlyn/calm_io?category=code "Repository Size")](https://github.com/myrrlyn/calm_io "Source Code")
+[![Crate](https://img.shields.io/crates/v/calm_io.svg "Crate Version Display"){:.unset}](https://crates.io/crates/calm_io "Crate Link")
+[![Documentation](https://docs.rs/calm_io/badge.svg "Documentation Display"){:.unset}](https://docs.rs/calm_io "Documentation Link")
+[![License](https://img.shields.io/crates/l/calm_io.svg "License Display"){:.unset}](https://github.com/myrrlyn/calm_io/blob/master/LICENSE.txt "License")
+[![Crate Downloads](https://img.shields.io/crates/dv/calm_io.svg "Download Counter"){:.unset}](https://crates.io/crates/calm_io "Crate Link")
+[![Crate Size](https://tokei.rs/b1/github/myrrlyn/calm_io?category=code "Repository Size"){:.unset}](https://github.com/myrrlyn/calm_io "Source Code")
 
 - [Source Code][source]
 
