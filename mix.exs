@@ -49,7 +49,8 @@ defmodule Home.MixProject do
       {:timex, "~> 3.6"},
       {:yaml_elixir, "~> 2.6"},
       {:gravatar, "~> 0.1"},
-      {:statistics, "~> 0.6"}
+      {:statistics, "~> 0.6"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
