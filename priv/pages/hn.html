@@ -5,6 +5,15 @@
     <title>
         Refusal of Service
     </title>
+    <style type="text/css">
+        body {
+            margin: 1em;
+        }
+
+        p {
+            max-width: 45em;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,6 +35,28 @@
         restriction applies, then I encourage you to consider getting your
         news from a different website.
     </p>
+    <p id="timer-message" class="hidden">
+        This page will self-destruct in <span id="countdown"></span> seconds.
+    </p>
+    <script type="text/javascript">
+        var countdown = 10;
+        document.getElementById("countdown").innerText = countdown.toString();
+        var timer;
+        timer = window.setInterval(() => {
+            if (countdown == 0) {
+                window.clearInterval(timer);
+                window.history.back();
+                window.close();
+                return;
+            }
+            countdown -= 1;
+            document.getElementById("countdown").innerText = countdown.toString();
+            if (countdown == 0) {
+                document.getElementsByTagName("body")[0].innerHTML = "";
+            }
+        }, 1000);
+        document.getElementById("timer-message").classList.remove("hidden");
+    </script>
 </body>
 
 </html>
