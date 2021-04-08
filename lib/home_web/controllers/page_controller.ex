@@ -45,8 +45,9 @@ defmodule HomeWeb.PageController do
     )
   end
 
+  @doc "Trap requestes for /favicon.ico and forward to the real location"
   def favicon_ico(conn, _) do
-    conn |> resp(307, "") |> put_resp_header("location", "/favicon.png")
+    conn |> resp(307, "") |> put_resp_header("location", "/static/images/favicon.ico")
   end
 
   @pages [

@@ -21,7 +21,7 @@ defmodule HomeWeb.Endpoint do
     at: "/",
     from: :home,
     gzip: false,
-    only: ~w(favicon.ico favicon.png robots.txt)
+    only: ~w(favicon.ico robots.txt)
 
   # Serve at "/static" the static files from "priv/static" directory.
   #
@@ -31,7 +31,7 @@ defmodule HomeWeb.Endpoint do
     at: "/static",
     from: :home,
     gzip: true,
-    only: ~w(css fonts images js music)
+    only: ~w(css favicons fonts images js music)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
