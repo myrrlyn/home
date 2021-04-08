@@ -2,7 +2,39 @@
 %meta{http-equiv: "X-UA-Compatible", content: "IE=edge"}
 %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
 %title= @title || "myrrlyn.net"
-%link{rel: "shortcut icon", href: "/favicon.png"}
--#, type="image/png"}
 %link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/" <> @flavor <> ".css")}"}
 %script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/" <> @flavor <> ".js")}"}
+
+- sizes = []
+- for size <- [16, 32, 64, 128, 256, 512, 1024] do
+	- pair = "#{size}x#{size}"
+  - sizes = sizes ++ ["#{pair}"]
+	%link{rel: "icon", type: "image/png", sizes: "#{pair}", href: "/static/favicons/favicon-#{size}.png"}
+	%link{rel: "apple-touch-icon", type: "image/png", sizes: "#{pair}", href: "/static/favicons/favicon-#{size}.png"}
+%link{rel: "icon", type: "image/ico", sizes: "#{sizes |> Enum.join(" ")}", href: "/static/favicons/favicon.ico"}
+%link{rel: "icon", type: "image/svg+xml", sizes: "any", href: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes"}
+%link{rel: "apple-touch-startup-image", type: "image/svg+xml", sizes: "any", href: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes"}
+
+%meta{name: "author", content: "Alexander Payne (myrrlyn)"}
+- desc = nil
+- if summary = @page.summary do
+	desc = summary
+- else
+	- if about = @page.yaml |> Map.get("about") do
+		desc = about
+- if desc do
+	%meta{name: "description", content: "#{desc}"}
+
+/ https://ogp.me/
+%meta{name: "og:title", content: "#{@title}"}
+-# TODO(myrrlyn): Bundle this into article metadata?
+%meta{name: "og:type", content: "website"}
+%meta{name: "og:image", content: "https://myrrlyn.net/static/favicons/favicon-512.png"}
+%meta{name: "og:url", content: "https://myrrlyn.net/#{@conn.path_info |> Path.join()}"}
+
+%meta{name: "twitter:card", content: "summary"}
+%meta{name: "twitter:site", content: "@myrrlyn"}
+%meta{name: "twitter:title", content: "#{@title}"}
+%meta{name: "twitter:image", content: "https://myrrlyn.net/static/favicons/favicon-512.png"}
+- if desc do
+	%meta{name: "twitter:description", content: "#{desc}"}
