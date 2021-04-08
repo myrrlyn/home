@@ -6,6 +6,8 @@
 		radius: ($avi-size + (2 * $avi-rim)) / 2;
 	}
 	padding: $avi-rim;
+	width: $avi-size;
+	height: $avi-size;
 }
 
 $avi-height: $avi-size + (2 * $avi-rim);

@@ -99,7 +99,7 @@ defmodule HomeWeb.OeuvreController do
       flavor: "oeuvre",
       banner: "oeuvre/#{banner}.jpg",
       page: page,
-      gravatar: Home.Page.gravatar("myrrlyn@outlook.com"),
+      gravatar: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes",
       navtree: page_listing(url),
       scope: @root
     )
