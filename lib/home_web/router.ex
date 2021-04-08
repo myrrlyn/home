@@ -23,6 +23,7 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", BlogController, :index)
+    get("/feed.rss", BlogController, :feed)
 
     get("/*path", BlogController, :page)
   end
@@ -58,6 +59,7 @@ defmodule HomeWeb.Router do
     get("/hn", PageController, :refuse)
     get("/favicon.ico", PageController, :favicon_ico)
     get("/sitemap.xml", PageController, :sitemap)
+    get("/feed.rss", BlogController, :feed)
     get("/klaus", KlausController, :page)
     get("/*path", PageController, :page)
   end

@@ -213,7 +213,7 @@ defmodule Home.Page do
 
           {:error, _} ->
             case date |> Timex.parse("{ISOdate}") do
-              {:ok, d} -> {:ok, d}
+              {:ok, d} -> d |> DateTime.from_naive("UTC")
               {:error, _} -> {:error, "Could not parse datestamp"}
             end
         end

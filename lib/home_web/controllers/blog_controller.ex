@@ -18,6 +18,13 @@ defmodule HomeWeb.BlogController do
     )
   end
 
+  @doc "Render an RSS feed"
+  def feed(conn, _params) do
+    conn
+    |> put_resp_content_type("application/rss+xml")
+    |> render("rss.xml", layout: nil, articles: get_articles())
+  end
+
   # Map categorized pages correctly.
   def page(conn, %{"path" => [category, page]} = _params) do
     req_url = [@root, category, page] |> Path.join()

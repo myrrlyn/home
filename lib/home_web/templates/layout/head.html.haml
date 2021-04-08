@@ -16,12 +16,7 @@
 %link{rel: "apple-touch-startup-image", type: "image/svg+xml", sizes: "any", href: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes"}
 
 %meta{name: "author", content: "Alexander Payne (myrrlyn)"}
-- desc = nil
-- if summary = @page.summary do
-	desc = summary
-- else
-	- if about = @page.yaml |> Map.get("about") do
-		desc = about
+- desc = @page.summary || Map.get(@page.yaml, "about")
 - if desc do
 	%meta{name: "description", content: "#{desc}"}
 
@@ -30,7 +25,7 @@
 -# TODO(myrrlyn): Bundle this into article metadata?
 %meta{name: "og:type", content: "website"}
 %meta{name: "og:image", content: "https://myrrlyn.net/static/favicons/favicon-512.png"}
-%meta{name: "og:url", content: "https://myrrlyn.net/#{@conn.path_info |> Path.join()}"}
+%meta{name: "og:url", content: "https://myrrlyn.net#{["/" | @conn.path_info] |> Path.join()}"}
 
 %meta{name: "twitter:card", content: "summary"}
 %meta{name: "twitter:site", content: "@myrrlyn"}
