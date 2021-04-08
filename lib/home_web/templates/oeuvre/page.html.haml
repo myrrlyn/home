@@ -13,7 +13,6 @@
 			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
 	%hr
 	- if intro = @page.yaml |> Map.get("intro-music") do
-		- repeat = intro |> Map.get("repeat", false)
 		<audio id="intro-music"
 			controls
 			= if intro |> Map.get("repeat", false), do: "loop", else: ""

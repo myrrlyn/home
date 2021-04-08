@@ -1,0 +1,230 @@
+<defs>
+	<path id="keystone-aedra" class="keystone aedra" d="
+		M -52.211 -396.578
+		L -65.263 -495.722
+		A 500 500 0 0 1 65.263 -495.722
+		L 52.211 -396.578
+		A 400 400 1 0 0 -52.11 -396.578
+		" />
+	<path id="keystone-major" class="keystone major" d="
+		M -52.211 -396.678
+		L -60.825 -462.013
+		A 466 466 0 0 1 60.825 -462.013
+		L 52.211 -396.578
+		A 400 400 1 0 0 -52.211 -396.678
+		" />
+	<path id="keystone-minor" class="keystone minor" d="
+		M -52.211 -396.678
+		L -56.518 -429.296
+		A 466 466 0 0 1 56.5118 -429.296
+		L 52.211 -396.578
+		A 400 400 1 0 0 -52.211 -396.678
+		" />
+	<path id="spoke" d="
+		M 0 0
+		L -52.211 -396.578
+		A 400 400 0 0 1 52.211 -396.578
+		Z
+		" />
+	<path id="narrow" d="
+		M 0 0
+		L -3.491 -399.985
+		A 400 400 0 0 1 3.491 -399.985
+		Z
+		" />
+	<path id="swirl-item" d="
+	M 0 0
+	A 160 200 0 0 1 0 -400
+	A 400 400 0 0 1 0  400
+	A 160 200 1 0 0 0    0
+	" />
+</defs>
+<g id="all" class="<%= @classes %>">
+	<g id="inner">
+		<circle cx="0" cy="0" r="500" stroke="black" stroke-width="1px" />
+		<circle class="keyring minor"/>
+		<circle class="keyring major" />
+		<circle class="keyring aedra" />
+		<g id="swirl">
+			<g>
+				<use href="#swirl-item" class="padhome" />
+				<use href="#swirl-item" class="anu" transform="rotate(180)" />
+			</g>
+		</g>
+		<g id="main">
+			<%= for {name, note, class, num, _opts} <- @table do %>
+				<% ident = name |> Home.str_to_ident() %>
+				<% keystone = class |> String.split() |> Enum.at(-1) %>
+				<g id="<%= ident %>" class="spoke-<%= num |> to_string() %> <%= class %>">
+					<linearGradient id="fill-<%= ident %>" gradientTransform="rotate(90)">
+						<stop offset="20%" stop-opacity="1" />
+						<stop offset="60%" stop-opacity="0.6" />
+						<stop offset="80%" stop-opacity="0.3" />
+						<stop offset="95%" stop-opacity="0" />
+					</linearGradient>
+					<use href="#keystone-<%= keystone %>" class="keystone <%= keystone %>" />
+					<use href="#spoke" class="spoke" fill="url('#fill-<%= ident %>')" />
+					<text class="name"><%= name %></text>
+					<text class="note"><%= note %></text>
+				</g>
+			<% end %>
+		</g>
+	</g>
+</g>
+<script type="text/javascript">
+	let this = document.ElementById("all");
+	let swirl = document.getElementById("swirl");
+	this.onclick = () => {
+		swirl.toggleClass("animated");
+	};
+</script>
+<style type="text/css">
+	@font-face {
+		font-family: "Daedric";
+		src: url("//myrrlyn.net/static/fonts/oeuvre/Daedra.otf");
+	}
+
+	.keyring {
+		cx: 0;
+		cy: 0;
+		fill: transparent;
+		stroke-width: 34;
+	}
+	.keyring.minor {
+		r: 415px;
+		stroke: grey;
+	}
+	.keyring.major {
+		r: 449px;
+		stroke: black;
+	}
+	.keyring.aedra {
+		r: 483px;
+		stroke: white;
+	}
+
+	.keystone.minor {
+		fill: grey;
+	}
+	.padhome,
+	.keystone.major {
+		fill: black;
+	}
+	.anu,
+	.keystone.aedra {
+		fill: white;
+	}
+
+	text.name {
+		transform: translateY(-420px);
+		text-orientation: upright;
+		writing-mode: vertical-rl;
+	}
+	.no-names text.name {
+		display: none;
+	}
+	text.note {
+		transform: translateY(-475px);
+		font-size: 1.2em;
+	}
+	.no-notes text.note {
+		display: none;
+	}
+
+	<%= for {key, angle} <- [
+		{"c", 30},
+		{"g", 180},
+		{"d", -30},
+		{"a", 120},
+		{"e", -90},
+		{"b", 60},
+		{"gb", -150},
+		{"db", 0},
+		{"ab", 150},
+		{"eb", -60},
+		{"bb", 90},
+		{"f", -120},
+	] do %>
+		.<%= key %>-major #swirl g {
+			transform: rotate(<%= -angle %>deg);
+		}
+		.<%= key %>-major #inner {
+			transform: rotate(<%= angle %>deg);
+		}
+	<% end %>
+
+	#all:not(.no-animation) #swirl {
+		animation: chase 120s linear 0s infinite reverse;
+	}
+	.no-swirl #swirl {
+		display: none;
+	}
+
+	@keyframes chase {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(359deg);
+		}
+	}
+
+	.fifths {
+		animation: fifths 120s linear 0s infinite;
+	}
+
+	@keyframes fifths {
+		<%= for pct <- 0..11 do %>
+			<%= (pct * 100 / 12) |> Float.round(3) %>% {
+				transform: rotate(<%= (pct * 150) |> round() %>deg);
+			}
+			<%= ((pct * 100 / 12) |> Float.round(3)) + 7.5 %>% {
+				transform: rotate(<%= (pct * 150) |> round() %>deg);
+			}
+		<% end %>
+		100% {
+			transform: rotate(5turn);
+		}
+	}
+
+	text {
+		font-family: "Roboto", sans-serif;
+	}
+
+	.daedric .daedra text.name {
+		font-family: Daedric;
+	}
+
+	.no-color .aedra stop {
+		stop-color: white;
+	}
+	.no-color .daedra.major stop {
+		stop-color: black;
+	}
+	.no-color .daedra.minor stop {
+		stop-color: grey;
+	}
+
+	text {
+		fill: black;
+	}
+	.daedra text.name {
+		fill: white;
+	}
+
+	<%= for {_, _, _, num, opts} <- @table do %>
+		<% angle = (num |> Integer.mod(24)) * 15 %>
+		.spoke-<%= num %> {
+			transform: rotate(<%= angle %>deg);
+		}
+		.hsl .spoke-<%= num %> stop {
+			stop-color: hsl(<%= angle %>, 100%, 50%);
+		}
+		.cube-helix .spoke-<%= num %> stop {
+			stop-color: <%= opts[:cube_helix] %>;
+		}
+		.hcl .spoke-<%= num %> stop {
+			stop-color: <%= opts[:hcl] %>;
+		}
+	<% end %>
+</style>

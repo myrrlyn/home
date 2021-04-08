@@ -17,14 +17,18 @@ article img {
 		max-width: 400px;
 	}
 
+	&.halfcol {
+		width: 50%;
+	}
+
 	&.ctr {
 		margin: 0 auto;
 	}
+}
 
-	&.right {
-		float: right;
-		margin-left: 1em;
-	}
+.right {
+	float: right;
+	margin-left: 1em;
 }
 
 .title {

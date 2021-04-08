@@ -11,6 +11,14 @@ defmodule Home do
     calendar()
   end
 
+  @doc "Converts a string to an HTML-acceptable identifier."
+  def str_to_ident(text) do
+    text
+    |> String.downcase()
+    |> String.replace(~r/[^\w ]+/, "")
+    |> String.replace(~r/\s+/, "-")
+  end
+
   @doc "Generates a random image rotation"
   def true_random, do: 0..359 |> Enum.random()
 
