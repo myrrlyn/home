@@ -16,10 +16,9 @@ defmodule HomeWeb.PageController do
       _ ->
         conn
         |> resp(
-          307,
-          "This page is not yet implemented on the new site. Use old.myrrlyn.net in the meantime."
+          404,
+          "This resource is no longer available. If you are following a formerly-working link, please contact me directly."
         )
-        |> put_resp_header("location", ["https://old.myrrlyn.net", path] |> Path.join())
     end
   end
 
