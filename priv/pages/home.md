@@ -37,7 +37,7 @@ a good idea but an irritating practice.
 [gh]: https://github.com/myrrlyn
 [ig]: https://instagr.am/myrrlyn
 [kb]: https://keybase.io/myrrlyn
-[linkedin]: https:linkedin.com/in/myrrlyn
+[linkedin]: https://linkedin.com/in/myrrlyn
 [pubkey]: /static/myrrlyn.asc
 [reddit]: https://reddit.com/u/myrrlyn
 [snap]: https://snapchat.com/add/myrrlyn
