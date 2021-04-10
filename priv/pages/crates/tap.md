@@ -1,5 +1,0 @@
----
-title: Suffix Tapping
----
-
-# `tap`

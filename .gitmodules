@@ -1,6 +1,3 @@
-[submodule "priv/pages/blog"]
-	path = priv/pages/blog
-	url = git@github.com:myrrlyn/blog.git
-[submodule "priv/pages/oeuvre"]
-	path = priv/pages/oeuvre
-	url = git@github.com:myrrlyn/oeuvre.git
+[submodule "priv/pages"]
+	path = priv/pages
+	url = git@github.com:myrrlyn/website-content.git

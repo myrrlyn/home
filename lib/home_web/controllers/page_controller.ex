@@ -3,7 +3,7 @@ defmodule HomeWeb.PageController do
 
   def home(conn, params) do
     conn
-    |> build(params, "/", Home.Page.compile!("home.md"))
+    |> build(params, "/", Home.Page.compile!("index.md"))
   end
 
   def page(conn, %{"path" => path} = params) do
