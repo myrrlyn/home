@@ -19,11 +19,18 @@ defmodule HomeWeb.Router do
   #   pipe_through :api
   # end
 
+  # Catch XML early
+  scope "/", HomeWeb do
+    get("/blog.rss", BlogController, :feed)
+    get("/blog/feed.rss", BlogController, :feed)
+    get("/sitemap.xml", PageController, :sitemap)
+    get("/feed.rss", BlogController, :feed)
+  end
+
   scope "/blog", HomeWeb do
     pipe_through(:browser)
 
     get("/", BlogController, :index)
-    get("/feed.rss", BlogController, :feed)
 
     get("/*path", BlogController, :page)
   end
@@ -58,8 +65,6 @@ defmodule HomeWeb.Router do
     get("/", PageController, :home)
     get("/hn", PageController, :refuse)
     get("/favicon.ico", PageController, :favicon_ico)
-    get("/sitemap.xml", PageController, :sitemap)
-    get("/feed.rss", BlogController, :feed)
     get("/klaus", KlausController, :page)
     get("/*path", PageController, :page)
   end
