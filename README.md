@@ -1,20 +1,33 @@
-# Home
+# myrrlyn.net
 
-To start your Phoenix server:
+This is the server application that drives my website. It contains very little
+of the site content, which can be found in my [website-content] repository; this
+is limited strictly to the application logic necessary to translate the content
+collection into HTTP responses.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+It is an [Elixir]/[Phoenix] web application with some custom YAML/Markdown
+processing logic and other decorations.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Installation
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+```sh
+git close https://github.com/myrrlyn/home.git
+cd home
+mix do deps.get, deps.compile, compile
+cd assets
+npm install
+cd ..
+mix phx.server
+```
 
 ## Learn more
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+- Official website: <https://www.phoenixframework.org/>
+- Guides: <https://hexdocs.pm/phoenix/overview.html>
+- Docs: <https://hexdocs.pm/phoenix>
+- Forum: <https://elixirforum.com/c/phoenix-forum>
+- Source: <https://github.com/phoenixframework/phoenix>
+
+[Elixir]: https://elixir-lang.org/
+[Phoenix]: https://www.phoenixframework.org/
+[website-content]: https://github.com/myrrlyn/website-content

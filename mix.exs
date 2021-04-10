@@ -52,6 +52,8 @@ defmodule Home.MixProject do
       {:phoenix_markdown, "~> 1.0"},
       {:phoenix_haml, "~> 0.2"},
       {:earmark, "~> 1.4"},
+      {:earmark_parser,
+       git: "https://github.com/myrrlyn/earmark_parser", branch: "patch-1", override: true},
       {:timex, "~> 3.6"},
       {:yaml_elixir, "~> 2.6"},
       {:gravatar, "~> 0.1"},
