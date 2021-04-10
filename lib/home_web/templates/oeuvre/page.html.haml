@@ -1,18 +1,18 @@
 %article
-	%h1#title.title= @page.title
-	- if sub = @page.yaml |> Map.get("subtitle") do
-		%h2#subtitle.title= sub
+	%h1#title.title= @meta.title
+	- if @meta.subtitle do
+		%h2#subtitle.title= @meta.subtitle
 	%p
-		%a{href="//old.reddit.com/r/teslore/comments/#{@page.yaml["reddit"]}"}
+		%a{href="//old.reddit.com/r/teslore/comments/#{@meta.props["reddit"]}"}
 			Originally published to /r/teslore
 		on
-		- d = Timex.format!(@page.date, "{YYYY}, {Mshort} {D} at {h24}:{m}")
+		- d = Timex.format!(@meta.date, "{YYYY}, {Mshort} {D} at {h24}:{m}")
 		= d
 	- if @page.toc != [] do
 		%nav{aria-label: "Table of Contents"}
 			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
 	%hr
-	- if intro = @page.yaml |> Map.get("intro-music") do
+	- if intro = @meta.props |> Map.get("intro-music") do
 		<audio id="intro-music"
 			controls
 			= if intro |> Map.get("repeat", false), do: "loop", else: ""
@@ -27,21 +27,22 @@
 				%a{href: "#{intro |> Map.get("src")}"} from this link
 		</audio>
 	= @page.content |> raw
-%section
-	%hr.afterword
-	%h4 About the Text
-	= @page.about |> raw
-	- if outro = @page.yaml |> Map.get("outro-music") do
-		<audio id="outro-music"
-			controls
-			= if outro |> Map.get("repeat", false), do: "loop", else: ""
-		>
-			%source{src: "#{outro["src"]}"}
-			%p
-				Your browser does not support the
-				%code &lt;audio&gt;
-				element. The song is
-				%em= outro |> Map.get("title", "unnamed")
-				and you can download it yourself
-				%a{href: "#{outro |> Map.get("src")}"} from this link
-		</audio>
+	- if about = @meta.props |> Map.get("about") do
+		%section
+		%hr.afterword
+		%h2 About the Text
+		= about |> raw
+- if outro = @meta.props |> Map.get("outro-music") do
+	<audio id="outro-music"
+		controls
+		= if outro |> Map.get("repeat", false), do: "loop", else: ""
+	>
+		%source{src: "#{outro["src"]}"}
+		%p
+			Your browser does not support the
+			%code &lt;audio&gt;
+			element. The song is
+			%em= outro |> Map.get("title", "unnamed")
+			and you can download it yourself
+			%a{href: "#{outro |> Map.get("src")}"} from this link
+	</audio>

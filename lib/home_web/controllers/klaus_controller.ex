@@ -9,7 +9,7 @@ defmodule HomeWeb.KlausController do
       layout: {HomeWeb.LayoutView, "plain.html"},
       flavor: "klaus",
       page: page,
-      title: page.title
+      title: page.meta.title
     )
   end
 end

@@ -123,12 +123,15 @@
 		stroke: white;
 	}
 
+	.keystone.minor,
 	.grey {
 		fill: grey;
 	}
+	.keystone.major,
 	.black {
 		fill: black;
 	}
+	.keystone.aedra,
 	.white {
 		fill: white;
 	}

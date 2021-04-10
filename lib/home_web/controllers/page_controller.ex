@@ -3,17 +3,17 @@ defmodule HomeWeb.PageController do
 
   def home(conn, params) do
     conn
-    |> build(params, "/", Home.Page.compile("home.md"))
+    |> build(params, "/", Home.Page.compile!("home.md"))
   end
 
-  def page(conn, params) do
-    path = params["path"] |> Path.join()
+  def page(conn, %{"path" => path} = params) do
+    path = path |> Path.join()
 
-    try do
-      page = Home.Page.compile("#{path}.md")
-      conn |> build(params, "/#{path}", page)
-    rescue
-      _ ->
+    case Home.Page.compile("#{path}.md") do
+      {:ok, page} ->
+        conn |> build(params, "/#{path}", page)
+
+      {:error, _} ->
         conn
         |> resp(
           404,
@@ -35,9 +35,10 @@ defmodule HomeWeb.PageController do
     conn
     |> render("page.html",
       flavor: "app",
-      title: page.title,
+      title: page.meta.title,
       banner: "banners/2017-01-28T08-50-37.jpg",
       page: page,
+      meta: page.meta,
       navtree: make_nav(path),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: ""

@@ -67,8 +67,8 @@
 
 	--charcoal: #{lighten($charcoal, 10%)};
 
-	--bg: var(--iso-white);
-	--text-fg: var(--iso-black);
+	--bg: #e0e0e0;
+	--text-fg: #1f1f1f;
 	--header-color: #{$blue-capri};
 	--border-color: #{$blue-prussian};
 }

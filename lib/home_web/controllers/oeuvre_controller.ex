@@ -5,7 +5,7 @@ defmodule HomeWeb.OeuvreController do
   @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _params) do
-    page = Home.Page.compile("oeuvre/index.md")
+    page = Home.Page.compile!("oeuvre/index.md")
 
     conn |> assign(:tagset, by_tags()) |> build("index.html", nil, page)
   end
@@ -19,7 +19,8 @@ defmodule HomeWeb.OeuvreController do
            file |> Path.rootname() == req_url |> String.trim_leading("/")
          end) do
       {f, _} ->
-        build(conn, "page.html", req_url, f |> Home.Page.compile())
+        page = f |> Home.Page.compile!()
+        build(conn, "page.html", req_url, page)
 
       nil ->
         conn |> send_resp(404, "Fanfic not found")
@@ -92,13 +93,14 @@ defmodule HomeWeb.OeuvreController do
   end
 
   def build(conn, template, url, page) do
-    banner = page.yaml |> Map.get("banner", "text-oghma")
+    banner = page.meta.props |> Map.get("banner", "text-oghma")
 
     conn
     |> render(template,
       flavor: "oeuvre",
       banner: "oeuvre/#{banner}.jpg",
       page: page,
+      meta: page.meta,
       gravatar: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes",
       navtree: page_listing(url),
       scope: @root
@@ -107,8 +109,8 @@ defmodule HomeWeb.OeuvreController do
 
   def by_tags() do
     get_fanfic()
-    |> Stream.flat_map(fn {p, yml} ->
-      yml |> Map.get("tags", ["untagged"]) |> Stream.map(fn t -> {t, {yml["title"], p}} end)
+    |> Stream.flat_map(fn {p, meta} ->
+      meta.tags |> Stream.map(fn t -> {t, {meta.title, p}} end)
     end)
     |> Enum.group_by(fn {tag, _} -> tag end, fn {_, {title, url}} ->
       {title, "/#{url |> Path.rootname()}"}
@@ -122,17 +124,15 @@ defmodule HomeWeb.OeuvreController do
       {"Lobby <small>(Site index)</small>", "/", nil}
     ] ++
       (get_fanfic()
-       |> Stream.map(fn {path, yml} ->
-         {:ok, date} = yml["date"] |> Home.Page.multiparse_date()
-         {:ok, date} = date |> Timex.format("{ISOdate}")
+       |> Stream.map(fn {path, meta} ->
+         {:ok, date} = meta.date |> Timex.format("{ISOdate}")
 
-         {"<span class=\"title\">" <> yml["title"] <> "</span>", "/#{path |> Path.rootname()}",
-          date}
+         {"<span class=\"title\">#{meta.title}</span>", "/#{path |> Path.rootname()}", date}
        end)
        |> Stream.map(fn {name, url, date} ->
          name =
            if url == current do
-             "👉 " <> name <> " 👈"
+             "👉 #{name} 👈"
            else
              name
            end
@@ -151,9 +151,9 @@ defmodule HomeWeb.OeuvreController do
       p |> Path.basename() |> Path.rootname() |> String.match?(~r/(index|README)/)
     end)
     |> Stream.map(fn p -> ["oeuvre", p] |> Path.join() end)
-    |> Stream.map(fn p -> {p, Home.Page.get_yaml(p)} end)
-    |> Stream.filter(fn {_, yml} -> yml |> Map.get("published", true) end)
+    |> Stream.map(fn p -> {p, Home.Page.metadata!(p)} end)
+    |> Stream.filter(fn {_, meta} -> meta.published end)
     |> Enum.to_list()
-    |> Enum.sort_by(fn {_, yml} -> yml |> Home.Page.get_date() |> elem(0) end, DateTime)
+    |> Enum.sort_by(fn {_, meta} -> meta.date end, DateTime)
   end
 end

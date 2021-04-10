@@ -9,8 +9,8 @@
         <generator>Phoenix (Elixir + Erlang/OTP)</generator>
         <language>en-us</language>
         <lastBuildDate>
-            <% {:ok, date} = @articles |> Enum.at(-1) |> elem(1) |> Map.get("date") |> Home.Page.multiparse_date() %>
-            <%= date |> Timex.format!("{RFC822}") %>
+            <% {_, meta} = @articles |> Enum.at(-1) %>
+            <%= meta.date |> Timex.format!("{RFC822}") %>
         </lastBuildDate>
         <pubDate>
             <%= DateTime.new!(Date.utc_today(), ~T[00:00:00], "Etc/UTC") |> Timex.format!("{RFC822}") %>
@@ -22,20 +22,19 @@
         </image>
         <atom:link rel="self" href="https://myrrlyn.net/blog/feed.rss" type="application/rss+xml" />
 
-        <%= for {_, yml} = pair <- @articles |> Enum.reverse() do %>
+        <%= for {url, meta} <- @articles |> Enum.reverse() do %>
             <item>
-                <title><%= yml["title"] %></title>
-                <link><%= HomeWeb.BlogController.make_link(pair) %></link>
-                <guid><%= HomeWeb.BlogController.make_link(pair) %></guid>
+                <title><%= meta.title %></title>
+                <link>https://myrrlyn.net<%= url %></link>
+                <guid>https://myrrlyn.net<%= url %></guid>
                 <description>
-                    <%= yml |> Map.get("summary", "This article currently lacks a description") %>
+                    <%= meta |> Home.Meta.summary("This article currently lacks a description") %>
                 </description>
                 <author>self@myrrlyn.dev (Alexander Payne)</author>
                 <pubDate>
-                    <% {:ok, date} = yml["date"] |> Home.Page.multiparse_date() %>
-                    <%= date |> Timex.format!("{RFC822}") %>
+                    <%= meta.date |> Timex.format!("{RFC822}") %>
                 </pubDate>
-                <%= for tag <- yml |> Map.get("tags", []) do %>
+                <%= for tag <- meta |> Home.Meta.tags([]) do %>
                     <category><%= tag %></category>
                 <% end %>
             </item>

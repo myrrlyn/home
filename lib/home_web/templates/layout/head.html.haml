@@ -5,20 +5,20 @@
 %link{rel: "stylesheet", type: "text/css", href: "#{Routes.static_path(@conn, "/css/" <> @flavor <> ".css")}"}
 %script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/" <> @flavor <> ".js")}"}
 
-- sizes = []
+- mkpair = &"#{&1}x#{&1}"
 - for size <- [16, 32, 64, 128, 256, 512, 1024] do
-	- pair = "#{size}x#{size}"
-  - sizes = sizes ++ ["#{pair}"]
-	%link{rel: "icon", type: "image/png", sizes: "#{pair}", href: "/static/favicons/favicon-#{size}.png"}
-	%link{rel: "apple-touch-icon", type: "image/png", sizes: "#{pair}", href: "/static/favicons/favicon-#{size}.png"}
-%link{rel: "icon", type: "image/ico", sizes: "#{sizes |> Enum.join(" ")}", href: "/static/favicons/favicon.ico"}
+	%link{rel: "icon", type: "image/png", sizes: "#{mkpair.(size)}", href: "/static/favicons/favicon-#{size}.png"}
+	%link{rel: "apple-touch-icon", type: "image/png", sizes: "#{mkpair.(size)}", href: "/static/favicons/favicon-#{size}.png"}
+%link{rel: "icon", type: "image/ico", sizes: "16x16 32x32 64x64 128x128 256x256 512x512 1024x1024", href: "/static/favicons/favicon.ico"}
 %link{rel: "icon", type: "image/svg+xml", sizes: "any", href: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes"}
 %link{rel: "apple-touch-startup-image", type: "image/svg+xml", sizes: "any", href: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes"}
 
 %meta{name: "author", content: "Alexander Payne (myrrlyn)"}
-- desc = @page.summary || Map.get(@page.yaml, "about")
-- if desc do
-	%meta{name: "description", content: "#{desc}"}
+- if @meta.summary do
+	%meta{name: "description", content: "#{@meta.summary}"}
+
+- for {name, content} <- @meta.meta do
+	%meta{name: "#{name}", content: "#{content}"}
 
 / https://ogp.me/
 %meta{name: "og:title", content: "#{@title}"}
@@ -31,5 +31,5 @@
 %meta{name: "twitter:site", content: "@myrrlyn"}
 %meta{name: "twitter:title", content: "#{@title}"}
 %meta{name: "twitter:image", content: "https://myrrlyn.net/static/favicons/favicon-512.png"}
-- if desc do
-	%meta{name: "twitter:description", content: "#{desc}"}
+- if @meta.summary do
+	%meta{name: "twitter:description", content: "#{@meta.summary}"}

@@ -1,8 +1,10 @@
 %article
-	= @page.content |> raw
-	- for {name, group} <- HomeWeb.BlogController.grouped_by_category() do
-		%h2= name
-		%ol
-			- for {title, url, _} <- group do
-				%li
-					%a{href: "#{url}"}= title
+	%section
+		= @page.content |> raw
+	%section
+		- for {name, group} <- HomeWeb.BlogController.grouped_by_category() do
+			%h2= name
+			%ol
+				- for {url, meta} <- group do
+					%li
+						%a{href: "#{url}"}= meta.title
