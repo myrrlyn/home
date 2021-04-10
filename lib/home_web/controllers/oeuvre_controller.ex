@@ -102,7 +102,7 @@ defmodule HomeWeb.OeuvreController do
       banner: "oeuvre/#{banner}.jpg",
       page: page,
       meta: page.meta,
-      gravatar: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes",
+      gravatar: "/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes",
       navtree: navtree(url),
       scope: @root
     )
