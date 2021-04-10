@@ -94,8 +94,9 @@ header {
 	}
 }
 
+$about-clear: ($avi-height / 2) - $header-border;
 #about {
-	@include media-breakpoint-up(sm) {
+	@include media-breakpoint-up(md) {
 		flex: 1.5 1 0%;
 	}
 	@include media-breakpoint-up(md) {
@@ -105,17 +106,18 @@ header {
 			width: $vertical-border;
 		}
 		order: 1;
+		min-width: 15em;
 		max-width: 25em;
 	}
 	//  Get ready for some fuckery
 	@include media-breakpoint-up(md) {
-		$avi-height: $avi-size + (2 * $avi-rim);
-
 		.logo.gravatar a {
 			position: absolute;
 			top: $header-height - ($avi-height + $header-border) / 2;
 		}
-		padding-top: ($avi-height / 2) - $header-border;
+		#about-text {
+			margin-top: $about-clear;
+		}
 	}
 
 	> .contents {
@@ -168,14 +170,22 @@ body.hide-panels {
 
 @include media-breakpoint-up(md) {
 	@media only screen and (min-height: 800px) {
-		body:not(.hide-panels) #main {
-			// not sure where the extra 12px are coming from
-			height: calc(100vh - #{core-height()} + 12px);
+		body:not(.hide-panels) {
+			#main,
+			#about {
+				// not sure where the extra 12px are coming from
+				height: calc(100vh - #{core-height()} + 12px);
+			}
+		}
+		main {
+			height: inherit;
+		}
+		#about-text {
+			height: calc(100% - #{$about-clear});
 		}
 		main,
-		#about {
+		#about-text {
 			overflow-y: auto;
-			height: inherit;
 		}
 	}
 }
