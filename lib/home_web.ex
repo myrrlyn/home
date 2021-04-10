@@ -59,15 +59,12 @@ defmodule HomeWeb do
   end
 
   @doc """
-  Lists all the documents available on the site.
+  Lists all the pages available on the site.
   """
-  @spec page_listing :: [Path.t()]
+  @spec page_listing :: [{String.t(), Path.t(), String.t()}]
   def page_listing do
-    root = ["priv", "pages"] |> Path.join()
-
-    root
-    |> walk
-    |> Enum.map(fn p -> p |> String.trim_leading(root) |> String.trim_trailing(".md") end)
+    HomeWeb.PageController.page_listing() ++
+      HomeWeb.BlogController.page_listing() ++ HomeWeb.OeuvreController.page_listing()
   end
 
   defp view_helpers do
@@ -82,22 +79,6 @@ defmodule HomeWeb do
       import HomeWeb.Gettext
       alias HomeWeb.Router.Helpers, as: Routes
     end
-  end
-
-  @spec walk(Path.t()) :: [Path.t()]
-  defp walk(path) do
-    path
-    |> File.ls!()
-    |> Enum.map(fn p ->
-      full_path = [path, p] |> Path.join()
-
-      cond do
-        full_path |> File.dir?() -> walk(full_path)
-        full_path |> Path.extname() == ".md" -> [full_path]
-        true -> []
-      end
-    end)
-    |> List.flatten()
   end
 
   @doc """

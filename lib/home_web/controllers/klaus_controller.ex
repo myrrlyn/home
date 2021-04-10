@@ -8,7 +8,9 @@ defmodule HomeWeb.KlausController do
     |> render("page.html",
       layout: {HomeWeb.LayoutView, "plain.html"},
       flavor: "klaus",
+      classes: ["klaus no-index"],
       page: page,
+      meta: page.meta,
       title: page.meta.title
     )
   end

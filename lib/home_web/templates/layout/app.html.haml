@@ -17,24 +17,25 @@
 				img#gravatar {
 					transform: rotate(#{Home.rotate_avi()}deg);
 				}
-	%body
+	- classes = @classes |> Enum.join(" ")
+	%body{class: "#{classes}"}
 		%header{role: "banner"}.screen-only
 			-# %img{src: "#{Routes.static_path(@conn, @header_img)}"}
 		%div#main.flex-wrapper.flex-cols.hide-scroll
-			%main.container.flex-item{role: "main"}
+			%main.container-md.flex-item{role: "main"}
 				= @inner_content
-			%aside#about.container.flex-item.screen-only
+			%aside#about.flex-item.screen-only
 				%div.logo.gravatar
 					%a{href: "/"}
 						%img#gravatar{src: "#{@gravatar}", alt: "Gravatar"}
-				%div.contents
-					= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "")
+				%div#about-text.container-md
 					= render @view_module, "about.html", assigns
-				%small
-					This site is a continual work in progress. I would greatly appreciate
-					bug reports, and also your patience as I build it. Lots of old links
-					are broken! You can access the old site at
-					%a{href: "//old.myrrlyn.net"}
-						%code old.myrrlyn.net
-				= render("logos.html", conn: @conn)
+					= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "")
+					%small
+						This site is a continual work in progress. I would greatly appreciate
+						bug reports, and also your patience as I build it. Lots of old links
+						are broken! You can access the old site at
+						%a{href: "//old.myrrlyn.net"}
+							%code old.myrrlyn.net
+					= render("logos.html", conn: @conn)
 		= render("footer.html", conn: @conn)

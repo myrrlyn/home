@@ -8,3 +8,6 @@
 				- for {url, meta} <- group do
 					%li
 						%a{href: "#{url}"}= meta.title
+						= "(#{Timex.format!(meta.date, "{ISOdate}")})"
+						%br
+						= meta.summary |> Earmark.as_html! |> raw

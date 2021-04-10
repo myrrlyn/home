@@ -13,36 +13,7 @@
 			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
 	%hr
 	- if intro = @meta.props |> Map.get("intro-music") do
-		<audio id="intro-music"
-			controls
-			= if intro |> Map.get("repeat", false), do: "loop", else: ""
-		>
-			%source{src: "#{intro["src"]}"}
-			%p
-				Your browser does not support the
-				%code &lt;audio&gt;
-				element. The song is
-				%em= intro |> Map.get("title", "unnamed")
-				and you can download it yourself
-				%a{href: "#{intro |> Map.get("src")}"} from this link
-		</audio>
+		= render("audio.html", ident: "intro", audio: intro)
 	= @page.content |> raw
-	- if about = @meta.props |> Map.get("about") do
-		%section
-		%hr.afterword
-		%h2 About the Text
-		= about |> raw
-- if outro = @meta.props |> Map.get("outro-music") do
-	<audio id="outro-music"
-		controls
-		= if outro |> Map.get("repeat", false), do: "loop", else: ""
-	>
-		%source{src: "#{outro["src"]}"}
-		%p
-			Your browser does not support the
-			%code &lt;audio&gt;
-			element. The song is
-			%em= outro |> Map.get("title", "unnamed")
-			and you can download it yourself
-			%a{href: "#{outro |> Map.get("src")}"} from this link
-	</audio>
+	- if outro = @meta.props |> Map.get("outro-music") do
+		= render("audio.html", ident: "outro", audio: outro )

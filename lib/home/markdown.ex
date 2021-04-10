@@ -309,6 +309,8 @@ defmodule Home.Markdown do
       "del",
       "dfn",
       "ins",
+      "kbd",
+      "key",
       # "math",
       # "mfrac",
       # "mi",

@@ -35,11 +35,12 @@ defmodule HomeWeb.PageController do
     conn
     |> render("page.html",
       flavor: "app",
+      classes: ["general"],
       title: page.meta.title,
       banner: "banners/2017-01-28T08-50-37.jpg",
       page: page,
       meta: page.meta,
-      navtree: make_nav(path),
+      navtree: navtree(path),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: ""
     )
@@ -50,23 +51,21 @@ defmodule HomeWeb.PageController do
     conn |> resp(307, "") |> put_resp_header("location", "/static/images/favicon.ico")
   end
 
-  @pages [
-    {"Home", "/", "-r--"},
-    {"About", "/about", "-r--"},
-    {"Blog", "/blog", "dr-x"},
-    {"Crates", "/crates", "dr-x"},
-    {"Oeuvre", "/oeuvre", "dr-x"},
-    {"Portfolio", "/portfolio", "-r--"},
-    {"Résumé", "/résumé", "-r--"},
-    {"Workbench", "/uses", "-r--"}
-  ]
-
-  def page_listing do
-    @pages
-    |> List.flatten()
+  def navtree(_) do
+    page_listing()
   end
 
-  def make_nav(_) do
-    @pages
+  def page_listing do
+    [
+      {"Home", "/", "-r--"},
+      {"About", "/about", "-r--"},
+      {"Blog", "/blog", "dr-x"},
+      {"Crates", "/crates", "dr-x"},
+      {"Hermaeus", "/hermaeus", "-r--"},
+      {"Oeuvre", "/oeuvre", "dr-x"},
+      {"Portfolio", "/portfolio", "-r--"},
+      {"Résumé", "/résumé", "-r--"},
+      {"Workbench", "/uses", "-r--"}
+    ]
   end
 end

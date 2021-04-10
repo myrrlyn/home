@@ -61,7 +61,7 @@
 </defs>
 <g id="all" class="<%= @classes %>">
 	<g id="inner">
-		<circle cx="0" cy="0" r="500" stroke="black" stroke-width="1px" />
+		<circle cx="0" cy="0" r="500" stroke="black" stroke-width="1px" fill="transparent" />
 		<circle class="keyring minor"/>
 		<circle class="keyring major" />
 		<circle class="keyring aedra" />

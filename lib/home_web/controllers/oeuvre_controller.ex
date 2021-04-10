@@ -98,11 +98,12 @@ defmodule HomeWeb.OeuvreController do
     conn
     |> render(template,
       flavor: "oeuvre",
+      classes: ["oeuvre"],
       banner: "oeuvre/#{banner}.jpg",
       page: page,
       meta: page.meta,
       gravatar: "/oeuvre/images/tones.svg?color=hcl&key=d-major&classes=no-names,no-notes",
-      navtree: page_listing(url),
+      navtree: navtree(url),
       scope: @root
     )
   end
@@ -118,28 +119,35 @@ defmodule HomeWeb.OeuvreController do
     |> Enum.sort_by(fn {_, ps} -> ps |> length() end, :desc)
   end
 
-  def page_listing(current \\ nil) do
+  def navtree(current \\ nil) do
     [
       {"Library desk <small>(Oeuvre index)</small>", "#{@root}", nil},
       {"Lobby <small>(Site index)</small>", "/", nil}
     ] ++
-      (get_fanfic()
-       |> Stream.map(fn {path, meta} ->
-         {:ok, date} = meta.date |> Timex.format("{ISOdate}")
+      (page_listing(current)
+       |> Enum.map(fn {name, url, date} ->
+         {"<span class=\"title\">#{name}</span>", url, date}
+       end))
+  end
 
-         {"<span class=\"title\">#{meta.title}</span>", "/#{path |> Path.rootname()}", date}
-       end)
-       |> Stream.map(fn {name, url, date} ->
-         name =
-           if url == current do
-             "👉 #{name} 👈"
-           else
-             name
-           end
+  def page_listing(current \\ nil) do
+    get_fanfic()
+    |> Stream.map(fn {path, meta} ->
+      {:ok, date} = meta.date |> Timex.format("{ISOdate}")
 
-         {name, url, date}
-       end)
-       |> Enum.to_list())
+      {meta.title, "/#{path |> Path.rootname()}", date}
+    end)
+    |> Stream.map(fn {name, url, date} ->
+      name =
+        if url == current do
+          "👉 #{name} 👈"
+        else
+          name
+        end
+
+      {name, url, date}
+    end)
+    |> Enum.to_list()
   end
 
   def get_fanfic() do
@@ -154,6 +162,6 @@ defmodule HomeWeb.OeuvreController do
     |> Stream.map(fn p -> {p, Home.Page.metadata!(p)} end)
     |> Stream.filter(fn {_, meta} -> meta.published end)
     |> Enum.to_list()
-    |> Enum.sort_by(fn {_, meta} -> meta.date end, DateTime)
+    |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
   end
 end

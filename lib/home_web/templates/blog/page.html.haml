@@ -4,7 +4,7 @@
 		Published on
 		- d = Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}")
 		= d
-	%p= @meta.summary
+	%p= @meta.summary |> Earmark.as_html! |> raw
 	- if @page.toc != [] do
 		%nav{aria-label: "Table of Contents"}
 			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)

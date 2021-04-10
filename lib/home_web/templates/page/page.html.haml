@@ -1,2 +1,7 @@
 %article
+	- if @meta.show_toc do
+		%h1= @page.meta.title
+		%nav{aria-label: "Table of Contents"}
+			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
+		%hr
 	= @page.content |> raw
