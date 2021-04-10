@@ -318,6 +318,7 @@ defmodule Home.Markdown do
       # "mn",
       # "msub",
       # "msup",
+      "small",
       "sub",
       "sup"
     ]

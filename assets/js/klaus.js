@@ -12,10 +12,11 @@ import css from "../css/klaus.scss";
 //
 import "phoenix_html";
 
-setTimeout(() => {
-	for (var div of document.querySelectorAll("div.MathJax_SVG_Display")) {
-		let pt = div.parentElement;
-		pt.insertBefore(div.children[0], div);
-		pt.removeChild(div);
+window.onload = () => {
+	let from = document.getElementById("date-src");
+	let to = document.getElementById("date");
+	if ((from !== null) && (to !== null)) {
+		to.innerText = from.innerText;
+		from.parentNode.removeChild(from);
 	}
-}, 3333);
+};
