@@ -18,9 +18,16 @@ defmodule Home.MixProject do
   #
   # Type `mix help compile.app` for more information.
   def application do
+    base_apps = [:logger, :runtime_tools, :timex, :crypto]
+
     [
       mod: {Home.Application, []},
-      extra_applications: [:logger, :runtime_tools, :timex, :crypto]
+      extra_applications:
+        if Mix.env() == :dev do
+          [:os_mon | base_apps]
+        else
+          base_apps
+        end
     ]
   end
 
@@ -34,7 +41,6 @@ defmodule Home.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.5"},
-      {:phoenix_ecto, "~> 4.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
@@ -62,10 +68,8 @@ defmodule Home.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      setup: ["deps.get", "cmd npm install --prefix assets"],
+      test: ["test"]
     ]
   end
 end
