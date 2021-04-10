@@ -16,31 +16,28 @@ import css from "../css/oeuvre.scss";
 import "phoenix_html";
 
 window.onload = function () {
-    let intro = document.getElementById("intro");
-    if (intro !== null) {
-        let audio = document.getElementById("intro-music");
-        if (audio !== null) {
-            intro.parentNode.replaceChild(audio, intro);
-        }
-    }
-    let outro = document.getElementById("outro");
-    if (outro !== null) {
-        let audio = document.getElementById("outro-music");
-        if (audio !== null) {
-            outro.parentNode.replaceChild(audio, outro);
-        }
-    }
-    for (let audio of document.getElementsByTagName("audio")) {
-        audio.onplay = pause_others;
-    }
+	for (let ident of ["intro", "outro"]) {
+		let slot = document.getElementById(ident);
+		if (slot !== null) {
+			// console.debug(`Found slot ${slot}`);
+			let audio = document.getElementById(`${ident}-sound`);
+			if (audio !== null) {
+				// console.debug(`Found audio ${audio}`);
+				slot.parentNode.replaceChild(audio, slot);
+			}
+		}
+	}
+	for (let audio of document.getElementsByTagName("audio")) {
+		audio.onplay = pause_others;
+	}
 };
 
 function pause_others(event) {
-    let src = event.target;
-    for (let audio of document.getElementsByTagName("audio")) {
-        if (audio == src) {
-            continue;
-        }
-        audio.pause();
-    }
+	let src = event.target;
+	for (let audio of document.getElementsByTagName("audio")) {
+		if (audio == src) {
+			continue;
+		}
+		audio.pause();
+	}
 }

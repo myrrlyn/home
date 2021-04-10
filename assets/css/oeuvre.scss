@@ -25,6 +25,12 @@ hr.afterword {
 	background-color: var(--border-color);
 }
 
+.title,
+.subtitle {
+	font-style: italic;
+	text-align: center;
+}
+
 main article,
 main section {
 	// border-right: 2px solid var(--border-color);
@@ -118,9 +124,11 @@ blockquote {
 		}
 	}
 	&.scourge {
+		background-color: transparentize($tyrian-purple, 0.75);
 		border-left-color: $tyrian-purple;
 	}
 	&.spellbreaker {
+		background-color: transparentize($yellow-selective, 0.75);
 		border-left-color: $yellow-selective;
 	}
 }

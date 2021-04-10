@@ -1,5 +1,6 @@
 $avi-size: 192px;
 $avi-rim: 8px;
+$avi-height: $avi-size + (2 * $avi-rim);
 
 // The max width of *all* content on the screen.
 $content-width-max: 110em;

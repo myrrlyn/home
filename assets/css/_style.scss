@@ -31,12 +31,28 @@ article img {
 	margin-left: 1em;
 }
 
-.title {
-	font-style: italic;
-}
-
 .clearfix {
 	clear: both;
+}
+
+body:not(.oeuvre) {
+	//  Make the deleted- and inserted- text span tags have visual flair akin to
+	//  a highlighter pen
+	ins,
+	del {
+		text-decoration: none;
+		padding: 0 0.6em;
+		border-top-left-radius: 1000px;
+		border-bottom-right-radius: 1000px;
+	}
+
+	del {
+		background-color: fade-out(pink, 0.2);
+	}
+
+	ins {
+		background-color: fade-out(lightgreen, 0.3);
+	}
 }
 
 pre {
@@ -55,6 +71,9 @@ pre {
 	}
 	&.codeblock-rust {
 		border-left-color: $lang-rust;
+	}
+	&.codeblock-ps1 {
+		border-left-color: $lang-pwsh;
 	}
 	&.codeblock-sh,
 	&.codeblock-shell {
