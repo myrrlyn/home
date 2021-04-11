@@ -150,7 +150,11 @@ defmodule HomeWeb.OeuvreController do
   def get_fanfic() do
     src_paths()
     |> Stream.map(fn p -> {"/#{p |> Path.rootname()}", Home.PageCache.get_page!(p).meta} end)
-    |> Stream.filter(fn {_, meta} -> meta.published end)
+    |> (fn stream ->
+          if Mix.env() == :dev,
+            do: stream,
+            else: stream |> Stream.filter(fn {_, meta} -> meta.published end)
+        end).()
     |> Enum.to_list()
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
   end

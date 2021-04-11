@@ -118,7 +118,11 @@ defmodule HomeWeb.BlogController do
   def get_articles() do
     src_paths()
     |> Stream.map(fn p -> {p |> path_to_url(), Home.PageCache.get_page!(p).meta} end)
-    |> Stream.filter(fn {_, meta} -> meta.published end)
+    |> (fn stream ->
+          if Mix.env() == :dev,
+            do: stream,
+            else: stream |> Stream.filter(fn {_, meta} -> meta.published end)
+        end).()
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
   end
 
