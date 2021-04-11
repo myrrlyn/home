@@ -145,11 +145,10 @@ defmodule HomeWeb.BlogController do
   end
 
   def src_paths do
-    [@dir, "**", "*.md"]
+    [@dir, "*", "*.md"]
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
-    |> Stream.reject(&(Path.basename(&1) in ["index.md", "README.md"]))
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end

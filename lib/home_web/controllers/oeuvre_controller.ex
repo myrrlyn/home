@@ -156,7 +156,7 @@ defmodule HomeWeb.OeuvreController do
   end
 
   def src_paths do
-    [@dir, "**", "*.md"]
+    [@dir, "*.md"]
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
