@@ -117,12 +117,6 @@ defmodule HomeWeb.BlogController do
   """
   def get_articles() do
     src_paths()
-    |> Stream.reject(
-      &(&1
-        |> Path.basename()
-        |> Path.rootname()
-        |> (fn f -> f in ["index", "README"] end).())
-    )
     |> Stream.map(fn p -> {p |> path_to_url(), Home.PageCache.get_page!(p).meta} end)
     |> Stream.filter(fn {_, meta} -> meta.published end)
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
@@ -132,6 +126,7 @@ defmodule HomeWeb.BlogController do
   Given a group and article name, finds the path (with datestamp) of the source
   file.
   """
+  @spec url_to_path(Path.t(), Path.t()) :: Path.t()
   def url_to_path(group, name) do
     src_paths()
     |> Enum.find(fn path ->
@@ -142,6 +137,7 @@ defmodule HomeWeb.BlogController do
   @doc """
   Given a filepath, constructs the corresponding site URL.
   """
+  @spec path_to_url(Path.t()) :: Path.t()
   def path_to_url(path) do
     ["blog", group, filename] = path |> Path.rootname() |> Path.split()
     [_y, _m, _d, name] = filename |> String.split("-", parts: 4)
@@ -153,6 +149,7 @@ defmodule HomeWeb.BlogController do
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
+    |> Stream.reject(&(Path.basename(&1) in ["index", "README"]))
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end

@@ -59,8 +59,8 @@ defmodule Home.PageCache do
 
               # If the path fails to rebuild, we still have a successfully built
               # Page. Renew its lifetime and continue serving it.
-              {{:error, err}, pages} ->
-                Logger.error("Error rebuilding #{path}: #{err}")
+              {{:error, _err}, pages} ->
+                Logger.error("Error rebuilding #{path}")
                 Logger.warning("Renewing the expired Page")
                 page = _renew(page)
                 {{:ok, page}, %{pages | path => page}}
@@ -181,7 +181,7 @@ defmodule Home.PageCache do
 
       # Return failure and the original cache.
       {:error, err} ->
-        Logger.error("Error compiling #{path} as a Home.Page: #{err}")
+        Logger.error("Error compiling #{path} as a Home.Page")
         {{:error, err}, pages}
     end
   end

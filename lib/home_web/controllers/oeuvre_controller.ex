@@ -149,12 +149,6 @@ defmodule HomeWeb.OeuvreController do
 
   def get_fanfic() do
     src_paths()
-    |> Stream.reject(
-      &(&1
-        |> Path.basename()
-        |> Path.rootname()
-        |> (fn f -> f in ["index", "README"] end).())
-    )
     |> Stream.map(fn p -> {"/#{p |> Path.rootname()}", Home.PageCache.get_page!(p).meta} end)
     |> Stream.filter(fn {_, meta} -> meta.published end)
     |> Enum.to_list()
@@ -166,6 +160,7 @@ defmodule HomeWeb.OeuvreController do
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
+    |> Stream.reject(&(Path.basename(&1) in ["index", "README"]))
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end
