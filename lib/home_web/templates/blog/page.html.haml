@@ -11,5 +11,9 @@
 		%nav{aria-label: "Table of Contents"}
 			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
 	%hr
+	- if intro = @meta.props |> Map.get("intro-music") do
+		= render(HomeWeb.LayoutView, "audio.html", ident: "intro", audio: intro)
 	= @page.content |> raw
+	- if outro = @meta.props |> Map.get("outro-music") do
+		= render(HomeWeb.LayoutView, "audio.html", ident: "outro", audio: outro)
 %script{type: "text/javascript", async: "1", src: "https://platform.twitter.com/widgets.js", charset: "utf-8"}

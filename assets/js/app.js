@@ -36,7 +36,10 @@ let lang_dict = {
 	toml: "TOML configuration",
 };
 
-setTimeout(mark_codeblocks, 1);
+window.onload = () => {
+	mark_codeblocks();
+	set_jukebox();
+};
 
 function mark_codeblocks() {
 	for (var node of document.querySelectorAll("pre.codeblock")) {
@@ -71,5 +74,32 @@ function mark_codeblocks() {
 				node.append(wrapper);
 			}
 		}
+	}
+}
+
+function set_jukebox() {
+	for (let ident of ["intro", "outro"]) {
+		let slot = document.getElementById(ident);
+		if (slot !== null) {
+			// console.debug(`Found slot ${slot}`);
+			let audio = document.getElementById(`${ident}-sound`);
+			if (audio !== null) {
+				// console.debug(`Found audio ${audio}`);
+				slot.parentNode.replaceChild(audio, slot);
+			}
+		}
+	}
+	for (let audio of document.getElementsByTagName("audio")) {
+		audio.onplay = pause_others;
+	}
+}
+
+function pause_others(event) {
+	let src = event.target;
+	for (let audio of document.getElementsByTagName("audio")) {
+		if (audio == src) {
+			continue;
+		}
+		audio.pause();
 	}
 }

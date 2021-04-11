@@ -13,7 +13,7 @@
 			= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
 	%hr
 	- if intro = @meta.props |> Map.get("intro-music") do
-		= render("audio.html", ident: "intro", audio: intro)
+		= render(HomeWeb.LayoutView, "audio.html", ident: "intro", audio: intro)
 	= @page.content |> raw
 	- if outro = @meta.props |> Map.get("outro-music") do
-		= render("audio.html", ident: "outro", audio: outro )
+		= render(HomeWeb.LayoutView, "audio.html", ident: "outro", audio: outro )

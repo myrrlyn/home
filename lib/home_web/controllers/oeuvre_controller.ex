@@ -132,7 +132,7 @@ defmodule HomeWeb.OeuvreController do
     |> Stream.map(fn {path, meta} ->
       {:ok, date} = meta.date |> Timex.format("{ISOdate}")
 
-      {meta.title, "/#{path |> Path.rootname()}", date}
+      {meta.title, "#{path |> Path.rootname()}", date}
     end)
     |> Stream.map(fn {name, url, date} ->
       name =
