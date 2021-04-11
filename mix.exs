@@ -49,6 +49,7 @@ defmodule Home.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:phoenix_etag, "~> 0.1"},
       {:phoenix_markdown, "~> 1.0"},
       {:phoenix_haml, "~> 0.2"},
       {:earmark, "~> 1.4"},
@@ -71,6 +72,7 @@ defmodule Home.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "cmd npm install --prefix assets"],
+      serve: ["cmd npm run deploy --prefix ./assets", "phx.digest", "phx.server"],
       test: ["test"]
     ]
   end

@@ -2,7 +2,7 @@
 	- text = "$ ls ~#{@scope}"
 	%code= text
 	%ul{style: "list-style-type: none; padding-left: 0;"}
-		- for {show, url, perm} <- @navtree do
+		- for {show, url, perm} <- (@navtree).() do
 			%li
 				- if perm != nil do
 					%code.inline= perm

@@ -5,7 +5,7 @@ defmodule HomeWeb.OeuvreController do
   @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _params) do
-    page = Home.Page.compile!("oeuvre/index.md")
+    page = Home.PageCache.get_page!("oeuvre/index.md")
 
     conn |> assign(:tagset, by_tags()) |> build("index.html", nil, page)
   end
@@ -13,16 +13,13 @@ defmodule HomeWeb.OeuvreController do
   # Renders a single article
   def page(conn, %{"path" => [page]} = _params) do
     req_url = [@root, page] |> Path.join()
+    path = "oeuvre/#{page}.md"
 
-    case get_fanfic()
-         |> Enum.find(fn {file, _} ->
-           file |> Path.rootname() == req_url |> String.trim_leading("/")
-         end) do
-      {f, _} ->
-        page = f |> Home.Page.compile!()
+    case Home.PageCache.get_page(path) do
+      {:ok, page} ->
         build(conn, "page.html", req_url, page)
 
-      nil ->
+      {:error, _} ->
         conn |> send_resp(404, "Fanfic not found")
     end
   end
@@ -74,7 +71,7 @@ defmodule HomeWeb.OeuvreController do
     conn
     # Because Phoenix can’t use any other filename, set the MIME type directly.
     |> put_resp_content_type("image/svg+xml")
-    |> render("tones.html",
+    |> PhoenixETag.render_if_stale("tones.html",
       layout: {HomeWeb.LayoutView, "svg.html"},
       classes: ([key, color] ++ animation ++ classes) |> Enum.join(" "),
       table: @table
@@ -96,14 +93,14 @@ defmodule HomeWeb.OeuvreController do
     banner = page.meta.props |> Map.get("banner", "text-oghma")
 
     conn
-    |> render(template,
+    |> PhoenixETag.render_if_stale(template,
       flavor: "oeuvre",
       classes: ["oeuvre"],
       banner: "oeuvre/#{banner}.jpg",
       page: page,
       meta: page.meta,
       gravatar: "/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes",
-      navtree: navtree(url),
+      navtree: fn -> __MODULE__.navtree(url) end,
       scope: @root
     )
   end
@@ -151,17 +148,24 @@ defmodule HomeWeb.OeuvreController do
   end
 
   def get_fanfic() do
-    @dir
-    |> File.ls!()
-    |> Stream.filter(fn p -> Path.join(@dir, p) |> File.regular?() end)
-    |> Stream.filter(fn p -> Path.extname(p) == ".md" end)
-    |> Stream.reject(fn p ->
-      p |> Path.basename() |> Path.rootname() |> String.match?(~r/(index|README)/)
-    end)
-    |> Stream.map(fn p -> ["oeuvre", p] |> Path.join() end)
-    |> Stream.map(fn p -> {p, Home.Page.metadata!(p)} end)
+    src_paths()
+    |> Stream.reject(
+      &(&1
+        |> Path.basename()
+        |> Path.rootname()
+        |> (fn f -> f in ["index", "README"] end).())
+    )
+    |> Stream.map(fn p -> {"/#{p |> Path.rootname()}", Home.PageCache.get_page!(p).meta} end)
     |> Stream.filter(fn {_, meta} -> meta.published end)
     |> Enum.to_list()
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
+  end
+
+  def src_paths do
+    [@dir, "**", "*.md"]
+    |> Path.join()
+    |> Path.wildcard()
+    |> Stream.filter(&File.regular?/1)
+    |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end

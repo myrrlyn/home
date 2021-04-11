@@ -7,6 +7,8 @@ defmodule Home.Application do
 
   def start(_type, _args) do
     children = [
+      # Start the page cache to reduce filesystem hits
+      {Home.PageCache, %{}},
       # Start the Telemetry supervisor
       HomeWeb.Telemetry,
       # Start the PubSub system

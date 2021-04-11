@@ -3,13 +3,13 @@ defmodule HomeWeb.PageController do
 
   def home(conn, params) do
     conn
-    |> build(params, "/", Home.Page.compile!("index.md"))
+    |> build(params, "/", Home.PageCache.get_page!("index.md"))
   end
 
   def page(conn, %{"path" => path} = params) do
     path = path |> Path.join()
 
-    case Home.Page.compile("#{path}.md") do
+    case Home.PageCache.get_page("#{path}.md") do
       {:ok, page} ->
         conn |> build(params, "/#{path}", page)
 
@@ -33,14 +33,14 @@ defmodule HomeWeb.PageController do
 
   defp build(conn, _params, path, page) do
     conn
-    |> render("page.html",
+    |> PhoenixETag.render_if_stale("page.html",
       flavor: "app",
       classes: ["general"],
       title: page.meta.title,
       banner: "banners/2017-01-28T08-50-37.jpg",
       page: page,
       meta: page.meta,
-      navtree: navtree(path),
+      navtree: fn -> __MODULE__.navtree(path) end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: ""
     )

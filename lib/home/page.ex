@@ -10,13 +10,17 @@ defmodule Home.Page do
   @type toc :: [__MODULE__.toc_entry()]
   @type toc_entry :: {String.t(), String.t(), __MODULE__.toc()}
 
-  defstruct meta: nil,
-            toc: [],
-            content: nil
+  defstruct id: nil, updated_at: DateTime.utc_now(), meta: nil, toc: [], content: nil
 
   @type t :: %__MODULE__{
-          meta: Home.Yaml.t(),
+          # Used for caching
+          id: Path.t(),
+          updated_at: DateTime.t(),
+          # YAML metadata
+          meta: Home.Meta.t(),
+          # ToC parsed from Markdown
           toc: __MODULE__.toc(),
+          # Markdown -> HTML
           content: String.t()
         }
 
@@ -28,10 +32,14 @@ defmodule Home.Page do
   object suitable for rendering.
   """
   def compile(path, toc_filter \\ 2..3) do
+    p = ["priv", "pages", path] |> Path.join()
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
-    case path |> load do
-      {:ok, contents} -> {:ok, from_string(contents, toc_filter)}
-      {:error, :enoent} -> {:error, %NotFoundException{message: "File #{path} does not exist"}}
+    case p |> load do
+      {:ok, contents, mtime} ->
+        {:ok, build(p, contents, mtime, toc_filter)}
+
+      {:error, :enoent} ->
+        {:error, %NotFoundException{message: "File #{p} does not exist"}}
     end
   end
 
@@ -46,11 +54,13 @@ defmodule Home.Page do
   Gets the metadata for a document.
   """
   def metadata(path) do
-    case path |> load do
-      {:ok, contents} ->
+    p = ["priv", "pages", path] |> Path.join()
+
+    case p |> load do
+      {:ok, text, _} ->
         {yml, _} =
           try do
-            contents |> split
+            text |> split
           rescue
             _ -> raise __MODULE__.BadContentException
           end
@@ -58,7 +68,7 @@ defmodule Home.Page do
         yml |> Home.Meta.from_string()
 
       {:error, :enoent} ->
-        {:error, %NotFoundException{message: "File #{path} does not exist"}}
+        {:error, %NotFoundException{message: "File #{p} does not exist"}}
     end
   end
 
@@ -69,10 +79,10 @@ defmodule Home.Page do
     end
   end
 
-  def from_string(contents, toc_filter) do
+  def build(path, text, mtime, toc_filter) do
     {yaml, md} =
       try do
-        contents
+        text
         |> split
       rescue
         _ -> raise __MODULE__.BadContentException
@@ -92,6 +102,8 @@ defmodule Home.Page do
       end
 
     %__MODULE__{
+      id: path,
+      updated_at: mtime,
       meta: meta,
       toc:
         if meta.show_toc do
@@ -106,9 +118,16 @@ defmodule Home.Page do
   @doc """
   Loads a file from `priv/pages` into memory.
   """
-  @spec load(String.t()) :: {:ok, String.t()} | {:error, File.posix()}
+  @spec load(Path.t()) :: {:ok, String.t(), DateTime.t()} | {:error, File.posix()}
   def load(path) do
-    ["priv", "pages", path] |> Path.join() |> File.read()
+    stat = path |> File.stat(time: :posix)
+    text = path |> File.read()
+
+    case {text, stat} do
+      {{:ok, text}, {:ok, stat}} -> {:ok, text, stat.mtime |> DateTime.from_unix!()}
+      {{:error, err}, _} -> {:error, err}
+      {_, {:error, err}} -> {:error, err}
+    end
   end
 
   @doc """

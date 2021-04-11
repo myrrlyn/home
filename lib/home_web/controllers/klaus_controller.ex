@@ -2,10 +2,10 @@ defmodule HomeWeb.KlausController do
   use HomeWeb, :controller
 
   def page(conn, _params) do
-    page = Home.Page.compile!("klaus.md")
+    page = Home.PageCache.get_page!("klaus.md")
 
     conn
-    |> render("page.html",
+    |> PhoenixETag.render_if_stale("page.html",
       layout: {HomeWeb.LayoutView, "plain.html"},
       flavor: "klaus",
       classes: ["klaus no-index"],

@@ -12,11 +12,6 @@
 			header {
 				background-image: url("#{banner}");
 			}
-		- if @flavor == "app" do
-			:css
-				img#gravatar {
-					transform: rotate(#{Home.rotate_avi()}deg);
-				}
 	- classes = @classes |> Enum.join(" ")
 	%body{class: "#{classes}"}
 		%header{role: "banner"}.screen-only
