@@ -1,0 +1,101 @@
+%iso7010-image {
+	background: {
+		repeat: no-repeat;
+		size: contain;
+	}
+	content: "";
+	display: block;
+	float: left;
+	margin: {
+		// top: -0.75em;
+		right: 0.75em;
+	}
+	width: $iso7010-image-size;
+	height: $iso7010-image-size;
+}
+
+@mixin iso7010($file) {
+	&::before {
+		background: {
+			image: url("/static/images/iso-7010/#{$file}.svg");
+		}
+		@extend %iso7010-image;
+	}
+}
+
+.iso7010 {
+	padding: {
+		top: 1em;
+		left: 1em;
+		right: 1em;
+		bottom: 1em;
+	}
+
+	@each $pfx,
+		$nums
+			in (
+				"e": (
+					"001",
+					"002",
+					"003",
+					"004",
+					"007",
+					"009",
+					"011",
+					"016",
+				),
+				"f": (
+					"005",
+				),
+				"m": (
+					"001",
+					"002",
+					"004",
+					"005",
+					"006",
+					"007",
+					"008",
+					"009",
+					"011",
+					"013",
+					"014",
+					"055",
+				),
+				"p": (
+					"001",
+					"004",
+					"010",
+					"015",
+					"024",
+					"025",
+					"029",
+				),
+				"w": (
+					"001",
+					"002",
+					"003",
+					"004",
+					"005",
+					"007",
+					"009",
+					"011",
+					"012",
+					"013",
+					"018",
+					"020",
+					"021",
+					"022",
+					"025",
+					"027",
+					"028",
+				)
+			)
+	{
+		@each $num in $nums {
+			$ident: "#{$pfx}#{$num}";
+			&.#{$ident} {
+				@include iso7010($ident);
+			}
+		}
+	}
+}

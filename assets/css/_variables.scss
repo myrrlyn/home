@@ -32,31 +32,6 @@ $iso7010-image-size: 3em;
 	padding-left: 1em;
 }
 
-%iso7010-image {
-	background: {
-		repeat: no-repeat;
-		size: contain;
-	}
-	content: "";
-	display: block;
-	float: left;
-	margin: {
-		// top: -0.75em;
-		right: 0.75em;
-	}
-	width: $iso7010-image-size;
-	height: $iso7010-image-size;
-}
-
-@mixin iso7010($file) {
-	&::before {
-		background: {
-			image: url("/static/images/iso-7010/#{$file}.svg");
-		}
-		@extend %iso7010-image;
-	}
-}
-
 @mixin flex-wrapper {
 	display: -webkit-box;
 	display: -moz-box;

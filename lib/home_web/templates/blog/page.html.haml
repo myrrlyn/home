@@ -1,5 +1,7 @@
 %article
 	%h1#title= @meta.title
+	- if subtitle = @meta.subtitle do
+		%h2#subtitle.title= subtitle
 	%p
 		Published on
 		- d = Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}")
