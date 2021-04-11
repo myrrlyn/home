@@ -29,7 +29,7 @@ defmodule HomeWeb.BlogController do
     path = [@dir, group, page, resource] |> Path.join()
 
     if path |> File.regular?() do
-      conn |> send_file(200, path)
+      conn |> Home.Etag.cache_send_file(200, path)
     else
       conn |> send_resp(404, "Resource not found")
     end
