@@ -160,7 +160,7 @@ defmodule HomeWeb.OeuvreController do
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
-    |> Stream.reject(&(Path.basename(&1) in ["index", "README"]))
+    |> Stream.reject(&(Path.basename(&1) in ["index.md", "README.md"]))
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end
