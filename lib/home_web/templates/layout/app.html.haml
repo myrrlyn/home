@@ -1,6 +1,6 @@
 !!! 5
 = render "c0da.html"
-%html{lang: "en"}
+%html{lang: "en-US"}
 	%head
 		= render("head.html", conn: @conn, title: @meta.title, flavor: @flavor, meta: @meta)
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/mathjax.js")}"}
@@ -27,9 +27,10 @@
 					= render @view_module, "about.html", assigns
 					= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "")
 					%small
-						This site is a continual work in progress. I would greatly appreciate
-						bug reports, and also your patience as I build it. Lots of old links
-						are broken! You can access the old site at
+						I recently rebuilt this site. I would appreciate bug reports, in
+						presentation, content, or formerly-working links, at
+						%a{href: "//github.com/myrrlyn/home"} the GitHub repository.
+						You may also view the previous site at
 						%a{href: "//old.myrrlyn.net"}
 							%code old.myrrlyn.net
 					= render("logos.html", conn: @conn)

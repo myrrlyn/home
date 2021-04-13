@@ -65,6 +65,7 @@ defmodule HomeWeb.PageController do
       {"Oeuvre", "/oeuvre", "dr-x"},
       {"Portfolio", "/portfolio", "-r--"},
       {"Résumé", "/résumé", "-r--"},
+      {"WebRing", "/webring", "-r--"},
       {"Workbench", "/uses", "-r--"}
     ]
   end

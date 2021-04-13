@@ -33,3 +33,7 @@
 %meta{name: "twitter:image", content: "https://myrrlyn.net/static/favicons/favicon-512.png"}
 - if @meta.summary do
 	%meta{name: "twitter:description", content: "#{@meta.summary}"}
+
+- for embed <- @meta.props |> Map.get("embeds", []) do
+	- if embed == "tweet" do
+		%script{type: "text/javascript", async: "", src: "https://platform.twitter.com/widgets.js", charset: "utf-8"}
