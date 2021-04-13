@@ -3,13 +3,13 @@ defmodule HomeWeb.PageController do
 
   def home(conn, params) do
     conn
-    |> build(params, "/", Home.PageCache.get_page!("index.md"))
+    |> build(params, "/", Home.PageCache.cached!("index.md"))
   end
 
   def page(conn, %{"path" => path} = params) do
     path = path |> Path.join()
 
-    case Home.PageCache.get_page("#{path}.md") do
+    case Home.PageCache.cached("#{path}.md") do
       {:ok, page} ->
         conn |> build(params, "/#{path}", page)
 

@@ -5,7 +5,7 @@ defmodule HomeWeb.OeuvreController do
   @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _params) do
-    page = Home.PageCache.get_page!("oeuvre/index.md")
+    page = Home.PageCache.cached!("oeuvre/index.md")
 
     conn |> assign(:tagset, by_tags()) |> build("index.html", nil, page)
   end
@@ -15,7 +15,7 @@ defmodule HomeWeb.OeuvreController do
     req_url = [@root, page] |> Path.join()
     path = "oeuvre/#{page}.md"
 
-    case Home.PageCache.get_page(path) do
+    case Home.PageCache.cached(path) do
       {:ok, page} ->
         build(conn, "page.html", req_url, page)
 
@@ -149,7 +149,9 @@ defmodule HomeWeb.OeuvreController do
 
   def get_fanfic() do
     src_paths()
-    |> Stream.map(fn p -> {"/#{p |> Path.rootname()}", Home.PageCache.get_page!(p).meta} end)
+    |> Home.PageCache.cached_many()
+    |> Stream.filter(fn {res, _} -> res == :ok end)
+    |> Stream.map(fn {:ok, {path, page}} -> {"/#{path |> Path.rootname()}", page.meta} end)
     |> (fn stream ->
           if Mix.env() == :dev,
             do: stream,

@@ -22,7 +22,15 @@ defmodule Home.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Home.Supervisor]
-    Supervisor.start_link(children, opts)
+    out = Supervisor.start_link(children, opts)
+
+    # Warm up the page cache
+    case out do
+      {:ok, _} -> HomeWeb.page_listing()
+      _ -> nil
+    end
+
+    out
   end
 
   # Tell Phoenix to update the endpoint configuration

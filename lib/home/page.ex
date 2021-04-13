@@ -31,6 +31,7 @@ defmodule Home.Page do
   structured article (YAML frontmatter, Markdown main content), and returns an
   object suitable for rendering.
   """
+  @spec compile(Path.t(), Range.t()) :: {:ok, __MODULE__.t()} | {:error, any}
   def compile(path, toc_filter \\ 2..3) do
     p = ["priv", "pages", path] |> Path.join()
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions

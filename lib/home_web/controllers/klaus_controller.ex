@@ -2,7 +2,7 @@ defmodule HomeWeb.KlausController do
   use HomeWeb, :controller
 
   def page(conn, _params) do
-    page = Home.PageCache.get_page!("klaus.md")
+    page = Home.PageCache.cached!("klaus.md")
 
     conn
     |> PhoenixETag.render_if_stale("page.html",

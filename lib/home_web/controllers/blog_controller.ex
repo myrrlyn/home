@@ -36,7 +36,7 @@ defmodule HomeWeb.BlogController do
   end
 
   def build(conn, _params, template, req_url, src_path) do
-    case src_path |> Home.PageCache.get_page() do
+    case src_path |> Home.PageCache.cached() do
       {:ok, page} ->
         banner = page.meta.props |> Map.get("banner", "2017-01-28T08-50-37.jpg")
 
@@ -97,7 +97,12 @@ defmodule HomeWeb.BlogController do
   def page_listing(current \\ nil) do
     get_articles()
     |> Stream.map(fn {url, meta} ->
-      {meta.title, url, meta.date |> Timex.format!("{ISOdate}")}
+      {meta.title, url,
+       if Map.get(meta.props, "published", true) do
+         Timex.format!(meta.date, "{ISOdate}")
+       else
+         "DRAFT PAGE"
+       end}
     end)
     |> Stream.map(fn {name, url, date} ->
       name =
@@ -117,11 +122,13 @@ defmodule HomeWeb.BlogController do
   """
   def get_articles() do
     src_paths()
-    |> Stream.map(fn p -> {p |> path_to_url(), Home.PageCache.get_page!(p).meta} end)
-    |> (fn stream ->
+    |> Home.PageCache.cached_many()
+    |> Stream.filter(fn {res, _} -> res == :ok end)
+    |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta} end)
+    |> (fn seq ->
           if Mix.env() == :dev,
-            do: stream,
-            else: stream |> Stream.filter(fn {_, meta} -> meta.published end)
+            do: seq,
+            else: seq |> Stream.filter(fn {_, meta} -> meta.published end)
         end).()
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
   end
