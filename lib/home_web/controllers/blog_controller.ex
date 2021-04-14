@@ -139,6 +139,7 @@ defmodule HomeWeb.BlogController do
   """
   def get_articles() do
     src_paths()
+    |> Stream.reject(fn p -> ["priv", "pages", p] |> Path.join() |> Home.symlink?() end)
     |> Home.PageCache.cached_many()
     |> Stream.filter(fn {res, _} -> res == :ok end)
     |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta} end)
@@ -177,7 +178,6 @@ defmodule HomeWeb.BlogController do
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
-    |> Stream.filter(&(not Home.is_symlink(&1)))
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end

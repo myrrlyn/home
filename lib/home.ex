@@ -19,7 +19,7 @@ defmodule Home do
     |> String.replace(~r/\s+/, "-")
   end
 
-  def is_symlink(path) do
+  def symlink?(path) do
     case path |> File.read_link() do
       {:ok, _} -> true
       {:error, :einval} -> false
