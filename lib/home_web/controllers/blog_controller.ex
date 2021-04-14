@@ -177,6 +177,7 @@ defmodule HomeWeb.BlogController do
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
+    |> Stream.filter(&(not Home.is_symlink(&1)))
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end

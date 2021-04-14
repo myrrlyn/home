@@ -20,7 +20,8 @@ defmodule HomeWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :home,
-    gzip: false,
+    gzip: true,
+    brotli: true,
     only: ~w(favicon.ico robots.txt)
 
   # Serve at "/static" the static files from "priv/static" directory.
@@ -31,6 +32,7 @@ defmodule HomeWeb.Endpoint do
     at: "/static",
     from: :home,
     gzip: true,
+    brotli: true,
     only: ~w(css favicons fonts images js music)
 
   # Code reloading can be explicitly enabled under the

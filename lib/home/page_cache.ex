@@ -209,7 +209,7 @@ defmodule Home.PageCache do
   def load_from_fs(path, toc_filter \\ 2..3) do
     case Home.Page.compile(path, toc_filter) do
       {:ok, page} ->
-        Logger.debug("Loaded #{path} from fs into cache")
+        Logger.debug("Caching #{path} from fs")
         {:ok, _renew(path, page)}
 
       {:error, err} ->

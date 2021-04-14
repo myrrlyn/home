@@ -19,6 +19,14 @@ defmodule Home do
     |> String.replace(~r/\s+/, "-")
   end
 
+  def is_symlink(path) do
+    case path |> File.read_link() do
+      {:ok, _} -> true
+      {:error, :einval} -> false
+      {:error, _} -> false
+    end
+  end
+
   @doc "Generates a random image rotation"
   def true_random, do: 0..359 |> Enum.random()
 
