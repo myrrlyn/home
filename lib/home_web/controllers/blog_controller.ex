@@ -36,26 +36,43 @@ defmodule HomeWeb.BlogController do
   end
 
   def build(conn, _params, template, req_url, src_path) do
-    case src_path |> Home.PageCache.cached() do
-      {:ok, page} ->
-        banner = page.meta.props |> Map.get("banner", "2017-01-28T08-50-37.jpg")
+    case ["priv", "pages", src_path] |> Path.join() |> File.read_link() do
+      {:ok, redirect} ->
+        dir = src_path |> Path.dirname()
+
+        redirect =
+          [dir, redirect]
+          |> Path.join()
+          |> Path.expand("/")
+          |> Path.relative_to("/")
+          |> path_to_url()
 
         conn
-        |> PhoenixETag.render_if_stale(template,
-          flavor: "app",
-          banner: ["banners", banner] |> Path.join(),
-          classes: ["blog"],
-          page: page,
-          meta: page.meta,
-          gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-          navtree: fn -> __MODULE__.navtree(req_url) end,
-          scope: @root,
-          req_url: req_url,
-          src_path: src_path
-        )
+        |> put_resp_header("location", redirect)
+        |> send_resp(301, "Moved to https://myrrlyn.net#{redirect}")
 
-      {:error, _err} ->
-        conn |> send_resp(404, "Article not found")
+      {:error, :einval} ->
+        case src_path |> Home.PageCache.cached() do
+          {:ok, page} ->
+            banner = page.meta.props |> Map.get("banner", "2017-01-28T08-50-37.jpg")
+
+            conn
+            |> PhoenixETag.render_if_stale(template,
+              flavor: "app",
+              banner: ["banners", banner] |> Path.join(),
+              classes: ["blog"],
+              page: page,
+              meta: page.meta,
+              gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+              navtree: fn -> __MODULE__.navtree(req_url) end,
+              scope: @root,
+              req_url: req_url,
+              src_path: src_path
+            )
+
+          {:error, _err} ->
+            conn |> send_resp(404, "Article not found")
+        end
     end
   end
 
