@@ -12,7 +12,6 @@ use Mix.Config
 config :home, HomeWeb.Endpoint,
   url: [host: "localhost", port: 1312],
   http: [compress: true],
-  https: [compress: true],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
