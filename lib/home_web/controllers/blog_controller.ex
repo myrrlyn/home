@@ -19,9 +19,14 @@ defmodule HomeWeb.BlogController do
   # Map categorized pages correctly.
   def page(conn, %{"path" => [group, page]} = params) do
     req_url = [@root, group, page] |> Path.join()
-    path = url_to_path(group, page)
 
-    conn |> build(params, "page.html", req_url, path)
+    case url_to_path(group, page) do
+      nil ->
+        conn |> send_resp(404, "Article not found")
+
+      path ->
+        conn |> build(params, "page.html", req_url, path)
+    end
   end
 
   # Map nested resources correctly.
@@ -155,7 +160,7 @@ defmodule HomeWeb.BlogController do
   Given a group and article name, finds the path (with datestamp) of the source
   file.
   """
-  @spec url_to_path(Path.t(), Path.t()) :: Path.t()
+  @spec url_to_path(Path.t(), Path.t()) :: Path.t() | nil
   def url_to_path(group, name) do
     src_paths()
     |> Enum.find(fn path ->
