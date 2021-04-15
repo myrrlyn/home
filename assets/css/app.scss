@@ -49,23 +49,28 @@
 	margin: -1rem 0 2rem;
 }
 
-h1::before {
-	content: "#";
+body,
+h1 {
+	counter-reset: h2counter;
 }
-h2::before {
-	content: "##";
+
+h2 span::before {
+	content: counter(h2counter) ".\0000a0";
+	counter-increment: h2counter;
+	counter-reset: h3counter;
 }
-h3::before {
-	content: "###";
+
+h3 span::before {
+	content: counter(h2counter) "." counter(h3counter) ".\0000a0";
+	counter-increment: h3counter;
 }
-h4::before {
-	content: "####";
-}
-h5::before {
-	content: "#####";
-}
-h6::before {
-	content: "######";
+
+h2,
+h3 {
+	&.nocount span::before {
+		content: none;
+		counter-increment: none;
+	}
 }
 
 main aside {

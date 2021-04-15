@@ -37,9 +37,23 @@ let lang_dict = {
 };
 
 window.onload = () => {
+	mark_headings();
 	mark_codeblocks();
 	set_jukebox();
 };
+
+function mark_headings() {
+	for (let num of [2, 3, 4, 5, 6]) {
+		for (let hed of document.querySelectorAll(`main article h${num}`)) {
+			let inner = hed.innerHTML;
+			let id = hed.id;
+			if (id === "") {
+				continue;
+			}
+			hed.innerHTML = `<a href="#${hed.id}" class="text-mono">§</a> <span>${inner}</span>`
+		}
+	}
+}
 
 function mark_codeblocks() {
 	for (var node of document.querySelectorAll("pre.codeblock")) {
