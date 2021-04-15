@@ -1,4 +1,6 @@
 defmodule Home.Page do
+  require Logger
+
   defmodule NotFoundException do
     defexception [:message, plug_status: 404]
   end
@@ -81,6 +83,37 @@ defmodule Home.Page do
   end
 
   def build(path, text, mtime, toc_filter) do
+    path_date =
+      try do
+        [y, m, d] =
+          case path |> Path.basename() |> String.split("-", parts: 4) do
+            [y, m, d, _rest] -> [y, m, d]
+            _ -> throw(nil)
+          end
+
+        [y, m, d] =
+          [y, m, d]
+          |> Enum.map(fn part ->
+            case part |> Integer.parse() do
+              {num, ""} -> num
+              _ -> throw(nil)
+            end
+          end)
+
+        date =
+          case Date.new(y, m, d) do
+            {:ok, date} -> date
+            _ -> throw(nil)
+          end
+
+        case DateTime.new(date, ~T[00:00:00], "Etc/UTC") do
+          {:ok, date} -> date
+          _ -> throw(nil)
+        end
+      catch
+        nil -> nil
+      end
+
     {yaml, md} =
       try do
         text
@@ -91,6 +124,23 @@ defmodule Home.Page do
 
     {:ok, meta} = yaml |> Home.Meta.from_string()
     {:ok, html, toc, _warns} = md |> Elixir.Home.Markdown.render(toc_filter)
+
+    meta =
+      case {meta.date, path_date} do
+        {nil, nil} ->
+          Logger.warn("YAML frontmatter should have a `date` key", yaml: meta)
+          meta
+
+        {nil, date} ->
+          Logger.debug(
+            "Setting `date` from path: #{path} => #{date |> Timex.format!("{ISOdate}")}"
+          )
+
+          %Home.Meta{meta | date: date}
+
+        {_, _} ->
+          meta
+      end
 
     meta =
       case meta.props |> Map.get("about") do

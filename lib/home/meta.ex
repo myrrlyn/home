@@ -125,7 +125,6 @@ defmodule Home.Meta do
     {datestr, yml} =
       case yaml |> Map.pop("date") do
         {nil, yml} ->
-          Logger.warn("YAML frontmatter should have a `date` key", yaml: yaml)
           throw({nil, yml})
 
         found ->
