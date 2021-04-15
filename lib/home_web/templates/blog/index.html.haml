@@ -2,9 +2,9 @@
 	%section
 		= @page.content |> raw
 	%section
-		- for {name, group} <- HomeWeb.BlogController.grouped_by_category() do
-			%h2= name
-			%ol
+		- for {name, ident, group} <- HomeWeb.BlogController.grouped_by_category() do
+			%h2{id="#{ident}"}= name
+			%ol{reversed: ""}
 				- for {url, meta} <- group do
 					%li
 						%a{href: "#{url}"}= meta.title

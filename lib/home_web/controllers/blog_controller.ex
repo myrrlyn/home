@@ -85,18 +85,18 @@ defmodule HomeWeb.BlogController do
     get_articles()
     |> Enum.group_by(fn {url, _} ->
       ["/", "blog", group, _] = url |> Path.split()
-      group |> String.split("-") |> Stream.map(&String.capitalize/1) |> Enum.join(" ")
+      {group |> String.split("-") |> Stream.map(&String.capitalize/1) |> Enum.join(" "), group}
     end)
-    |> Enum.map(fn {name, list} ->
+    |> Enum.map(fn {{name, ident}, list} ->
       name =
         case name do
-          "Misc" -> "Other"
+          "Misc" -> "General"
           n -> n
         end
 
-      {name, list}
+      {name, ident, list}
     end)
-    |> Enum.sort_by(fn {_, list} -> list |> length end, :desc)
+    |> Enum.sort_by(fn {_, _, list} -> list |> length end, :desc)
   end
 
   def check_draft(conn, page) do
