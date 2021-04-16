@@ -189,3 +189,29 @@ body.hide-panels {
 		}
 	}
 }
+
+//  Centers and clamps YouTube embeds to look reasonable.
+.youtube {
+	//  Centering
+	margin: 0 auto 1em;
+	width: 100%;
+	//  Constrain the width of the interior containers
+	max-width: 480px;
+
+	//  Unsure what this does, but it's necessary.
+	position: relative;
+
+	//  The divs are vertically empty(?), so force the inner to have height
+	& > div {
+		padding-bottom: 56.25%;
+	}
+
+	//  Pin the embed window within its wrappers to exactly fill them.
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
