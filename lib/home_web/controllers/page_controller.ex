@@ -15,10 +15,7 @@ defmodule HomeWeb.PageController do
 
       {:error, _} ->
         conn
-        |> resp(
-          404,
-          "This resource is no longer available. If you are following a formerly-working link, please contact me directly."
-        )
+        |> error(404, params)
     end
   end
 
@@ -46,13 +43,41 @@ defmodule HomeWeb.PageController do
     )
   end
 
+  def error(conn, status, params) do
+    conn
+    |> put_status(status)
+    |> render(
+      HomeWeb.ErrorView,
+      "404.html",
+      flavor: "app",
+      classes: ["general"],
+      title: "Not Found",
+      banner: "banners/2017-01-28T08-50-37.jpg",
+      page: nil,
+      meta: %Home.Meta{title: "Not Found"},
+      navtree: fn -> __MODULE__.navtree() end,
+      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      scope: ""
+    )
+  end
+
   @doc "Trap requestes for /favicon.ico and forward to the real location"
   def favicon_ico(conn, _) do
     conn |> resp(307, "") |> put_resp_header("location", "/static/images/favicon.ico")
   end
 
-  def navtree(_) do
+  def navtree(current \\ nil) do
     page_listing()
+    |> Enum.map(fn {name, url, attr} ->
+      name =
+        if url == current do
+          "👉 " <> name <> " 👈"
+        else
+          name
+        end
+
+      {name, url, attr}
+    end)
   end
 
   def page_listing do

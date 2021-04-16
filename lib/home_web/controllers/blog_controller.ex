@@ -16,13 +16,17 @@ defmodule HomeWeb.BlogController do
     |> render("rss.xml", layout: nil, articles: get_articles())
   end
 
+  def page(conn, %{"path" => [group]}) do
+    conn |> error(500, "invalid-category.html", nil, "Unimplemented feature")
+  end
+
   # Map categorized pages correctly.
   def page(conn, %{"path" => [group, page]} = params) do
     req_url = [@root, group, page] |> Path.join()
 
     case url_to_path(group, page) do
       nil ->
-        conn |> send_resp(404, "Article not found")
+        conn |> error(404, "missing-article.html", req_url, "Missing article")
 
       path ->
         conn |> build(params, "page.html", req_url, path)
@@ -39,6 +43,8 @@ defmodule HomeWeb.BlogController do
       conn |> send_resp(404, "Resource not found")
     end
   end
+
+  def page(conn, params), do: conn |> PageController.error(404, params)
 
   def build(conn, _params, template, req_url, src_path) do
     case ["priv", "pages", src_path] |> Path.join() |> File.read_link() do
@@ -76,9 +82,27 @@ defmodule HomeWeb.BlogController do
             )
 
           {:error, _err} ->
-            conn |> send_resp(404, "Article not found")
+            conn |> error(500, "invalid-article.html", req_url, "Broken article")
         end
     end
+  end
+
+  def error(conn, status, template, req_url, title) do
+    conn
+    |> put_status(status)
+    |> render(
+      HomeWeb.ErrorView,
+      template,
+      flavor: "app",
+      banner: ["banners", "2017-01-28T08-50-37.jpg"] |> Path.join(),
+      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      classes: ["blog"],
+      navtree: fn -> navtree() end,
+      page: nil,
+      meta: %Home.Meta{title: title},
+      scope: @root,
+      req_url: req_url
+    )
   end
 
   def grouped_by_category() do

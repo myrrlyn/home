@@ -7,6 +7,8 @@ defmodule HomeWeb.ErrorView do
   #   "Internal Server Error"
   # end
 
+  def render("about.html", _), do: ""
+
   # By default, Phoenix returns the status message from
   # the template name. For example, "404.html" becomes
   # "Not Found".
