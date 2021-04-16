@@ -55,6 +55,13 @@ body:not(.oeuvre) {
 	}
 }
 
+blockquote,
+aside {
+	pre {
+		clear: left;
+	}
+}
+
 pre {
 	@include left-chevron(var(--charcoal));
 	&.codeblock-c {

@@ -43,11 +43,11 @@ defmodule HomeWeb.PageController do
     )
   end
 
-  def error(conn, status, params) do
+  def error(conn, status, _params) do
     conn
     |> put_status(status)
+    |> put_view(HomeWeb.ErrorView)
     |> render(
-      HomeWeb.ErrorView,
       "404.html",
       flavor: "app",
       classes: ["general"],

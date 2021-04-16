@@ -1,5 +1,6 @@
 defmodule HomeWeb.BlogController do
   use HomeWeb, :controller
+  require Logger
 
   @root "/blog"
   @dir ["priv", "pages", @root] |> Path.join()
@@ -16,7 +17,7 @@ defmodule HomeWeb.BlogController do
     |> render("rss.xml", layout: nil, articles: get_articles())
   end
 
-  def page(conn, %{"path" => [group]}) do
+  def page(conn, %{"path" => [_group]}) do
     conn |> error(500, "invalid-category.html", nil, "Unimplemented feature")
   end
 
@@ -44,11 +45,12 @@ defmodule HomeWeb.BlogController do
     end
   end
 
-  def page(conn, params), do: conn |> PageController.error(404, params)
+  def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
   def build(conn, _params, template, req_url, src_path) do
     case ["priv", "pages", src_path] |> Path.join() |> File.read_link() do
       {:ok, redirect} ->
+        Logger.notice("Accessed a deprecated path")
         dir = src_path |> Path.dirname()
 
         redirect =
@@ -90,8 +92,8 @@ defmodule HomeWeb.BlogController do
   def error(conn, status, template, req_url, title) do
     conn
     |> put_status(status)
+    |> put_view(HomeWeb.ErrorView)
     |> render(
-      HomeWeb.ErrorView,
       template,
       flavor: "app",
       banner: ["banners", "2017-01-28T08-50-37.jpg"] |> Path.join(),

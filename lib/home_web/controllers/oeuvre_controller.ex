@@ -11,7 +11,7 @@ defmodule HomeWeb.OeuvreController do
   end
 
   # Renders a single article
-  def page(conn, %{"path" => [page]} = _params) do
+  def page(conn, %{"path" => [page]} = params) do
     req_url = [@root, page] |> Path.join()
     path = "oeuvre/#{page}.md"
 
@@ -20,7 +20,7 @@ defmodule HomeWeb.OeuvreController do
         build(conn, "page.html", req_url, page)
 
       {:error, _} ->
-        conn |> send_resp(404, "Fanfic not found")
+        conn |> HomeWeb.PageController.error(404, params)
     end
   end
 
@@ -88,6 +88,8 @@ defmodule HomeWeb.OeuvreController do
       conn |> send_resp(404, "Resource not found")
     end
   end
+
+  def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
   def build(conn, template, url, page) do
     banner = page.meta.props |> Map.get("banner", "text-oghma")
