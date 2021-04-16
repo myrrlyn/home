@@ -50,7 +50,7 @@ function mark_headings() {
 			if (id === "") {
 				continue;
 			}
-			hed.innerHTML = `<a href="#${hed.id}" class="text-mono">§</a> <span>${inner}</span>`
+			hed.innerHTML = `<a href="#${hed.id}" class="text-mono">§</a> <span>${inner}</span>`;
 		}
 	}
 }

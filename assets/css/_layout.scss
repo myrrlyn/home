@@ -64,7 +64,7 @@ header {
 		size: cover;
 	}
 	border-bottom: {
-		color: var(--border-color);
+		color: $bell-blue;
 		style: solid;
 		width: $header-border;
 	}
@@ -72,6 +72,20 @@ header {
 }
 
 #main {
+	border: {
+		//  Ochre stripe of the header border
+		top: {
+			color: $bell-ochre;
+			style: solid;
+			width: $header-border;
+		}
+		//  Blue strip of the footer border
+		bottom: {
+			color: $bell-blue;
+			style: solid;
+			width: $footer-border;
+		}
+	}
 	justify-content: center;
 	margin: {
 		left: auto;
@@ -79,18 +93,8 @@ header {
 	}
 	max-width: $content-width-max;
 	@include media-breakpoint-up(xl) {
-		border: {
-			left: {
-				color: var(--border-color);
-				style: solid;
-				width: $vertical-border;
-			}
-			right: {
-				color: var(--border-color);
-				style: solid;
-				width: $vertical-border;
-			}
-		}
+		@include vertical-border("left");
+		@include vertical-border("right");
 	}
 }
 
@@ -100,11 +104,7 @@ $about-clear: ($avi-height / 2) - $header-border;
 		flex: 1.5 1 0%;
 	}
 	@include media-breakpoint-up(md) {
-		border-right: {
-			color: var(--border-color);
-			style: solid;
-			width: $vertical-border;
-		}
+		@include vertical-border("right");
 		order: 1;
 		min-width: 15em;
 		max-width: 25em;
@@ -113,7 +113,7 @@ $about-clear: ($avi-height / 2) - $header-border;
 	@include media-breakpoint-up(md) {
 		.logo.gravatar a {
 			position: absolute;
-			top: $header-height - ($avi-height + $header-border) / 2;
+			top: $header-height + $header-border - ($avi-height / 2);
 		}
 		#about-text {
 			margin-top: $about-clear;
@@ -147,7 +147,7 @@ main {
 
 footer {
 	border-top: {
-		color: var(--border-color);
+		color: $bell-ochre;
 		style: solid;
 		width: $footer-border;
 	}
@@ -171,14 +171,14 @@ body.hide-panels {
 @include media-breakpoint-up(md) {
 	@media only screen and (min-height: 800px) {
 		body:not(.hide-panels) {
-			#main,
-			#about {
-				// not sure where the extra 12px are coming from
-				height: calc(100vh - #{core-height()} + 12px);
+			#main {
+				// not sure where the extra 4px are coming from
+				height: calc(100vh - #{core-height()} + 4px);
 			}
 		}
-		main {
-			height: inherit;
+		main,
+		#about {
+			height: 100%;
 		}
 		#about-text {
 			height: calc(100% - #{$about-clear});

@@ -19,7 +19,7 @@ $vertical-border: 2px;
 $iso7010-image-size: 3em;
 
 @function core-height() {
-	@return $header-height + $header-border + $footer-height + $footer-border;
+	@return $header-height + $footer-height;
 }
 
 @mixin left-chevron($color, $lr-width: 4px, $tb-width: 2px) {
@@ -45,4 +45,14 @@ $iso7010-image-size: 3em;
 	tab-size: $size;
 	-o-tab-size: $size;
 	-moz-tab-size: $size;
+}
+
+@mixin vertical-border($side) {
+	border: {
+		#{$side}: {
+			color: $blue-carolina;
+			style: solid;
+			width: $vertical-border;
+		}
+	}
 }
