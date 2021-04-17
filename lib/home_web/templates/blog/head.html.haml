@@ -1,2 +1,5 @@
 %link{rel: "alternate", type: "application/rss+xml", href: "//myrrlyn.net/blog/feed.rss"}
 %meta{name: "og:type", content: "article"}
+- for script <- @meta.props |> Map.get("scripts", []) do
+	- src = ["/", @src_path |> Path.dirname(), script] |> Path.join() |> Path.expand()
+  %script{type: "text/javascript", src: "#{src}"}

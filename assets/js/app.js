@@ -44,7 +44,8 @@ window.onload = () => {
 
 function mark_headings() {
 	for (let num of [2, 3, 4, 5, 6]) {
-		for (let hed of document.querySelectorAll(`main article h${num}`)) {
+		let sel = `main article h${num}:not(.subtitle)`;
+		for (let hed of document.querySelectorAll(sel)) {
 			let inner = hed.innerHTML;
 			let id = hed.id;
 			if (id === "") {

@@ -1,9 +1,14 @@
 article img {
 	&:not(.unset) {
 		display: block;
-		min-width: 200px;
-		width: 33%;
-		max-width: 800px;
+		@include media-breakpoint-up(md) {
+			min-width: 200px;
+			width: 33%;
+			max-width: 800px;
+		}
+		@include media-breakpoint-down(md) {
+			width: 100%;
+		}
 	}
 
 	&.fullwidth {
@@ -17,8 +22,10 @@ article img {
 		max-width: 400px;
 	}
 
-	&.halfcol {
-		width: 50%;
+	@include media-breakpoint-up(md) {
+		&.halfcol {
+			width: 50%;
+		}
 	}
 
 	&.ctr {
@@ -47,11 +54,11 @@ body:not(.oeuvre) {
 	}
 
 	del {
-		background-color: fade-out(pink, 0.2);
+		background-color: var(--iso-red);
 	}
 
 	ins {
-		background-color: fade-out(lightgreen, 0.3);
+		background-color: var(--iso-green);
 	}
 }
 

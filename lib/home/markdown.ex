@@ -1,4 +1,7 @@
 defmodule Home.Markdown do
+  @type toc_tree :: [toc_item]
+  @type toc_item :: {String.t(), String.t(), toc_tree}
+
   @opts %Earmark.Options{
     gfm: true,
     breaks: false,

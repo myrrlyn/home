@@ -70,7 +70,7 @@ defmodule HomeWeb.OeuvreController do
 
     conn
     # Because Phoenix can’t use any other filename, set the MIME type directly.
-    |> put_resp_content_type("image/svg+xml")
+    |> put_resp_content_type(MIME.type("svg"))
     |> PhoenixETag.render_if_stale("tones.html",
       layout: {HomeWeb.LayoutView, "svg.html"},
       classes: ([key, color] ++ animation ++ classes) |> Enum.join(" "),
@@ -83,7 +83,9 @@ defmodule HomeWeb.OeuvreController do
     path = ["priv", "pages", "oeuvre", folder, resource] |> Path.join()
 
     if path |> File.regular?() do
-      conn |> Home.Etag.cache_send_file(200, path)
+      conn
+      |> put_resp_content_type(resource |> MIME.from_path())
+      |> Home.Etag.cache_send_file(200, path)
     else
       conn |> send_resp(404, "Resource not found")
     end
