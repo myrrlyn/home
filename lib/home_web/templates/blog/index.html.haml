@@ -2,12 +2,10 @@
 	%section
 		= @page.content |> raw
 	%section
-		- for {name, ident, group} <- HomeWeb.BlogController.grouped_by_category() do
-			%h2{id="#{ident}"}= name
-			%ol{reversed: ""}
-				- for {url, meta} <- group do
-					%li
-						%a{href: "#{url}"}= meta.title
-						= "(#{Timex.format!(meta.date, "{ISOdate}")})"
+		%ol
+			- for {name, slug, count, desc} <- @groups do
+				%li{value: "#{count}"}
+					%a{href: "/blog/#{slug}"}= name
+					- if desc do
 						%br
-						= meta.summary |> Earmark.as_html! |> raw
+						= desc |> Earmark.as_html! |> raw

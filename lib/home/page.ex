@@ -65,7 +65,7 @@ defmodule Home.Page do
           try do
             text |> split
           rescue
-            _ -> raise __MODULE__.BadContentException
+            _ -> raise __MODULE__.BadContentException, message: "Invalid YAML/MD source file"
           end
 
         yml |> Home.Meta.from_string()
@@ -119,7 +119,7 @@ defmodule Home.Page do
         text
         |> split
       rescue
-        _ -> raise __MODULE__.BadContentException
+        _ -> raise __MODULE__.BadContentException, message: "Invalid YAML/MD source file"
       end
 
     {:ok, meta} = yaml |> Home.Meta.from_string()

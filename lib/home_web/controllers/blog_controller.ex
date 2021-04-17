@@ -6,7 +6,20 @@ defmodule HomeWeb.BlogController do
   @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, params) do
+    groups =
+      grouped_by_category()
+      |> Stream.reject(fn {_, _, pages} -> pages == [] end)
+      |> Stream.map(fn {name, slug, pages} ->
+        count = pages |> Enum.count()
+
+        case "blog/#{slug}/index.md" |> Home.PageCache.cached() do
+          {:ok, %Home.Page{meta: meta}} -> {meta.title, slug, count, meta.summary}
+          {:error, _} -> {name, slug, count, nil}
+        end
+      end)
+
     conn
+    |> assign(:groups, groups)
     |> build(params, "index.html", @root, "blog/index.md")
   end
 
@@ -17,8 +30,33 @@ defmodule HomeWeb.BlogController do
     |> render("rss.xml", layout: nil, articles: get_articles())
   end
 
-  def page(conn, %{"path" => [_group]}) do
-    conn |> error(500, "invalid-category.html", nil, "Unimplemented feature")
+  def page(conn, %{"path" => [group]} = params) do
+    req_url = [@root, group] |> Path.join()
+    src_path = ["blog", group, "index.md"] |> Path.join()
+
+    index = src_path |> Home.PageCache.cached()
+    category = grouped_by_category(group) |> List.first()
+
+    case {index, category} do
+      {{:error, %Home.Page.NotFoundException{}}, nil} ->
+        conn
+        |> assign(:category, category)
+        |> error(404, "invalid-category.html", req_url, "Invalid category")
+
+      {{:error, %Home.Page.NotFoundException{}}, {name, slug, pages}} ->
+        conn
+        |> assign(:name, name)
+        |> assign(:slug, slug)
+        |> assign(:meta, %Home.Meta{title: name})
+        |> assign(:pages, pages)
+        |> assign(:banner, "banners/2017-01-28T08-50-37.jpg")
+        |> error(200, "missing-category.html", @root, name)
+
+      {{:ok, %Home.Page{}}, {_, _, pages}} ->
+        conn
+        |> assign(:pages, pages)
+        |> build(params, "category.html", req_url, src_path)
+    end
   end
 
   # Map categorized pages correctly.
@@ -49,7 +87,20 @@ defmodule HomeWeb.BlogController do
 
   def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
-  def build(conn, _params, template, req_url, src_path) do
+  def build(conn, _params, template, req_url) do
+    conn
+    |> PhoenixETag.render_if_stale(
+      template,
+      flavor: "app",
+      classes: ["blog"],
+      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      navtree: fn -> __MODULE__.navtree(req_url) end,
+      scope: @root,
+      req_url: req_url
+    )
+  end
+
+  def build(conn, params, template, req_url, src_path) do
     case ["priv", "pages", src_path] |> Path.join() |> File.read_link() do
       {:ok, redirect} ->
         Logger.notice("Accessed a deprecated path")
@@ -72,18 +123,11 @@ defmodule HomeWeb.BlogController do
             banner = page.meta.props |> Map.get("banner", "2017-01-28T08-50-37.jpg")
 
             conn
-            |> PhoenixETag.render_if_stale(template,
-              flavor: "app",
-              banner: ["banners", banner] |> Path.join(),
-              classes: ["blog"],
-              page: page,
-              meta: page.meta,
-              gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-              navtree: fn -> __MODULE__.navtree(req_url) end,
-              scope: @root,
-              req_url: req_url,
-              src_path: src_path
-            )
+            |> assign(:banner, ["banners", banner] |> Path.join())
+            |> assign(:page, page)
+            |> assign(:meta, page.meta)
+            |> assign(:src_path, src_path)
+            |> build(params, template, req_url)
 
           {:error, _err} ->
             conn |> error(500, "invalid-article.html", req_url, "Broken article")
@@ -109,29 +153,61 @@ defmodule HomeWeb.BlogController do
     )
   end
 
-  def grouped_by_category() do
-    get_articles()
-    |> Enum.group_by(fn {url, _} ->
-      ["/", "blog", group, _] = url |> Path.split()
-      {group |> String.split("-") |> Stream.map(&String.capitalize/1) |> Enum.join(" "), group}
-    end)
-    |> Enum.map(fn {{name, ident}, list} ->
-      name =
-        case name do
-          "Misc" -> "General"
-          n -> n
-        end
+  @doc """
+  Select all articles in the blog system, clustered by their category. If a
+  category or list of categories are provided, this returns only that subset.
 
-      {name, ident, list}
+  Articles are already sorted into category folders on the filesystem, so this
+  function merely loads the contents of each category folder and keeps them
+  clustered together, rather than returning one mixed collection like
+  `page_listing` does.
+
+  ## Parameters
+
+  - `categories`: A string or list of strings, each of which names a category
+    directory in the blog root.
+
+  ## Returns
+
+  A list of `{name, slug, [{url, meta}]}` for each category slug selected.
+
+  - `name` is a display name suitable for rendering to the user
+  - `slug` is the filesystem and URL component
+  - `[{url, meta}]` is the list of full URLs and article metadata for each
+    article in the category.
+  """
+  @spec grouped_by_category(String.t() | [String.t()]) :: [
+          {String.t(), Path.t(), [{Path.t(), Home.Meta.t()}]}
+        ]
+  def grouped_by_category(categories \\ []) do
+    @dir
+    |> File.ls!()
+    |> (fn dirs ->
+          if categories != [] do
+            dirs |> Stream.filter(&(&1 in List.wrap(categories)))
+          else
+            dirs
+          end
+        end).()
+    |> Stream.filter(&([@dir, &1] |> Path.join() |> File.dir?()))
+    |> Enum.map(fn dir ->
+      Task.async(fn ->
+        dir
+        |> src_paths()
+        |> get_articles()
+        |> (fn pages -> {dir, pages} end).()
+      end)
+    end)
+    |> Stream.map(&Task.await/1)
+    |> Stream.map(fn {slug, pages} ->
+      name = slug |> String.split("-") |> Stream.map(&String.capitalize/1) |> Enum.join(" ")
+
+      {case name do
+         "Misc" -> "General"
+         n -> n
+       end, slug, pages}
     end)
     |> Enum.sort_by(fn {_, _, list} -> list |> length end, :desc)
-  end
-
-  def check_draft(conn, page) do
-    case page.meta.published do
-      true -> conn
-      _ -> raise "Replace me with 404"
-    end
   end
 
   def navtree(current \\ nil) do
@@ -142,12 +218,14 @@ defmodule HomeWeb.BlogController do
   end
 
   @doc """
-  Satisfies the directory listing demanded by the `nav` layout
+  Lists all articles in the blog system, irrespective of category and sorted by
+  date.
   """
+  @spec page_listing(Path.t() | nil) :: [{String.t(), Path.t(), String.t()}]
   def page_listing(current \\ nil) do
     get_articles()
     |> Stream.map(fn {url, meta} ->
-      {meta.title, url,
+      {"<span class=\"title\">" <> meta.title <> "</span>", url,
        if Map.get(meta.props, "published", true) do
          Timex.format!(meta.date, "{ISOdate}")
        else
@@ -168,19 +246,41 @@ defmodule HomeWeb.BlogController do
   end
 
   @doc """
-  Produces a list of `{url, Meta}` pairs
+  Fetches a set of articles from the blog system.
+
+  By default, this loads all articles in the blog; however, you may stream path
+  entries (rooted beneath `priv/pages/`) into this to limit the fetch to the
+  provided paths.
+
+  ## Parameters
+
+  - `paths`: A set of paths, implicitly rooted in `priv/pages/`, to load.
+    Defaults to `blog/*/*.md`.
+
+  ## Returns
+
+  A list of `{url, metadata}` for each article fetched. The articles are all
+  loaded into the `Home.PageCache`, and can be accessed by the same paths passed
+  into this.
   """
-  def get_articles() do
-    src_paths()
+  @spec get_articles(Stream.t()) :: [{Path.t(), Home.Meta.t()}]
+  def get_articles(paths \\ src_paths()) do
+    paths
+    # Do not include filesystem-powered redirects.
     |> Stream.reject(fn p -> ["priv", "pages", p] |> Path.join() |> Home.symlink?() end)
+    # Kick off a cache load
     |> Home.PageCache.cached_many()
+    # Discard any invalid entries. That’s my problem, not the viewer’s problem.
     |> Stream.filter(fn {res, _} -> res == :ok end)
+    # Translate filepath to URL and drop the full page for just metadata
     |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta} end)
+    # If we are not in :dev, discard unpublished entries
     |> (fn seq ->
           if Mix.env() == :dev,
             do: seq,
             else: seq |> Stream.filter(fn {_, meta} -> meta.published end)
         end).()
+    # And sort by date
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
   end
 
@@ -190,7 +290,7 @@ defmodule HomeWeb.BlogController do
   """
   @spec url_to_path(Path.t(), Path.t()) :: Path.t() | nil
   def url_to_path(group, name) do
-    src_paths()
+    src_paths(group)
     |> Enum.find(fn path ->
       path |> path_to_url() == [@root, group, name] |> Path.join()
     end)
@@ -201,16 +301,31 @@ defmodule HomeWeb.BlogController do
   """
   @spec path_to_url(Path.t()) :: Path.t()
   def path_to_url(path) do
-    ["blog", group, filename] = path |> Path.rootname() |> Path.split()
-    [_y, _m, _d, name] = filename |> String.split("-", parts: 4)
-    [@root, group, name] |> Path.join()
+    case path |> Path.rootname() |> Path.split() do
+      ["blog", group, filename] ->
+        [_y, _m, _d, name] = filename |> String.split("-", parts: 4)
+        [@root, group, name] |> Path.join()
+
+      ["blog", group] ->
+        [@root, group] |> Path.join()
+    end
   end
 
-  def src_paths do
-    [@dir, "*", "*.md"]
+  @doc """
+  Produces `Home.PageCache` lookup keys for all articles in the blog system. May
+  be restricted to a single category by providing an argument naming the
+  category directory on disk.
+  """
+  @spec src_paths(Path.t()) :: Enumerable.t()
+  def src_paths(category \\ "*") do
+    [@dir, category, "*.md"]
     |> Path.join()
     |> Path.wildcard()
+    # Discard index files
+    |> Stream.reject(fn p -> p |> Path.basename() == "index.md" end)
+    # Discard subdirectories (should not exist with a .md suffix anyway)
     |> Stream.filter(&File.regular?/1)
+    # Drop the content-directory prefix
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end

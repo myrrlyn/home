@@ -62,10 +62,25 @@ body:not(.oeuvre) {
 	}
 }
 
-blockquote,
-aside {
+aside,
+blockquote {
 	pre {
 		clear: left;
+	}
+}
+
+hr {
+	border: {
+		top: {
+			color: $bell-blue;
+			style: solid;
+			width: ($header-border + $footer-border) / 2;
+		}
+		bottom: {
+			color: $bell-ochre;
+			style: solid;
+			width: ($header-border + $footer-border) / 2;
+		}
 	}
 }
 
