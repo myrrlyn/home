@@ -40,7 +40,7 @@ defmodule HomeWeb.BlogController do
     case {index, category} do
       {{:error, %Home.Page.NotFoundException{}}, nil} ->
         conn
-        |> assign(:category, category)
+        |> assign(:category, group)
         |> error(404, "invalid-category.html", req_url, "Invalid category")
 
       {{:error, %Home.Page.NotFoundException{}}, {name, slug, pages}} ->
@@ -52,10 +52,16 @@ defmodule HomeWeb.BlogController do
         |> assign(:banner, "banners/2017-01-28T08-50-37.jpg")
         |> error(200, "missing-category.html", @root, name)
 
-      {{:ok, %Home.Page{}}, {_, _, pages}} ->
-        conn
-        |> assign(:pages, pages)
-        |> build(params, "category.html", req_url, src_path)
+      {{:ok, %Home.Page{meta: meta}}, {_, _, pages}} ->
+        if meta.published || Mix.env() == :dev do
+          conn
+          |> assign(:pages, pages)
+          |> build(params, "category.html", req_url, src_path)
+        else
+          conn
+          |> assign(:category, group)
+          |> error(404, "invalid-category.html", req_url, "Invalid category")
+        end
     end
   end
 
@@ -226,7 +232,7 @@ defmodule HomeWeb.BlogController do
     get_articles()
     |> Stream.map(fn {url, meta} ->
       {"<span class=\"title\">" <> meta.title <> "</span>", url,
-       if Map.get(meta.props, "published", true) do
+       if meta.published do
          Timex.format!(meta.date, "{ISOdate}")
        else
          "DRAFT PAGE"

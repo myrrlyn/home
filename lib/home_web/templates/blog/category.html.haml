@@ -3,7 +3,10 @@
 		%h1#title= @meta.title
 		- if summary = @meta.summary do
 			%p= summary |> Earmark.as_html! |> raw
-			%hr
+		- if @page.toc != [] do
+			%nav{aria-label: "Table of Contents"}
+				= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc)
+		%hr
 		= @page.content |> raw
 	%section
 		%ol{reversed=""}

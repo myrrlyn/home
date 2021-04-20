@@ -1,7 +1,7 @@
 %article
-	%h1#title= @meta.title
+	%h1#title.no-count= @meta.title
 	- if subtitle = @meta.subtitle do
-		%h2#subtitle.title= subtitle
+		%h2#subtitle.title.no-count= subtitle
 	%p
 		Published on
 		- d = Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}")
