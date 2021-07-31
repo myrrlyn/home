@@ -41,24 +41,24 @@ defmodule Home.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.5"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_html, "~> 2.14"},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 0.5"},
+      {:gettext, "~> 0.18"},
+      {:jason, "~> 1.2"},
+      {:plug_cowboy, "~> 2.5"},
       {:phoenix_etag, "~> 0.1"},
       {:phoenix_markdown, "~> 1.0"},
       {:phoenix_haml, "~> 0.2"},
       {:earmark, "~> 1.4"},
       {:earmark_parser, "~> 1.4"},
-      {:timex, "~> 3.6"},
+      {:timex, "~> 3.7"},
       {:yaml_elixir, "~> 2.6"},
       {:gravatar, "~> 0.1"},
       {:statistics, "~> 0.6"},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false}
     ]
   end
 
