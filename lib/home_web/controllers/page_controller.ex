@@ -6,6 +6,14 @@ defmodule HomeWeb.PageController do
     |> build(params, "/", Home.PageCache.cached!("index.md"))
   end
 
+  # Trap `/resume` and forward it to the real path
+  def page(conn, %{"path" => ["resume"]}) do
+    conn
+    |> put_resp_header("location", "/résumé")
+    |> put_resp_content_type("text/plain")
+    |> resp(301, "I am pretentious and spell it with the accents")
+  end
+
   def page(conn, %{"path" => path} = params) do
     path = path |> Path.join()
 

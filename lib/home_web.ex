@@ -59,6 +59,22 @@ defmodule HomeWeb do
   end
 
   @doc """
+  Fills the page cache with the website content in `priv/pages`.
+  """
+  def fill_cache do
+    # Get all the Markdown files
+    ["priv", "pages", "**", "*.md"]
+    |> Path.join()
+    |> Path.wildcard()
+    |> Stream.filter(&File.regular?/1)
+    # But not the READMEs
+    |> Stream.reject(&(&1 |> Path.basename() == "README.md"))
+    |> Stream.map(&(&1 |> Path.relative_to(["priv", "pages"] |> Path.join())))
+    # And load them into the cache.
+    |> Home.PageCache.cached_many()
+  end
+
+  @doc """
   Lists all the pages available on the site.
   """
   @spec page_listing :: [{String.t(), Path.t(), String.t()}]

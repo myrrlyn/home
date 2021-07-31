@@ -35,7 +35,7 @@
 	%meta{name: "twitter:description", content: "#{@meta.summary}"}
 
 - for embed <- @meta.props |> Map.get("embeds", []) do
-	- if embed == "tweet" do
+	- if embed == "twitter" do
 		%script{type: "text/javascript", async: "", src: "https://platform.twitter.com/widgets.js", charset: "utf-8"}
 	- if embed == "mathjax" do
 		%script{type: "text/javascript", src: "#{Routes.static_path(@conn, "/js/mathjax.js")}"}

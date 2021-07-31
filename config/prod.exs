@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :home, HomeWeb.Endpoint,
-  url: [host: "localhost", port: 1312],
+  url: [port: 1312],
   http: [compress: true],
   cache_static_manifest: "priv/static/cache_manifest.json"
 

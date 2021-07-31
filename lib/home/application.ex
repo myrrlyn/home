@@ -26,7 +26,7 @@ defmodule Home.Application do
 
     # Warm up the page cache
     case out do
-      {:ok, _} -> HomeWeb.page_listing()
+      {:ok, _} -> HomeWeb.fill_cache()
       _ -> nil
     end
 
