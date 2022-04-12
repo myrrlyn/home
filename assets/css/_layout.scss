@@ -1,3 +1,5 @@
+@use "sass:math";
+
 //  Ensure that the body will always be rendered to the full height of the
 //  viewport, even if the content is short enough that the body would not
 //  ordinarily reach the bottom.
@@ -98,7 +100,7 @@ header {
 	}
 }
 
-$about-clear: ($avi-height / 2) - $header-border;
+$about-clear: math.div($avi-height, 2) - $header-border;
 #about {
 	@include media-breakpoint-up(md) {
 		flex: 1.5 1 0%;
@@ -113,7 +115,7 @@ $about-clear: ($avi-height / 2) - $header-border;
 	@include media-breakpoint-up(md) {
 		.logo.gravatar a {
 			position: absolute;
-			top: $header-height + $header-border - ($avi-height / 2);
+			top: $header-height + $header-border - math.div($avi-height, 2);
 		}
 		#about-text {
 			margin-top: $about-clear;

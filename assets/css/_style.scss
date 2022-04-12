@@ -1,3 +1,5 @@
+@use "sass:math";
+
 article img {
 	&:not(.unset) {
 		display: block;
@@ -23,7 +25,7 @@ article img {
 	}
 
 	@include media-breakpoint-up(md) {
-		&.halfcol {
+		&.halfwidth {
 			width: 50%;
 		}
 	}
@@ -40,6 +42,12 @@ article img {
 
 .clearfix {
 	clear: both;
+}
+
+kbd kbd {
+	border-radius: 3px;
+	padding: 1px 4px 0;
+	border: 1px solid var(--text-fg);
 }
 
 body:not(.oeuvre) {
@@ -74,12 +82,12 @@ hr {
 		top: {
 			color: $bell-blue;
 			style: solid;
-			width: ($header-border + $footer-border) / 2;
+			width: math.div($header-border + $footer-border, 2);
 		}
 		bottom: {
 			color: $bell-ochre;
 			style: solid;
-			width: ($header-border + $footer-border) / 2;
+			width: math.div($header-border + $footer-border, 2);
 		}
 	}
 }

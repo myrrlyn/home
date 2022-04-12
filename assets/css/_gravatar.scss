@@ -1,9 +1,11 @@
+@use "sass:math";
+
 #gravatar {
 	background: {
 		color: $bell-ochre;
 	}
 	border: {
-		radius: ($avi-size + (2 * $avi-rim)) / 2;
+		radius: math.div($avi-size + (2 * $avi-rim), 2);
 	}
 	padding: $avi-rim;
 	width: $avi-size;
