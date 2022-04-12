@@ -3,11 +3,13 @@
 article img {
 	&:not(.unset) {
 		display: block;
+
 		@include media-breakpoint-up(md) {
 			min-width: 200px;
 			width: 33%;
 			max-width: 800px;
 		}
+
 		@include media-breakpoint-down(md) {
 			width: 100%;
 		}
@@ -35,6 +37,11 @@ article img {
 	}
 }
 
+.left {
+	float: Left;
+	margin-right: 1em;
+}
+
 .right {
 	float: right;
 	margin-left: 1em;
@@ -51,6 +58,7 @@ kbd kbd {
 }
 
 body:not(.oeuvre) {
+
 	//  Make the deleted- and inserted- text span tags have visual flair akin to
 	//  a highlighter pen
 	ins,
@@ -84,6 +92,7 @@ hr {
 			style: solid;
 			width: math.div($header-border + $footer-border, 2);
 		}
+
 		bottom: {
 			color: $bell-ochre;
 			style: solid;
@@ -94,49 +103,61 @@ hr {
 
 pre {
 	@include left-chevron(var(--charcoal));
+
 	&.codeblock-c {
 		border-left-color: $lang-c;
 	}
+
 	&.codeblock-cpp {
 		border-left-color: $lang-cpp;
 	}
+
 	&.codeblock-elixir {
 		border-left-color: $lang-elixir;
 	}
+
 	&.codeblock-js {
 		border-left-color: $lang-js;
 	}
+
 	&.codeblock-rust {
 		border-left-color: $lang-rust;
 	}
+
 	&.codeblock-ps1 {
 		border-left-color: $lang-pwsh;
 	}
+
 	&.codeblock-sh,
 	&.codeblock-shell {
 		border-left-color: $lang-shell;
 	}
+
 	&.codeblock-toml {
 		border-left-color: $lang-toml;
 	}
-	& > .lang-marker {
+
+	&>.lang-marker {
 		color: var(--text-fg);
 		display: block;
 		float: left;
 		margin-bottom: 0.25em;
 	}
 
-	& > .code-container {
+	&>.code-container {
 		clear: both;
 	}
 
 	&:not(.codeblock-term) {
+
 		code,
 		code span {
 			@extend %text-mono;
 		}
 	}
+
 	&.codeblock-term {
+
 		code,
 		code span {
 			@extend %text-term;
