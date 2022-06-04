@@ -115,7 +115,7 @@ defmodule HomeWeb.OeuvreController do
       meta.tags |> Stream.map(fn t -> {t, {meta.title, p}} end)
     end)
     |> Enum.group_by(fn {tag, _} -> tag end, fn {_, {title, url}} ->
-      {title, "/#{url |> Path.rootname()}"}
+      {title, "#{url |> Path.rootname()}"}
     end)
     |> Enum.sort_by(fn {_, ps} -> ps |> length() end, :desc)
   end
