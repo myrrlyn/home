@@ -30,6 +30,7 @@ defmodule HomeWeb.BlogController do
     |> render("rss.xml", layout: nil, articles: get_articles())
   end
 
+  # Render a group index page
   def page(conn, %{"path" => [group]} = params) do
     req_url = [@root, group] |> Path.join()
     src_path = ["blog", group, "index.md"] |> Path.join()
@@ -53,7 +54,7 @@ defmodule HomeWeb.BlogController do
         |> error(200, "missing-category.html", @root, name)
 
       {{:ok, %Home.Page{meta: meta}}, {_, _, pages}} ->
-        if meta.published || Mix.env() == :dev do
+        if meta.published || Application.get_env(:home, :show_drafts) do
           conn
           |> assign(:pages, pages)
           |> build(params, "category.html", req_url, src_path)
@@ -282,7 +283,7 @@ defmodule HomeWeb.BlogController do
     |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta} end)
     # If we are not in :dev, discard unpublished entries
     |> (fn seq ->
-          if Mix.env() == :dev,
+          if Application.get_env(:home, :show_drafts),
             do: seq,
             else: seq |> Stream.filter(fn {_, meta} -> meta.published end)
         end).()

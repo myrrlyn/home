@@ -250,28 +250,37 @@ defmodule Home.Markdown do
   @doc """
   Flattens an AST tree into a list. The tree
 
-  ```text
-  - root
-    - contents 0
-    - tag A
-      - contents 1
-      - tag C
-        - contents 2
-      - tag D
-        - contents 3
-    - tag B
-      - contents 4
-      - tag E
-        - contents 5
-      - tag D
-        - contents 6
-  ```
+  1. root
+     1. contents 0
+     1. tag A
+        1. contents 1
+        1. tag C
+           1. contents 2
+        1. tag D
+           1. contents 3
+     1. tag B
+        1. contents 4
+        1. tag E
+           1. contents 5
+        1. tag D
+           1. contents 6
 
   becomes the list
 
-  ```text
-  [root 0 A 1 C 2 D 3 B 4 E 5 D 6]
-  ```
+  1. root
+  1. contents 0
+  1. tag A
+  1. contents 1
+  1. tag C
+  1. contents 2
+  1. tag D
+  1. contents 3
+  1. tag B
+  1. contents 4
+  1. tag E
+  1. contents 5
+  1. tag D
+  1. contents 6
 
   The *contents* of each AST node are moved out of it and appended to the list,
   leaving a now-empty node in its original position.
@@ -441,8 +450,8 @@ defmodule Home.Markdown do
     def identify(this, ident) do
       this
       |> Agent.get_and_update(fn idents ->
-        case idents |> Map.get(ident, 0) do
-          0 ->
+        case idents |> Map.get(ident) do
+          nil ->
             {ident, idents |> Map.put(ident, 1)}
 
           n ->

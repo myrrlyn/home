@@ -3,5 +3,6 @@ MD024:
 MD033:
   allowed_elements:
     - ins
+    - kbd
     - sub
     - sup

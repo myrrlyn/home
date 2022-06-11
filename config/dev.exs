@@ -21,6 +21,8 @@ config :home, HomeWeb.Endpoint,
     ]
   ]
 
+config :home, fill_cache: false, show_drafts: true
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

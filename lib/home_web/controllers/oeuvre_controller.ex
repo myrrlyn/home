@@ -157,7 +157,7 @@ defmodule HomeWeb.OeuvreController do
     |> Stream.filter(fn {res, _} -> res == :ok end)
     |> Stream.map(fn {:ok, {path, page}} -> {"/#{path |> Path.rootname()}", page.meta} end)
     |> (fn stream ->
-          if Mix.env() == :dev,
+          if Application.get_env(:home, :show_drafts),
             do: stream,
             else: stream |> Stream.filter(fn {_, meta} -> meta.published end)
         end).()

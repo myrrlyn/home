@@ -1,6 +1,10 @@
 defmodule HomeWeb.PageController do
   use HomeWeb, :controller
 
+  @doc """
+  Renders the main landing page.
+  """
+  # This might be able to be folded into `page`
   def home(conn, params) do
     conn
     |> build(params, "/", Home.PageCache.cached!("index.md"))
@@ -63,7 +67,7 @@ defmodule HomeWeb.PageController do
       banner: "banners/2017-01-28T08-50-37.jpg",
       page: nil,
       meta: %Home.Meta{title: "Not Found"},
-      navtree: fn -> __MODULE__.navtree() end,
+      navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: ""
     )

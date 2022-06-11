@@ -14,6 +14,8 @@ config :home, HomeWeb.Endpoint,
   http: [compress: true],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :home, fill_cache: true, show_drafts: false
+
 # Do not print debug messages in production
 config :logger, level: :info
 

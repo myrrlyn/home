@@ -9,6 +9,7 @@ defmodule Home.Application do
     children = [
       # Start the page cache to reduce filesystem hits
       {Home.PageCache, %{}},
+      {Home.ImageCache, %{}},
       # Start the Telemetry supervisor
       HomeWeb.Telemetry,
       # Start the PubSub system
@@ -25,8 +26,8 @@ defmodule Home.Application do
     out = Supervisor.start_link(children, opts)
 
     # Warm up the page cache
-    case out do
-      {:ok, _} -> HomeWeb.fill_cache()
+    case {out, Application.get_env(:home, :fill_cache)} do
+      {{:ok, _}, true} -> HomeWeb.fill_cache()
       _ -> nil
     end
 

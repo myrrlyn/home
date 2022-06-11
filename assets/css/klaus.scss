@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import "~bootstrap";
 
 @import "variables";
@@ -70,7 +72,7 @@ $width-thick: 54.8;
 	}
 
 	#klaus-logos {
-		height: calc((#{$width-thick / 100} * 60em - #{$inblpad}) * 0.563);
+		height: calc((#{math.div($width-thick, 100)} * 60em - #{$inblpad}) * 0.563);
 		width: calc(#{$width-thick}% - #{$inblpad});
 	}
 }

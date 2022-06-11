@@ -17,18 +17,21 @@
 	margin-bottom: 20px;
 	border: 1px solid transparent;
 	border-radius: 4px;
+
 	&-info {
 		// color: #31708f;
 		color: var(--iso-blue);
 		background-color: #d9edf7;
 		border-color: #bce8f1;
 	}
+
 	&-warning {
 		// color: #8a6d3b;
 		color: var(--iso-yellow);
 		background-color: #fcf8e3;
 		border-color: #faebcc;
 	}
+
 	&-danger {
 		// color: #a94442;
 		color: var(--iso-red);
@@ -44,6 +47,7 @@
 		margin-bottom: 0;
 	}
 }
+
 .invalid-feedback {
 	color: #a94442;
 	display: block;
@@ -76,10 +80,12 @@ main aside {
 main aside,
 blockquote {
 	@include left-chevron(var(--charcoal));
+
 	margin: {
 		left: 1em;
 		right: 2em;
 	}
+
 	padding: {
 		top: 1em;
 		left: 1em;

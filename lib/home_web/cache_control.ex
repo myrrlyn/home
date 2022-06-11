@@ -28,14 +28,14 @@ defmodule HomeWeb.CacheControl do
   end
 
   defp make_header(opts) do
-    {max_age, opts} = Keyword.pop!(opts, :max_age)
-    {reval, opts} = Keyword.pop!(opts, :must_revalidate)
-    {proxy_reval, opts} = Keyword.pop!(opts, :proxy_revalidate)
-    {no_cache, opts} = Keyword.pop!(opts, :no_cache)
-    {no_store, opts} = Keyword.pop!(opts, :no_store)
-    {no_trans, opts} = Keyword.pop!(opts, :no_transform)
-    {vis, opts} = Keyword.pop!(opts, :visibility)
-    {s_max_age, _opts} = Keyword.pop!(opts, :s_max_age)
+    {max_age, opts} = Keyword.pop(opts, :max_age)
+    {reval, opts} = Keyword.pop(opts, :must_revalidate)
+    {proxy_reval, opts} = Keyword.pop(opts, :proxy_revalidate)
+    {no_cache, opts} = Keyword.pop(opts, :no_cache)
+    {no_store, opts} = Keyword.pop(opts, :no_store)
+    {no_trans, opts} = Keyword.pop(opts, :no_transform)
+    {vis, opts} = Keyword.pop(opts, :visibility)
+    {s_max_age, _opts} = Keyword.pop(opts, :s_max_age)
 
     reval = if reval, do: "must-revalidate", else: nil
     proxy_reval = if proxy_reval, do: "proxy-revalidate", else: nil
