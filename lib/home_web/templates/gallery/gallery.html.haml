@@ -1,0 +1,10 @@
+- if @page do
+	%article
+		= @page.content |> raw
+- for {name, images} <- @gallery do
+	%h2= name
+	.container.d-flex.flex-wrap
+		- for image <- images do
+			- img = [@directory, image] |> Path.join
+			-# %a.img{href: img}
+			%img{src: img}

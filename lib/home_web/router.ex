@@ -44,6 +44,14 @@ defmodule HomeWeb.Router do
     get("/*path", OeuvreController, :page)
   end
 
+  scope "/gallery", HomeWeb do
+    pipe_through(:browser)
+
+    # get("/", GalleryController, :index)
+    get("/iso7010", GalleryController, :iso7010)
+    # get("/:gallery", GalleryController, :gallery)
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put

@@ -1,0 +1,19 @@
+body.gallery {
+	@include media-breakpoint-down(md) {
+
+		a.img,
+		img {
+			max-width: 100% !important;
+			padding: 4px;
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+
+		a.img,
+		img {
+			max-width: 25% !important;
+			padding: 8px;
+		}
+	}
+}
