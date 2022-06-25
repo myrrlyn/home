@@ -40,6 +40,7 @@ window.onload = () => {
 	mark_headings();
 	mark_codeblocks();
 	set_jukebox();
+	load_images();
 };
 
 function mark_headings() {
@@ -117,4 +118,19 @@ function pause_others(event) {
 		}
 		audio.pause();
 	}
+}
+
+function load_images() {
+	function load_one(elems) {
+		if (elems.length == 0) { return; }
+		let elem = elems[0];
+		let image = new Image();
+		image.onload = () => {
+			elem.replaceWith(image);
+			load_one(elems);
+		};
+		image.src = elem.dataset.src;
+	}
+
+	load_one(document.getElementsByClassName("async-image"));
 }
