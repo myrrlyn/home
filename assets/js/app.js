@@ -122,15 +122,21 @@ function pause_others(event) {
 
 function load_images() {
 	function load_one(elems) {
-		if (elems.length == 0) { return; }
-		let elem = elems[0];
+		let elem = elems.pop();
+		if (elem === undefined) { return; }
 		let image = new Image();
 		image.onload = () => {
+			console.debug(`Replacing ${elem} with ${image}`);
 			elem.replaceWith(image);
 			load_one(elems);
 		};
 		image.src = elem.dataset.src;
 	}
 
-	load_one(document.getElementsByClassName("async-image"));
+	let elems = Array.from(document.getElementsByClassName("async-image"));
+
+	setTimeout(() => { load_one(elems); }, 20);
+	setTimeout(() => { load_one(elems); }, 15);
+	setTimeout(() => { load_one(elems); }, 10);
+	setTimeout(() => { load_one(elems); }, 5);
 }
