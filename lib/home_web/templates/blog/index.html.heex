@@ -1,0 +1,18 @@
+<article>
+	<section>
+		<%= @page.content |> raw %>
+	</section>
+	<section>
+		<ol>
+			<%= for {name, slug, count, desc} <- @groups do %>
+				<li value="#{count}">
+					<a href="/blog/#{slug}"> <%= name %> </a>
+					<%= if desc do %>
+						<br />
+						<%= desc |> Earmark.as_html! |> raw %>
+					<% end %>
+				</li>
+			<% end %>
+		</ol>
+	</section>
+</article>

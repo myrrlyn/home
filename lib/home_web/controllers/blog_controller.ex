@@ -103,7 +103,8 @@ defmodule HomeWeb.BlogController do
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       navtree: fn -> __MODULE__.navtree(req_url) end,
       scope: @root,
-      req_url: req_url
+      req_url: req_url,
+      view_module: HomeWeb.BlogView
     )
   end
 

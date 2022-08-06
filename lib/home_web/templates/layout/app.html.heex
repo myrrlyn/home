@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+    |
+  ——0—— REGISTERED BY C0DA.
+    |
+     -->
+<!--(It looks better if you click it)-->
+<html lang="en-US">
+	<head>
+		<%= render("head.html", conn: @conn, title: @meta.title, flavor: @flavor, meta: @meta) %>
+		<%= render_existing(@conn |> view_module, "head.html", assigns) %>
+		<% banner = Routes.static_path(@conn, "/images/#{@banner}") %>
+		<style type="text/css">
+			header {
+				background-image: url(<%= banner %>);
+			}
+		</style>
+	</head>
+	<body class={@classes |> Enum.join(" ")}>
+		<header role="banner" class="screen-only">
+			<%# %img{src: "#{Routes.static_path(@conn, @header_img)}"} %>
+		</header>
+		<div id="main" class="flex-wrapper flex-cols hide-scroll">
+			<main class="container-md flex-item" role="main">
+				<%= @inner_content %>
+			</main>
+			<aside id="about" class="flex-item screen-only">
+				<div class="logo gravatar">
+					<a href="/">
+						<img id="gravatar" src={@gravatar} alt="Gravatar" />
+					</a>
+				</div>
+				<div id="about-text" class="container-md">
+					<%= render(@view_module, "about.html", assigns) %>
+					<%= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "") %>
+					<small>
+						I recently rebuilt this site. I would appreciate bug reports, in
+						presentation, content, or formerly-working links, at
+						<a href="//github.com/myrrlyn/home">the GitHub repository</a>.
+					</small>
+					<%= render("logos.html", conn: @conn) %>
+				</div>
+			</aside>
+		</div>
+		<%= render("footer.html", conn: @conn) %>
+	</body>
+</html>

@@ -7,8 +7,7 @@
 	<h2><%= name %></h2>
 	<div class="container d-flex flex-wrap">
 		<%= for image <- images do %>
-			<% img = [@directory, image] |> Path.join %>
-			<div class="async-image" data-src="<%= img %>"></div>
+			<div class="async-image" data-src={[@directory, image] |> Path.join}></div>
 		<% end %>
 	</div>
 <% end %>

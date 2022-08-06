@@ -81,9 +81,14 @@ main aside,
 blockquote {
 	@include left-chevron(var(--charcoal));
 
+	background: {
+		color: var(--charcoal-bg);
+	}
+
 	margin: {
 		left: 1em;
 		right: 2em;
+		bottom: 1em;
 	}
 
 	padding: {

@@ -105,7 +105,8 @@ defmodule HomeWeb.OeuvreController do
       meta: page.meta,
       gravatar: "/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes",
       navtree: fn -> __MODULE__.navtree(url) end,
-      scope: @root
+      scope: @root,
+      view_module: HomeWeb.OeuvreView
     )
   end
 

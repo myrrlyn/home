@@ -25,8 +25,8 @@
         <%= for {url, meta} <- @articles |> Enum.reverse() do %>
             <item>
                 <title><%= meta.title %></title>
-                <link>https://myrrlyn.net<%= url %></link>
-                <guid>https://myrrlyn.net<%= url %></guid>
+                <link><%= "https://myrrlyn.net" <> url %></link>
+                <guid><%= "https://myrrlyn.net" <> url %></guid>
                 <description>
                     <%= meta |> Home.Meta.summary("This article currently lacks a description") %>
                 </description>

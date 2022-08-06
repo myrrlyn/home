@@ -1,0 +1,4 @@
+<article>
+	<span id="date-src"><%= DateTime.utc_now |> Calendar.strftime("%A, %B %d, %Y") %></span>
+	<%= @page.content |> raw %>
+</article>

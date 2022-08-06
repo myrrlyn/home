@@ -1,0 +1,10 @@
+<article>
+	<%= if @meta.show_toc do %>
+		<h1><%= @page.meta.title %></h1>
+		<nav aria-label="Table of Contents">
+			<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
+		</nav>
+		<hr />
+	<% end %>
+	<%= @page.content |> raw %>
+</article>

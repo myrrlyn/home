@@ -21,21 +21,29 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.14.29",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Configure Phoenix's template engines
-config :phoenix, :template_engines,
-  haml: PhoenixHaml.Engine,
-  md: PhoenixMarkdown.Engine
+# Use the Dart SASS driver for CSS compilation.
+config :dart_sass,
+  version: "1.53.0",
+  default: [
+    args: ~w(css/app.scss ../priv/static/assets/app.css),
+    cd: Path.expand("../assets", __DIR__)
+  ]
 
-# Configure Earmark markdown settings
-config :phoenix_markdown, :earmark, %{
-  gfm: true,
-  breaks: false,
-  code_class_prefix: "lang- language-",
-  smartypants: false
-}
+# Configure Phoenix's template engines
+config :phoenix, :template_engines, heex: Phoenix.LiveView.HTMLEngine
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

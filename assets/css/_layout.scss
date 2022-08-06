@@ -6,6 +6,7 @@
 html {
 	height: 100%;
 }
+
 body {
 	min-height: 100%;
 }
@@ -65,22 +66,26 @@ header {
 		repeat: no-repeat;
 		size: cover;
 	}
+
 	border-bottom: {
 		color: $bell-blue;
 		style: solid;
 		width: $header-border;
 	}
+
 	height: $header-height;
 }
 
 #main {
 	border: {
+
 		//  Ochre stripe of the header border
 		top: {
 			color: $bell-ochre;
 			style: solid;
 			width: $header-border;
 		}
+
 		//  Blue strip of the footer border
 		bottom: {
 			color: $bell-blue;
@@ -88,12 +93,16 @@ header {
 			width: $footer-border;
 		}
 	}
+
 	justify-content: center;
+
 	margin: {
 		left: auto;
 		right: auto;
 	}
+
 	max-width: $content-width-max;
+
 	@include media-breakpoint-up(xl) {
 		@include vertical-border("left");
 		@include vertical-border("right");
@@ -101,28 +110,32 @@ header {
 }
 
 $about-clear: math.div($avi-height, 2) - $header-border;
+
 #about {
 	@include media-breakpoint-up(md) {
 		flex: 1.5 1 0%;
 	}
+
 	@include media-breakpoint-up(md) {
 		@include vertical-border("right");
 		order: 1;
 		min-width: 15em;
 		max-width: 25em;
 	}
+
 	//  Get ready for some fuckery
 	@include media-breakpoint-up(md) {
 		.logo.gravatar a {
 			position: absolute;
 			top: $header-height + $header-border - math.div($avi-height, 2);
 		}
+
 		#about-text {
 			margin-top: $about-clear;
 		}
 	}
 
-	> .contents {
+	>.contents {
 		margin: 0 auto;
 		max-width: 30em;
 	}
@@ -134,11 +147,13 @@ $about-clear: math.div($avi-height, 2) - $header-border;
 
 main {
 	@include media-breakpoint-up(md) {
+
 		article,
 		section {
 			max-width: 60em;
 		}
 	}
+
 	&.flex-item {
 		@include media-breakpoint-up(md) {
 			flex: 4 0 0%;
@@ -161,6 +176,7 @@ footer {
 }
 
 body.hide-panels {
+
 	#about,
 	#nav,
 	#anchor-wrap,
@@ -178,13 +194,16 @@ body.hide-panels {
 				height: calc(100vh - #{core-height()} + 4px);
 			}
 		}
+
 		main,
 		#about {
 			height: 100%;
 		}
+
 		#about-text {
 			height: calc(100% - #{$about-clear});
 		}
+
 		main,
 		#about-text {
 			overflow-y: auto;
@@ -204,7 +223,7 @@ body.hide-panels {
 	position: relative;
 
 	//  The divs are vertically empty(?), so force the inner to have height
-	& > div {
+	&>div {
 		padding-bottom: 56.25%;
 	}
 

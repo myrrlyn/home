@@ -64,17 +64,17 @@ body:not(.oeuvre) {
 	ins,
 	del {
 		text-decoration: none;
-		padding: 0 0.6em;
+		padding: 0 0.75em;
 		border-top-left-radius: 1000px;
 		border-bottom-right-radius: 1000px;
 	}
 
 	del {
-		background-color: var(--iso-red);
+		background-color: var(--ansi-red);
 	}
 
 	ins {
-		background-color: var(--iso-green);
+		background-color: var(--ansi-green);
 	}
 }
 

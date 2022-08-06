@@ -1,0 +1,16 @@
+<article>
+	<%= @page.content |> raw %>
+	<h2> Tags </h2>
+	<%= for {tag, tagged} <- @tagset do %>
+		<div class="tagset">
+			<h3><%= "##{tag}" %></h3>
+			<ul>
+				<%= for {name, path} <- tagged do %>
+					<li>
+						<a class="title" href={path}> <%= name %> </a>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+</article>

@@ -34,6 +34,7 @@ let lang_dict = {
 	text: "Plain text",
 	term: "Text diagram",
 	toml: "TOML configuration",
+	xml: "XML",
 };
 
 window.onload = () => {
@@ -125,8 +126,11 @@ function load_images() {
 		let elem = elems.pop();
 		if (elem === undefined) { return; }
 		let image = new Image();
+		let splits = elem.dataset.src.split("/");
+		let name = splits[splits.length - 1];
+		image.alt = name;
+		image.title = name;
 		image.onload = () => {
-			console.debug(`Replacing ${elem} with ${image}`);
 			elem.replaceWith(image);
 			load_one(elems);
 		};

@@ -33,6 +33,7 @@ hr.afterword {
 
 main article,
 main section {
+
 	// border-right: 2px solid var(--border-color);
 	@include media-breakpoint-up(md) {
 		max-width: 46em;
@@ -43,36 +44,36 @@ main section {
 main aside,
 blockquote {
 	@include left-chevron(var(--charcoal));
+
+	&:not(.handwriting) {
+		background: {
+			color: var(--charcoal-bg);
+		}
+	}
+
 	&.handwriting {
 		background: {
 			color: var(--parchment);
 		}
 	}
+
 	border: {
 		top-right-radius: 1em;
 		bottom-right-radius: 1em;
 		right: none !important;
 	}
+
 	padding: {
 		top: 1px;
 		left: 5px;
 		right: 2px;
 		bottom: 1px;
 	}
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		text: {
-			align: center;
-		}
-	}
 
 	margin: {
 		left: 1em;
 		right: 2em;
+		bottom: 1em;
 	}
 
 	&.special-font {
@@ -81,55 +82,58 @@ blockquote {
 				display: none;
 			}
 		}
+
 		&:hover,
 		&:active {
 			@extend %text-serif;
+
 			blockquote {
 				display: block;
 			}
 		}
 	}
+
 	&.piano-key {
+
 		&:not(.last),
 		blockquote {
 			margin: {
 				bottom: 0;
 			}
 		}
+
 		blockquote {
 			margin: {
 				left: 0.25em;
 			}
 		}
+
 		p {
 			margin: {
 				bottom: 0;
 			}
 		}
+
 		&.aedra {
+
 			&,
 			blockquote,
 			blockquote blockquote {
 				border-left-color: var(--white);
 			}
 		}
+
 		&.daedra.cothot {
+
 			&,
 			blockquote {
 				border-left-color: var(--black);
 			}
 		}
+
 		&.daedra:not(.cothot) {
 			border-left-color: var(--grey);
 		}
-	}
-	&.scourge {
-		background-color: transparentize($tyrian-purple, 0.75);
-		border-left-color: $tyrian-purple;
-	}
-	&.spellbreaker {
-		background-color: transparentize($yellow-selective, 0.75);
-		border-left-color: $yellow-selective;
 	}
 }
 
@@ -137,11 +141,13 @@ table#color-table tbody {
 	@function hue-for($angle) {
 		@return hsl(($angle - 3) * 15, 75%, 50%);
 	}
+
 	@mixin row($num) {
 		tr:nth-of-type(#{$num}) {
 			background-image: linear-gradient(hue-for($num - 0.5), hue-for($num), hue-for($num + 0.5));
 		}
 	}
+
 	@include row(1);
 	@include row(2);
 	@include row(3);
@@ -193,12 +199,14 @@ table#color-table tbody {
 
 %inline-lang {
 	color: var(--text-fg);
+
 	&:hover {
 		text-decoration: none;
 	}
 }
 
 @mixin lang($href, $font) {
+
 	a[href$="##{$href}"],
 	.#{$href} {
 		@extend %inline-lang;
@@ -209,3 +217,41 @@ table#color-table tbody {
 @include lang("dovah", "Dovah");
 @include lang("dwemer", "Dwemer");
 @include lang("ehlnofex", "Mage");
+
+blockquote {
+	&.scourge {
+		background-color: transparentize($tyrian-purple, 0.75);
+		border-left-color: $tyrian-purple;
+		font-style: italic;
+	}
+
+	&.spellbreaker {
+		background-color: transparentize($yellow-selective, 0.75);
+		border-left-color: $yellow-selective;
+		font-variant: small-caps;
+	}
+
+	&.malacath,
+	&.volendrung {
+		background-color: transparentize($forest-green, 0.75);
+		border-left-color: $forest-green;
+		font-weight: bold;
+		text-align: center;
+	}
+}
+
+.sz-1 {
+	font-size: 200%;
+}
+
+.sz-2 {
+	font-size: 150%;
+}
+
+.sz-4 {
+	font-size: 90%;
+}
+
+.sz-5 {
+	font-size: 80%;
+}

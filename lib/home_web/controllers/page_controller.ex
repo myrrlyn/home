@@ -36,8 +36,8 @@ defmodule HomeWeb.PageController do
   end
 
   def sitemap(conn, _) do
-    {:safe, out} = Phoenix.View.render(HomeWeb.PageView, "sitemap.xml", [])
-    conn |> put_resp_content_type("text/xml") |> resp(200, out |> List.flatten() |> Enum.join())
+    out = Phoenix.View.render(HomeWeb.PageView, "sitemap.xml", [])
+    conn |> put_resp_content_type("text/xml") |> resp(200, out)
   end
 
   defp build(conn, _params, path, page) do
@@ -51,7 +51,8 @@ defmodule HomeWeb.PageController do
       meta: page.meta,
       navtree: fn -> __MODULE__.navtree(path) end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: ""
+      scope: "",
+      view_module: HomeWeb.PageView
     )
   end
 
@@ -69,7 +70,8 @@ defmodule HomeWeb.PageController do
       meta: %Home.Meta{title: "Not Found"},
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: ""
+      scope: "",
+      view_module: HomeWeb.PageView
     )
   end
 

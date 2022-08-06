@@ -1,0 +1,26 @@
+<article>
+	<h1 id="title" class="title"> <%= @meta.title %> </h1>
+	<%= if subtitle = @meta.subtitle do %>
+		<h2 id="subtitle" class="title"> <%= subtitle %> </h2>
+	<% end %>
+	<p>
+		<a href={"//old.reddit.com/r/teslore/comments/#{@meta.props["reddit"]}"}>
+			Originally published to /r/teslore
+		</a>
+		on
+		<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D} at {h24}:{m}") %>
+	</p>
+	<%= if @page.toc != [] do %>
+		<nav aria-label="Table of Contents">
+			<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
+		</nav>
+	<% end %>
+	<hr />
+	<%= if intro = @meta.props |> Map.get("intro-music") do %>
+		<%= render(HomeWeb.LayoutView, "audio.html", ident: "intro", audio: intro) %>
+	<% end %>
+	<%= @page.content |> raw %>
+	<%= if outro = @meta.props |> Map.get("outro-music") do %>
+		<%= render(HomeWeb.LayoutView, "audio.html", ident: "outro", audio: outro ) %>
+	<% end %>
+</article>

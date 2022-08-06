@@ -61,6 +61,7 @@ $red-violet: #912f40 !default;
 $baby-powder: #fffffa !default;
 
 $amaranth: #a72a2a;
+$forest-green: darken(#228b22, 20%);
 $parchment: hsl(042.4, 048.2%, 83.3%);
 
 @import "color/langs";
@@ -73,6 +74,7 @@ $parchment: hsl(042.4, 048.2%, 83.3%);
 
 @media (prefers-color-scheme: light) {
 	@import "color/light";
+
 	:root {
 		--parchment: #{$parchment};
 	}
@@ -80,6 +82,7 @@ $parchment: hsl(042.4, 048.2%, 83.3%);
 
 @media (prefers-color-scheme: dark) {
 	@import "color/dark";
+
 	:root {
 		--parchment: #{darken($parchment, 25%)};
 	}
