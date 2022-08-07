@@ -11,16 +11,20 @@
 		<%= if function_exported?(view_module(@conn), :head, 1) do %>
 			<%= view_module(@conn).head(assigns) %>
 		<% end %>
-		<% banner = Routes.static_path(@conn, "/images/#{@banner}") %>
+		<% banner = Routes.static_path(@conn, ["/images", @banner.name] |> Path.join()) %>
 		<style type="text/css">
 			header {
 				background-image: url(<%= banner %>);
+				background-position: <%= @banner |> Home.Banners.Banner.position %>;
 			}
 		</style>
 	</head>
 	<body class={@classes |> Enum.join(" ")}>
-		<header role="banner" class="screen-only">
-			<%# %img{src: "#{Routes.static_path(@conn, @header_img)}"} %>
+		<header role="banner" class="screen-only" title={@banner.caption}>
+			<!-- <img
+				src={Routes.static_path(@conn, ["/images", @banner.name] |> Path.join)}
+				title={@banner.caption}
+			/> -->
 		</header>
 		<div id="main" class="flex-wrapper flex-cols hide-scroll">
 			<main class="container-md flex-item" role="main">

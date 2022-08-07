@@ -94,13 +94,13 @@ defmodule HomeWeb.OeuvreController do
   def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
   def build(conn, template, url, page) do
-    banner = page.meta.props |> Map.get("banner", "text-oghma")
+    banner = page.meta.props |> Map.get("banner") |> Home.Banners.teslore()
 
     conn
     |> PhoenixETag.render_if_stale(template,
       flavor: "oeuvre",
       classes: ["oeuvre"],
-      banner: "oeuvre/#{banner}.jpg",
+      banner: banner,
       page: page,
       meta: page.meta,
       gravatar: "/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes",

@@ -127,10 +127,8 @@ defmodule HomeWeb.BlogController do
       {:error, :einval} ->
         case src_path |> Home.PageCache.cached() do
           {:ok, page} ->
-            banner = page.meta.props |> Map.get("banner", "2017-01-28T08-50-37.jpg")
-
             conn
-            |> assign(:banner, ["banners", banner] |> Path.join())
+            |> assign(:banner, Home.Banners.weighted_random())
             |> assign(:page, page)
             |> assign(:meta, page.meta)
             |> assign(:src_path, src_path)
@@ -149,7 +147,7 @@ defmodule HomeWeb.BlogController do
     |> render(
       template,
       flavor: "app",
-      banner: ["banners", "2017-01-28T08-50-37.jpg"] |> Path.join(),
+      banner: Home.Banners.weighted_random(),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       classes: ["blog"],
       navtree: fn -> navtree() end,
