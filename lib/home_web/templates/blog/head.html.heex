@@ -2,5 +2,5 @@
 <meta name="og:type" content="article" />
 <%= for script <- @meta.props |> Map.get("scripts", []) do %>
 	<% src = ["/", @src_path |> Path.dirname(), script] |> Path.join() |> Path.expand() %>
-	<script type="text/javascript" src="#{src}"> </script>
+	<script type="text/javascript" src={src}> </script>
 <% end %>

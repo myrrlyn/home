@@ -8,7 +8,9 @@
 <html lang="en-US">
 	<head>
 		<%= render("head.html", conn: @conn, title: @meta.title, flavor: @flavor, meta: @meta) %>
-		<%= render_existing(@conn |> view_module, "head.html", assigns) %>
+		<%= if function_exported?(view_module(@conn), :head, 1) do %>
+			<%= view_module(@conn).head(assigns) %>
+		<% end %>
 		<% banner = Routes.static_path(@conn, "/images/#{@banner}") %>
 		<style type="text/css">
 			header {
@@ -31,7 +33,7 @@
 					</a>
 				</div>
 				<div id="about-text" class="container-md">
-					<%= render(@view_module, "about.html", assigns) %>
+					<%= render(view_module(@conn), "about.html", assigns) %>
 					<%= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "") %>
 					<small>
 						I recently rebuilt this site. I would appreciate bug reports, in

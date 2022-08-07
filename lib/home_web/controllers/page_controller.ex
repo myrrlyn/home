@@ -51,8 +51,7 @@ defmodule HomeWeb.PageController do
       meta: page.meta,
       navtree: fn -> __MODULE__.navtree(path) end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: "",
-      view_module: HomeWeb.PageView
+      scope: ""
     )
   end
 
@@ -70,8 +69,7 @@ defmodule HomeWeb.PageController do
       meta: %Home.Meta{title: "Not Found"},
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: "",
-      view_module: HomeWeb.PageView
+      scope: ""
     )
   end
 

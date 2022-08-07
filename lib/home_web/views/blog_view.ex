@@ -24,4 +24,6 @@ defmodule HomeWeb.BlogView do
       last_modified: PhoenixETag.schema_last_modified(adhoc)
     ]
   end
+
+  def head(assigns), do: render("head.html", assigns)
 end

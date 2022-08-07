@@ -37,7 +37,6 @@ defmodule HomeWeb.GalleryController do
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: "",
       directory: "/static/images/iso-7010",
-      view_module: HomeWeb.GalleryView,
       gallery: %{
         "E (Safe Condition)" =>
           (Enum.to_list(1..13) ++ Enum.to_list(16..19))
