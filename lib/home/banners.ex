@@ -1128,7 +1128,9 @@ defmodule Home.Banners do
   @doc """
   Selects one banner at random from the main collection.
   """
-  def true_random(tag \\ nil) do
+  def true_random(), do: true_random(nil)
+
+  def true_random(tag) do
     banners = @banners |> filter_tag(tag)
     idx = banners |> length |> :rand.uniform()
     out = banners |> Enum.at(idx)
@@ -1140,7 +1142,9 @@ defmodule Home.Banners do
   Selects one banner at random from the main collection with respect to their
   specified frequency weights.
   """
-  def weighted_random(tag \\ nil) do
+  def weighted_random(), do: weighted_random(nil)
+
+  def weighted_random(tag) do
     banners = @banners |> filter_tag(tag)
 
     idx =

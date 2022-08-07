@@ -24,6 +24,25 @@ defmodule HomeWeb.GalleryController do
     )
   end
 
+  def banners(conn, _) do
+    conn
+    |> render("gallery.html",
+      flavor: "app",
+      classes: ["gallery", "banners-gallery"],
+      title: "Banner Images",
+      banner: Home.Banners.weighted_random(),
+      page: nil,
+      meta: %Home.Meta{title: "Banner Images"},
+      navtree: &navtree/0,
+      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      scope: "",
+      directory: "/static/images/banners",
+      gallery: %{
+        nil => File.ls!(["assets", "static", "images", "banners"] |> Path.join()) |> Enum.sort()
+      }
+    )
+  end
+
   def iso7010(conn, _) do
     conn
     |> render("gallery.html",

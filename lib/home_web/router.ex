@@ -48,6 +48,7 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     # get("/", GalleryController, :index)
+    get("/banners", GalleryController, :banners)
     get("/iso7010", GalleryController, :iso7010)
     # get("/:gallery", GalleryController, :gallery)
   end

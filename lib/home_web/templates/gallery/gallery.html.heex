@@ -4,7 +4,9 @@
 	</article>
 <% end %>
 <%= for {name, images} <- @gallery do %>
-	<h2><%= name %></h2>
+	<%= if name do %>
+		<h2><%= name %></h2>
+	<% end %>
 	<div class="container d-flex flex-wrap">
 		<%= for image <- images do %>
 			<div class="async-image" data-src={[@directory, image] |> Path.join}></div>
