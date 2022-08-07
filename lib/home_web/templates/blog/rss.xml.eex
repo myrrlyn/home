@@ -4,7 +4,7 @@
     <channel>
         <title>Insufficient Magic</title>
         <link>https://myrrlyn.net/blog</link>
-        <description> myrrlyn’s sporadic blogging habit </description>
+        <description>myrrlyn’s sporadic blogging habit</description>
         <copyright><%= "2012—#{Date.utc_today.year} Alexander Payne (myrrlyn)" %></copyright>
         <generator>Phoenix (Elixir + Erlang/OTP)</generator>
         <language>en-us</language>

@@ -2,7 +2,7 @@ defmodule HomeWeb.OeuvreView do
   use HomeWeb, :view
 
   def stale_checks("tones.html", _) do
-    path = ["lib", "home_web", "templates", "oeuvre", "tones.html.eex"] |> Path.join()
+    path = ["lib", "home_web", "templates", "oeuvre", "tones.html.heex"] |> Path.join()
     stat = path |> File.stat!(time: :posix)
     text = path |> File.read!()
 

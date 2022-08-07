@@ -2,7 +2,7 @@
 	<ol>
 		<%= for {show, href, children} <- @toc do %>
 			<li>
-				<a href={"##{href}"}> <%= show |> raw %> </a>
+				<a href={"#" <> href}><%= show |> raw %></a>
 				<%= render("toc.html", toc: children) %>
 			</li>
 		<% end %>

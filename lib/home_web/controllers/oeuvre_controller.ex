@@ -73,7 +73,7 @@ defmodule HomeWeb.OeuvreController do
     |> put_resp_content_type(MIME.type("svg"))
     |> PhoenixETag.render_if_stale("tones.html",
       layout: {HomeWeb.LayoutView, "svg.html"},
-      classes: ([key, color] ++ animation ++ classes) |> Enum.join(" "),
+      classes: [key, color] ++ animation ++ classes,
       table: @table
     )
   end

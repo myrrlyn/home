@@ -59,7 +59,7 @@
 		A 45 50 1 0 0 0  0
 	" />
 </defs>
-<g id="all" class="<%= @classes %>">
+<g id="all" class={@classes |> Enum.join(" ")}>
 	<g id="inner">
 		<circle cx="0" cy="0" r="500" stroke="black" stroke-width="1px" fill="transparent" />
 		<circle class="keyring minor"/>
@@ -75,15 +75,15 @@
 			<%= for {name, note, class, num, _opts} <- @table do %>
 				<% ident = name |> Home.str_to_ident() %>
 				<% keystone = class |> String.split() |> Enum.at(-1) %>
-				<g id="<%= ident %>" class="spoke-<%= num |> to_string() %> <%= class %>">
-					<linearGradient id="fill-<%= ident %>" gradientTransform="rotate(90)">
+				<g id={ident} class={"spoke-#{num} #{class}"}>
+					<linearGradient id={"fill-#{ident}"} gradientTransform="rotate(90)">
 						<stop offset="20%" stop-opacity="1" />
 						<stop offset="60%" stop-opacity="0.6" />
 						<stop offset="80%" stop-opacity="0.3" />
 						<stop offset="95%" stop-opacity="0" />
 					</linearGradient>
-					<use href="#keystone-<%= keystone %>" class="keystone <%= keystone %>" />
-					<use href="#spoke" class="spoke" fill="url('#fill-<%= ident %>')" />
+					<use href={"#keystone-" <> keystone} class={["keystone", keystone]} />
+					<use href="#spoke" class="spoke" fill={"url('#fill-#{ident}')"} />
 					<text class="name"><%= name %></text>
 					<text class="note"><%= note %></text>
 				</g>

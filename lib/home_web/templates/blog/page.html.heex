@@ -1,12 +1,11 @@
 <article>
-	<h1 id="title" class="no-count"> <%= @meta.title %> </h1>
+	<h1 id="title" class="no-count"><%= @meta.title %></h1>
 	<%= if subtitle = @meta.subtitle do %>
-		<h2 id="subtitle" class="title no-count"> <%= subtitle %> </h2>
+		<h2 id="subtitle" class="title no-count"><%= subtitle %></h2>
 	<% end %>
 	<p>
 		Published on
-		<% d = Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
-		<%= d %>
+		<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
 	</p>
 	<p>
 		<%= @meta.summary |> Earmark.as_html! |> raw %>
