@@ -39,7 +39,7 @@ defmodule Home.Markdown do
 
     {status, ast, msgs} =
       markdown
-      |> Earmark.postprocessed_ast(%{
+      |> EarmarkParser.as_ast(%{
         @opts
         | postprocessor: fn node -> __MODULE__.walker(node, idents) end
       })

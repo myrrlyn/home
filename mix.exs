@@ -64,7 +64,8 @@ defmodule Home.MixProject do
       {:gravatar, "~> 0.1"},
       {:statistics, "~> 0.6"},
       {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev},
-      {:dialyxir, "~> 1.1", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.28", only: [:dev], runtime: false}
     ]
   end
 
