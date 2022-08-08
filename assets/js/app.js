@@ -127,10 +127,9 @@ function load_images() {
 		if (elem === undefined) { return; }
 		let image = new Image();
 		image.classList.add("unset", "gallery-img");
-		let title = image.dataset.title;
+		let title = elem.dataset.title;
 		if (title) {
 			image.alt = title;
-			image.title = title;
 		}
 		image.onload = () => {
 			elem.replaceWith(image);
@@ -139,7 +138,7 @@ function load_images() {
 		image.src = elem.dataset.src;
 	}
 
-	let elems = Array.from(document.getElementsByClassName("async-image"));
+	let elems = Array.from(document.getElementsByClassName("async-image")).reverse();
 
 	setTimeout(() => { load_one(elems); }, 20);
 	setTimeout(() => { load_one(elems); }, 15);
