@@ -1,0 +1,11 @@
+<article>
+	<p>
+		I like to use pictures of landscapes for my banner images. Here are all
+		the banners I currently serve.
+	</p>
+	<%= for {heading, images} <- @gallery do %>
+		<section>
+			<.images heading={heading}, images={images} root={Routes.static_path(@conn, ["/images", "banners"] |> Path.join())} />
+		</section>
+	<% end %>
+</article>

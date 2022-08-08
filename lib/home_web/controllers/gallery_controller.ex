@@ -19,27 +19,24 @@ defmodule HomeWeb.GalleryController do
       meta: %Home.Meta{title: "Icon Gallery"},
       navtree: fn -> __MODULE__.navtree() end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: "",
+      scope: @root,
       gallery: gallery
     )
   end
 
   def banners(conn, _) do
     conn
-    |> render("gallery.html",
+    |> render("banners.html",
       flavor: "app",
       classes: ["gallery", "banners-gallery"],
-      title: "Banner Images",
       banner: Home.Banners.weighted_random(),
       page: nil,
       meta: %Home.Meta{title: "Banner Images"},
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: "",
+      scope: @root,
       directory: "/static/images/banners",
-      gallery: %{
-        nil => File.ls!(["assets", "static", "images", "banners"] |> Path.join()) |> Enum.sort()
-      }
+      gallery: Home.Banners.by_albums()
     )
   end
 
@@ -54,7 +51,7 @@ defmodule HomeWeb.GalleryController do
       meta: %Home.Meta{title: "ISO 7010 Icons"},
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      scope: "",
+      scope: @root,
       directory: "/static/images/iso-7010",
       gallery: %{
         "E (Safe Condition)" =>

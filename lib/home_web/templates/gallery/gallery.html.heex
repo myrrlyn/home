@@ -3,13 +3,6 @@
 		<%= @page.content |> raw %>
 	</article>
 <% end %>
-<%= for {name, images} <- @gallery do %>
-	<%= if name do %>
-		<h2><%= name %></h2>
-	<% end %>
-	<div class="container d-flex flex-wrap">
-		<%= for image <- images do %>
-			<div class="async-image" data-src={[@directory, image] |> Path.join}></div>
-		<% end %>
-	</div>
+<%= for {heading, images} <- @gallery do %>
+	<.images heading={heading} images={images} />
 <% end %>

@@ -126,10 +126,12 @@ function load_images() {
 		let elem = elems.pop();
 		if (elem === undefined) { return; }
 		let image = new Image();
-		let splits = elem.dataset.src.split("/");
-		let name = splits[splits.length - 1];
-		image.alt = name;
-		image.title = name;
+		image.addClass("unset");
+		let title = image.dataset.title;
+		if (title) {
+			image.alt = title;
+			image.title = title;
+		}
 		image.onload = () => {
 			elem.replaceWith(image);
 			load_one(elems);

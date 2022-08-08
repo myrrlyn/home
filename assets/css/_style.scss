@@ -1,7 +1,7 @@
 @use "sass:math";
 
 article img {
-	&:not(.unset) {
+	&:not(.unset):not(.gallery-img) {
 		display: block;
 
 		@include media-breakpoint-up(md) {
