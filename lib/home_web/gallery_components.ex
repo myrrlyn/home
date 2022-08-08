@@ -12,9 +12,9 @@ defmodule HomeWeb.GalleryComponents do
   def image(%{title: title, caption: caption, path: path} = assigns) do
     ~H"""
     <div class="img-block">
-      <img src={path} title={title} alt={title} class="unset gallery-img" />
-      <!-- <div class="async-image" data-src={path} data-title={title}>
-      </div> -->
+      <!-- <img src={path} title={title} alt={title} class="unset gallery-img" /> -->
+      <div class="async-image" data-src={path} data-title={title}>
+      </div>
       <p class="img-caption"><%= caption %></p>
     </div>
     """

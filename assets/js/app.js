@@ -126,7 +126,7 @@ function load_images() {
 		let elem = elems.pop();
 		if (elem === undefined) { return; }
 		let image = new Image();
-		image.addClass("unset");
+		image.classList.add("unset", "gallery-img");
 		let title = image.dataset.title;
 		if (title) {
 			image.alt = title;
