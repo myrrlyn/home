@@ -15,6 +15,10 @@ defmodule HomeWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :xml do
+    plug(:accepts, ["xml"])
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", HomeWeb do
   #   pipe_through :api
@@ -22,6 +26,8 @@ defmodule HomeWeb.Router do
 
   # Catch XML early
   scope "/", HomeWeb do
+    pipe_through(:xml)
+
     get("/blog.rss", BlogController, :feed)
     get("/blog/feed.rss", BlogController, :feed)
     get("/sitemap.xml", PageController, :sitemap)
