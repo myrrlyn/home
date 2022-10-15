@@ -1,4 +1,8 @@
 defmodule HomeWeb.Boycott do
+  @moduledoc """
+  Rejects connections from certain HTTP referers.
+  """
+
   import Plug.Conn
 
   def init(default), do: default
