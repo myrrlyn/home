@@ -72,32 +72,35 @@ defmodule Home.PageCache do
   def cached(path, opts \\ []) do
     opts = Keyword.merge([lifetime: 86400, toc_filter: 2..3], opts)
 
-    case get(path) do
-      # The path has never been loaded from the filesystem; attempt to do so.
-      nil ->
-        Logger.debug("Inserting #{path} for the first time")
-        path |> load_from_fs(opts[:toc_filter])
-
-      page ->
-        Logger.debug("Found #{path}, last updated at #{page.updated_at}")
-
-        # The page is expired; attempt to reload from the filesystem.
-        if page |> expired?(opts[:lifetime]) do
-          case path |> load_from_fs(opts[:toc_filter]) do
-            {:ok, page} ->
-              {:ok, page}
-
-            # If the filesystem fails, renew the prior entry instead.
-            {:error, _} ->
-              Logger.error("Error rebuilding #{path}")
-              Logger.warning("Renewing the expired Page entry")
-              {:ok, _renew(path, page)}
-          end
-        else
-          # The page is not expired; return it as-is.
-          {:ok, page}
-        end
+    page = get(path)
+    # The path has never been loaded from the filesystem; attempt to do so.
+    if page == nil do
+      Logger.debug("Inserting #{path} for the first time")
+      throw(path |> load_from_fs(opts[:toc_filter]))
     end
+
+    Logger.debug("Found #{path}, last updated at #{page.updated_at}")
+
+    # The page is expired; attempt to reload from the filesystem.
+    exp = page |> expired?(opts[:lifetime])
+    # The page is not expired; return it as-is.
+    unless exp do
+      throw({:ok, page})
+    end
+
+    res = path |> load_from_fs(opts[:toc_filter])
+
+    # If the load succeeded, return.
+    if res == {:ok, page} do
+      throw(res)
+    end
+
+    # If the filesystem fails, renew the prior entry instead.
+    Logger.error("Error rebuilding #{path}")
+    Logger.warning("Renewing the expired Page entry")
+    {:ok, _renew(path, page)}
+  catch
+    thrown -> thrown
   end
 
   @doc """
@@ -128,16 +131,15 @@ defmodule Home.PageCache do
 
   This returns a stream of results from `compile/2`, modified so that the
   payload of both the `:ok` and `:error` variants is a tuple of `{path, object}`
-  rather than just the `object`. While the stream is in the same order as the
-  supplied paths, explicitly adding the path to the output object makes it
-  easier to consume the output stream.
+  rather than just the `object`. As this does not guarantee that the output is
+  in the same order as the input, explicitly adding the path to the output
+  object makes it easier to consume the stream.
   """
   @spec cached_many(Enumerable.t(), Keyword.t()) :: Enumerable.t()
   def cached_many(paths, opts \\ []) do
     paths
-    |> Enum.map(fn path -> Task.async(fn -> {path, cached(path, opts)} end) end)
-    |> Stream.map(&(&1 |> Task.await(:infinity)))
-    |> Stream.map(fn {path, {status, payload}} -> {status, {path, payload}} end)
+    |> Task.async_stream(fn path -> {path, cached(path, opts)} end)
+    |> Stream.map(fn {:ok, {path, {status, payload}}} -> {status, {path, payload}} end)
   end
 
   @doc """
