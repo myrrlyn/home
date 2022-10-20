@@ -1,25 +1,25 @@
-// @import "~highlight.js/scss/base16/atelier-cave-light";
-// @import "~highlight.js/scss/a11y-light";
-// @import "~highlight.js/scss/base16/atelier-forest-light";
-// @import "~highlight.js/scss/base16/atelier-heath-light";
-// @import "~highlight.js/scss/base16/atelier-seaside-light";
-// @import "~highlight.js/scss/base16/atelier-sulphurpool-light";
-// @import "~highlight.js/scss/atom-one-light";
-// @import "~highlight.js/scss/github";
-// @import "~highlight.js/scss/idea";
-// @import "~highlight.js/scss/isbl-editor-light";
-// @import "~highlight.js/scss/lightfair";
-// @import "~highlight.js/scss/nnfx";
-// @import "~highlight.js/scss/paraiso-light";
-// @import "~highlight.js/scss/stackoverflow-light";
-// @import "~highlight.js/scss/tomorrow";
-@import "~highlight.js/scss/vs";
-// @import "~highlight.js/scss/xcode";
+// @import "../../node_modules/highlight.js/scss/base16/atelier-cave-light";
+// @import "../../node_modules/highlight.js/scss/a11y-light";
+// @import "../../node_modules/highlight.js/scss/base16/atelier-forest-light";
+// @import "../../node_modules/highlight.js/scss/base16/atelier-heath-light";
+// @import "../../node_modules/highlight.js/scss/base16/atelier-seaside-light";
+// @import "../../node_modules/highlight.js/scss/base16/atelier-sulphurpool-light";
+// @import "../../node_modules/highlight.js/scss/atom-one-light";
+// @import "../../node_modules/highlight.js/scss/github";
+// @import "../../node_modules/highlight.js/scss/idea";
+// @import "../../node_modules/highlight.js/scss/isbl-editor-light";
+// @import "../../node_modules/highlight.js/scss/lightfair";
+// @import "../../node_modules/highlight.js/scss/nnfx";
+// @import "../../node_modules/highlight.js/scss/paraiso-light";
+// @import "../../node_modules/highlight.js/scss/stackoverflow-light";
+// @import "../../node_modules/highlight.js/scss/tomorrow";
+@import "../../node_modules/highlight.js/scss/vs";
+// @import "../../node_modules/highlight.js/scss/xcode";
 
 .codeblock-text,
 .codeblock-term,
 .codeblock-cosmos {
-	@import "~highlight.js/scss/gradient-light";
+	@import "../../node_modules/highlight.js/scss/gradient-light";
 }
 
 :root {

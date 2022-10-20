@@ -10,7 +10,6 @@ import Config
 # Configures the endpoint
 config :home, HomeWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "RdrZGN6gmxbDqN6tShOxfQJPoU7gjaNAbk21hO6xn2QGSc9zhtPzwb25UFy+xbk5",
   render_errors: [view: HomeWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Home.PubSub,
   live_view: [signing_salt: "HHhB0BmM"],
@@ -36,7 +35,7 @@ config :phoenix, :json_library, Jason
 
 # Use the Dart SASS driver for CSS compilation.
 config :dart_sass,
-  version: "1.53.0",
+  version: "1.55.0",
   default: [
     args: ~w(css/app.scss ../priv/static/assets/app.css),
     cd: Path.expand("../assets", __DIR__)
@@ -47,4 +46,4 @@ config :phoenix, :template_engines, heex: Phoenix.LiveView.HTMLEngine
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"
