@@ -72,6 +72,7 @@ defmodule HomeWeb do
     |> Stream.map(&(&1 |> Path.relative_to(["priv", "pages"] |> Path.join())))
     # And load them into the cache.
     |> Home.PageCache.cached_many()
+    |> Stream.run()
   end
 
   @doc """

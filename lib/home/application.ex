@@ -4,6 +4,7 @@ defmodule Home.Application do
   @moduledoc false
 
   use Application
+  require Logger
 
   def start(_type, _args) do
     children = [
@@ -30,6 +31,8 @@ defmodule Home.Application do
       {{:ok, _}, true} -> HomeWeb.fill_cache()
       _ -> nil
     end
+
+    Logger.info("boot complete")
 
     out
   end
