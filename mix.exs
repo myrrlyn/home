@@ -79,7 +79,8 @@ defmodule Home.MixProject do
     [
       setup: ["deps.get", "deps.compile"],
       serve: ["phx.digest", "phx.server"],
-      test: ["test"]
+      test: ["test"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end
