@@ -22,7 +22,7 @@ ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
-RUN apt-get update -y && apt-get install -y build-essential git \
+RUN apt-get update -y && apt-get install -y build-essential git npm \
 	&& apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # prepare build dir
@@ -86,6 +86,8 @@ ENV MIX_ENV="prod"
 
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/home ./
+# Also copy over all the assets!
+COPY --from=builder --chown=nobody:root /app/priv/ /app/bin/priv/
 
 USER nobody
 

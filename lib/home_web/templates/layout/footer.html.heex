@@ -1,17 +1,14 @@
 <footer class="grid-wrapper grid-cols screen-only">
 	<span class="grid-item text-center">
 		Served with
-		<a href="https://elixir-lang.org">Elixir <%= System.version %></a>
+		<%= link "Elixir " <> System.version, to: "https://elxir-lang.org/" %>
 		and
-		<a href="https://www.phoenixframework.org">
-			Phoenix
-			<%= :application.get_key(:phoenix, :vsn) |> elem(1) |> to_string() %>
-		</a>
+		<%= link "Phoenx " <> (:application.get_key(:phoenix, :vsn) |> elem(1) |> to_string()), to: "https://www.phoenixframework.org/" %>
 	</span>
 	<span class="grid-item text-center">
 		<%= "© 2012—#{DateTime.utc_now.year} Alexander «myrrlyn» Payne" %>
 	</span>
 	<span class="grid-item text-center">
-		Hosted on DigitalOcean
+		Hosted on <%= link "fly.io", to: "https://fly.io/" %>
 	</span>
 </footer>

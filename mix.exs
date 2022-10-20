@@ -51,6 +51,7 @@ defmodule Home.MixProject do
       {:phoenix_live_view, "~> 0.17.5"},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
+      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
@@ -63,7 +64,6 @@ defmodule Home.MixProject do
       {:yaml_elixir, "~> 2.6"},
       {:gravatar, "~> 0.1"},
       {:statistics, "~> 0.6"},
-      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.28", only: [:dev], runtime: false}
     ]
@@ -81,6 +81,8 @@ defmodule Home.MixProject do
       serve: ["assets.deploy", "phx.server"],
       test: ["test"],
       "assets.deploy": [
+        "cmd npm install --prefix assets",
+        "cmd cp -R assets/static/ priv/static/",
         "esbuild default --minify",
         "sass default --no-source-map --style=compressed",
         "phx.digest"

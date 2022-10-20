@@ -1,5 +1,4 @@
 // import "bootstrap";
-import css from "../css/klaus.scss";
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured

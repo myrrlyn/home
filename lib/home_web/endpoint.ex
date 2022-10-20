@@ -19,7 +19,7 @@ defmodule HomeWeb.Endpoint do
   # Certain static files are expected at the site root.
   plug Plug.Static,
     at: "/",
-    from: :home,
+    from: {:home, "priv/static"},
     gzip: true,
     brotli: true,
     only: ~w(favicon.ico robots.txt)
@@ -30,7 +30,7 @@ defmodule HomeWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/static",
-    from: :home,
+    from: {:home, "priv/static"},
     gzip: true,
     brotli: true,
     only: ~w(css favicons fonts images js music)

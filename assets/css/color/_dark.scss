@@ -1,21 +1,21 @@
-@import "../../node_modules/highlight.js/scss/base16/atelier-seaside";
-// @import "../../node_modules/highlight.js/scss/base16/atelier-cave";
-// @import "../../node_modules/highlight.js/scss/arta";
-// @import "../../node_modules/highlight.js/scss/an-old-hope";
-// @import "../../node_modules/highlight.js/scss/paraiso-dark";
-// @import "../../node_modules/highlight.js/scss/dracula";
-// @import "../../node_modules/highlight.js/scss/shades-of-purple";
-// @import "../../node_modules/highlight.js/scss/tomorrow-night-bright";
-// @import "../../node_modules/highlight.js/scss/xt256";
+@import "highlight.js/scss/base16/atelier-seaside";
+// @import "highlight.js/scss/base16/atelier-cave";
+// @import "highlight.js/scss/arta";
+// @import "highlight.js/scss/an-old-hope";
+// @import "highlight.js/scss/paraiso-dark";
+// @import "highlight.js/scss/dracula";
+// @import "highlight.js/scss/shades-of-purple";
+// @import "highlight.js/scss/tomorrow-night-bright";
+// @import "highlight.js/scss/xt256";
 
 .codeblock-sh {
-	@import "../../node_modules/highlight.js/scss/vs2015";
+	@import "highlight.js/scss/vs2015";
 }
 
 .codeblock-text,
 .codeblock-term,
 .codeblock-cosmos {
-	@import "../../node_modules/highlight.js/scss/gradient-dark";
+	@import "highlight.js/scss/gradient-dark";
 }
 
 :root {

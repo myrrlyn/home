@@ -25,7 +25,7 @@ config :esbuild,
   version: "0.14.29",
   default: [
     args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+      ~w(js/app.js js/klaus.js js/mathjax.js js/oeuvre.js --bundle --target=es2017 --outdir=../priv/static/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
@@ -37,7 +37,7 @@ config :phoenix, :json_library, Jason
 config :dart_sass,
   version: "1.55.0",
   default: [
-    args: ~w(css/app.scss ../priv/static/assets/app.css),
+    args: ~w(-Inode_modules css:../priv/static/css),
     cd: Path.expand("../assets", __DIR__)
   ]
 

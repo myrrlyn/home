@@ -71,7 +71,7 @@ defmodule HomeWeb.OeuvreController do
     conn
     # Because Phoenix can’t use any other filename, set the MIME type directly.
     |> put_resp_content_type(MIME.type("svg"))
-    |> PhoenixETag.render_if_stale("tones.html",
+    |> render("tones.html",
       layout: {HomeWeb.LayoutView, "svg.html"},
       classes: [key, color] ++ animation ++ classes,
       table: @table
