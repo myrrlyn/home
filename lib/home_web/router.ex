@@ -79,9 +79,14 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :home)
+
+    get("/favicon.ico", AssetController, :favicon_ico)
+    get("/keybase.txt", AssetController, :keybase_txt)
+    get("/.well-known/*file", AssetController, :well_known)
+
     get("/hn", PageController, :refuse)
-    get("/favicon.ico", PageController, :favicon_ico)
     get("/klaus", KlausController, :page)
+
     get("/*path", PageController, :page)
   end
 end

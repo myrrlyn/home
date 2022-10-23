@@ -21,10 +21,15 @@ defmodule HomeWeb.Endpoint do
     at: "/",
     from: {:home, "priv/static"},
     gzip: true,
-    brotli: true,
     only: ~w(favicon.ico robots.txt)
 
-  # Serve at "/static" the static files from "priv/static" directory.
+  # Others are expected in `/.well-known/`.
+  plug Plug.Static,
+    at: "/.well-known",
+    from: {:home, "priv/static/well-known"},
+    gzip: true
+
+  # Serve at "/static" the rest of the static files from "priv/static" directory
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
