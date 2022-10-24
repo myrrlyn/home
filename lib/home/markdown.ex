@@ -8,6 +8,7 @@ defmodule Home.Markdown do
     footnotes: true,
     gfm: true,
     postprocessor: &__MODULE__.walker/1,
+    sub_sup: true,
     smartypants: false
   }
 
