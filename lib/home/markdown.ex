@@ -3,11 +3,11 @@ defmodule Home.Markdown do
   @type toc_item :: {String.t(), String.t(), toc_tree}
 
   @opts %Earmark.Options{
-    gfm: true,
     breaks: false,
     code_class_prefix: "lang- language-",
-    smartypants: false,
-    postprocessor: &__MODULE__.walker/1
+    gfm: true,
+    postprocessor: &__MODULE__.walker/1,
+    smartypants: false
   }
 
   @doc """
@@ -37,22 +37,32 @@ defmodule Home.Markdown do
         {:error, _} -> nil
       end
 
-    {status, ast, msgs} =
-      markdown
-      |> EarmarkParser.as_ast(%{
-        @opts
-        | postprocessor: fn node -> __MODULE__.walker(node, idents) end
-      })
+    opts = %Earmark.Options{
+      @opts
+      | postprocessor: &walker(&1, idents)
+    }
 
-    case idents do
-      nil -> nil
-      pid -> pid |> __MODULE__.Idents.stop()
+    {ast, msgs} =
+      case EarmarkParser.as_ast(markdown, opts) do
+        # EarmarkParser doesn't apply the postprocessor anymore, so we must
+        # explicitly do so here *before* passing it in to our own processors.
+        {:ok, ast, msgs} -> {Earmark.Transform.map_ast(ast, opts.postprocessor), msgs}
+        other -> throw(other)
+      end
+
+    {toc_tree, html} =
+      {Task.async(fn -> build_toc(ast, tocs, opts) end),
+       Task.async(fn -> ast |> ast_to_html(opts) |> restore_tags() end)}
+
+    {toc_tree, html} = {toc_tree |> Task.await(), html |> Task.await()}
+
+    if idents do
+      __MODULE__.Idents.stop(idents)
     end
 
-    toc_tree = Task.async(fn -> ast |> build_toc(tocs) end)
-    html = Task.async(fn -> ast |> ast_to_html() |> restore_tags() end)
-
-    {status, html |> Task.await(), toc_tree |> Task.await(), msgs}
+    {:ok, html, toc_tree, msgs}
+  catch
+    out -> out
   end
 
   @doc """
@@ -83,11 +93,8 @@ defmodule Home.Markdown do
   end
 
   # <h1> receives a .title class
-  def walker({"h1", attrs, inner, meta}, collector) do
-    classes = attrs |> List.keyfind("class", 0, {"class", ""}) |> elem(1) |> String.split()
-    classes = ["title" | classes] |> Enum.uniq() |> Enum.join(" ")
-    attrs = attrs |> List.keystore("class", 0, {"class", classes})
-    process_header({"h1", attrs, inner, meta}, collector)
+  def walker({"h1", _, _, _} = node, collector) do
+    node |> Earmark.AstTools.merge_atts_in_node(class: "title") |> process_header(collector)
   end
 
   # Match against any of the subheadings and send them to the headings processor.
@@ -140,11 +147,7 @@ defmodule Home.Markdown do
           {anchor, rest}
       end
 
-    anchor =
-      case collector do
-        nil -> anchor
-        pid -> pid |> __MODULE__.Idents.identify(anchor)
-      end
+    anchor = collector |> __MODULE__.Idents.identify(anchor)
 
     {classes, rest} =
       case rest |> List.keytake("class", 0) do
@@ -152,15 +155,11 @@ defmodule Home.Markdown do
         {{"class", classes}, rest} -> {classes |> String.split(), rest}
       end
 
-    classes = classes |> Enum.uniq()
-    attrs = [{"class", classes |> Enum.join(" ")} | rest]
+    attrs = [{"class", classes |> Enum.uniq() |> Enum.join(" ")} | rest]
 
     case anchor do
-      "" ->
-        {header, attrs, inner, meta}
-
-      anchor ->
-        {header, [{"id", anchor} | attrs], inner, meta}
+      "" -> {header, attrs, inner, meta}
+      anchor -> {header, [{"id", anchor} | attrs], inner, meta}
     end
   end
 
@@ -229,9 +228,9 @@ defmodule Home.Markdown do
 
   `TOC`, where `TOC ` is `[name, ident, TOC]`
   """
-  def build_toc(ast, tocs \\ 1..6) do
+  def build_toc(ast, tocs \\ 1..6, opts \\ @opts) do
     ast
-    |> flatten()
+    |> flatten(opts)
     |> Stream.filter(fn rec -> keep_headings(rec, tocs) end)
     |> Stream.filter(fn {_, attrs, _, _} ->
       !(attrs
@@ -285,16 +284,16 @@ defmodule Home.Markdown do
   The *contents* of each AST node are moved out of it and appended to the list,
   leaving a now-empty node in its original position.
   """
-  def flatten(ast)
+  def flatten(ast, opts)
 
-  def flatten([]), do: []
-  def flatten([text | rest]) when is_binary(text), do: flatten(rest)
+  def flatten([], _opts), do: []
+  def flatten([text | rest], opts) when is_binary(text), do: flatten(rest, opts)
 
-  def flatten([{tag, attrs, inner, meta} | rest]) do
+  def flatten([{tag, attrs, inner, meta} | rest], opts) do
     [
-      {tag, attrs, inner |> ast_to_html(), meta}
-      | flatten(inner)
-    ] ++ flatten(rest)
+      {tag, attrs, inner |> ast_to_html(opts), meta}
+      | flatten(inner, opts)
+    ] ++ flatten(rest, opts)
   end
 
   @doc """
@@ -305,7 +304,10 @@ defmodule Home.Markdown do
     Enum.member?(tocs, tag |> heading_to_rank)
   end
 
-  def ast_to_html(ast), do: Earmark.Transform.transform(ast, @opts)
+  def ast_to_html(ast, opts) do
+    ast
+    |> Earmark.Transform.transform(opts)
+  end
 
   @doc """
   Un-escapes certain tags. Does not support attributes in those tags.
@@ -370,8 +372,8 @@ defmodule Home.Markdown do
   def toc_tree([]), do: []
 
   def toc_tree(headings) do
-    {head, tail} = headings |> split_headings
-    (head |> make_tree()) ++ (tail |> toc_tree())
+    {head, tail} = split_headings(headings)
+    make_tree(head) ++ toc_tree(tail)
   end
 
   @doc """
@@ -433,7 +435,7 @@ defmodule Home.Markdown do
     @doc """
     Starts up a new, fresh, collector.
     """
-    def start_link(_opts \\ []), do: Agent.start_link(fn -> %{} end)
+    def start_link(_opts \\ []), do: Agent.start_link(&Map.new/0)
 
     @doc """
     Submits an identifier to the collector.
@@ -448,24 +450,24 @@ defmodule Home.Markdown do
     A unique identifier string.
     """
     def identify(this, ident) do
-      this
-      |> Agent.get_and_update(fn idents ->
-        case idents |> Map.get(ident) do
-          nil ->
-            {ident, idents |> Map.put(ident, 1)}
+      if this == nil do
+        throw(ident)
+      end
 
-          n ->
-            {"#{ident}-#{n}", %{idents | ident => n + 1}}
+      Agent.get_and_update(this, fn idents ->
+        case idents |> Map.get(ident) do
+          nil -> {ident, idents |> Map.put(ident, 1)}
+          n -> {"#{ident}-#{n}", %{idents | ident => n + 1}}
         end
       end)
+    catch
+      ident -> ident
     end
 
     @doc """
     Resets the collector to the blank state.
     """
-    def reset(this) do
-      this |> Agent.update(fn _ -> %{} end)
-    end
+    def reset(this), do: Agent.update(this, fn _ -> Map.new() end)
 
     @doc """
     Terminates the collector.

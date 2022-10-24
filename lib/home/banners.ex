@@ -1310,6 +1310,7 @@ defmodule Home.Banners do
       |> Stream.map(& &1.freq)
       |> Enum.reduce(&(&1 + &2))
       |> :rand.uniform()
+      |> (fn num -> num - 1 end).()
 
     out =
       banners
@@ -1339,7 +1340,7 @@ defmodule Home.Banners do
   """
   def teslore(nil) do
     idx = @teslore |> length |> :rand.uniform()
-    {_, out} = @teslore |> Enum.at(idx)
+    {_, out} = @teslore |> Enum.at(idx - 1)
     path = out.path
     %{out | path: ["oeuvre", path] |> Path.join()}
   end
