@@ -196,7 +196,7 @@ defmodule Home.PageCache do
   Empties the cache, evicting every entry it contains.
   """
   @spec reset() :: :ok
-  def reset(), do: Agent.update(__MODULE__, fn _ -> %{} end)
+  def reset(), do: Agent.update(__MODULE__, fn _ -> Map.new() end)
 
   @doc """
   Tests if a `Home.Page` object has expired according to either its filesystem
@@ -267,8 +267,15 @@ defmodule Home.PageCache do
         Logger.debug("Caching #{path} from fs")
         {:ok, _renew(path, page)}
 
+      {:error, err = %Home.Page.NotFoundException{}} ->
+        Logger.error("File does not exist: #{path}")
+        {:error, err}
+
       {:error, err} ->
-        Logger.error("Error compiling #{path} as a `Home.Page` for `Home.PageCache`")
+        Logger.error(
+          "Error compiling #{path} as a `Home.Page` for `Home.PageCache`: #{err |> inspect()}"
+        )
+
         {:error, err}
     end
   end

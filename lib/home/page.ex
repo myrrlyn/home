@@ -35,14 +35,14 @@ defmodule Home.Page do
   """
   @spec compile(Path.t(), Range.t()) :: {:ok, __MODULE__.t()} | {:error, any}
   def compile(path, toc_filter \\ 2..3) do
-    p = ["priv", "pages", path] |> Path.join()
+    path = ["priv", "pages", path] |> Path.join()
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
-    case p |> load do
+    case path |> load do
       {:ok, contents, mtime} ->
-        {:ok, build(p, contents, mtime, toc_filter)}
+        {:ok, build(path, contents, mtime, toc_filter)}
 
       {:error, :enoent} ->
-        {:error, %NotFoundException{message: "File #{p} does not exist"}}
+        {:error, %NotFoundException{message: "File #{path} does not exist"}}
     end
   end
 
@@ -59,20 +59,18 @@ defmodule Home.Page do
   def metadata(path) do
     p = ["priv", "pages", path] |> Path.join()
 
-    case p |> load do
-      {:ok, text, _} ->
-        {yml, _} =
-          try do
-            text |> split
-          rescue
-            _ -> raise __MODULE__.BadContentException, message: "Invalid YAML/MD source file"
-          end
+    {text, _} = load!(p)
 
-        yml |> Home.Meta.from_string()
+    {yml, _} =
+      try do
+        split(text)
+      rescue
+        _ -> raise __MODULE__.BadContentException, message: "Invalid YAML/MD source file"
+      end
 
-      {:error, :enoent} ->
-        {:error, %NotFoundException{message: "File #{p} does not exist"}}
-    end
+    yml |> Home.Meta.from_string()
+  rescue
+    err -> {:error, err}
   end
 
   def metadata!(path) do
@@ -83,86 +81,19 @@ defmodule Home.Page do
   end
 
   def build(path, text, mtime, toc_filter) do
-    path_date =
-      try do
-        [y, m, d] =
-          case path |> Path.basename() |> String.split("-", parts: 4) do
-            [y, m, d, _rest] -> [y, m, d]
-            _ -> throw(nil)
-          end
+    path_date = date_from_path(path)
+    {yaml, md} = split_frontmatter!(path, text)
 
-        [y, m, d] =
-          [y, m, d]
-          |> Enum.map(fn part ->
-            case part |> Integer.parse() do
-              {num, ""} -> num
-              _ -> throw(nil)
-            end
-          end)
+    {:ok, meta} = Home.Meta.from_string(yaml)
+    {:ok, html, toc, _warns} = Home.Markdown.render(md, toc_filter)
 
-        date =
-          case Date.new(y, m, d) do
-            {:ok, date} -> date
-            _ -> throw(nil)
-          end
-
-        case DateTime.new(date, ~T[00:00:00], "Etc/UTC") do
-          {:ok, date} -> date
-          _ -> throw(nil)
-        end
-      catch
-        nil -> nil
-      end
-
-    {yaml, md} =
-      try do
-        text
-        |> split
-      rescue
-        _ ->
-          raise __MODULE__.BadContentException, message: "Invalid YAML/MD source file in #{path}"
-      end
-
-    {:ok, meta} = yaml |> Home.Meta.from_string()
-    {:ok, html, toc, _warns} = md |> Elixir.Home.Markdown.render(toc_filter)
-
-    meta =
-      case {meta.date, path_date} do
-        {nil, nil} ->
-          Logger.warn("YAML frontmatter should have a `date` key", yaml: meta)
-          meta
-
-        {nil, date} ->
-          Logger.debug(
-            "Setting `date` from path: #{path} => #{date |> Timex.format!("{ISOdate}")}"
-          )
-
-          %Home.Meta{meta | date: date}
-
-        {_, _} ->
-          meta
-      end
-
-    meta =
-      case meta.props |> Map.get("about") do
-        nil ->
-          meta
-
-        text ->
-          html = text |> Earmark.as_html!()
-          %Home.Meta{meta | props: %{meta.props | "about" => html}}
-      end
+    meta = make_meta(meta, path_date, path)
 
     %__MODULE__{
       id: path,
       updated_at: mtime,
       meta: meta,
-      toc:
-        if meta.show_toc do
-          toc
-        else
-          []
-        end,
+      toc: if(meta.show_toc, do: toc, else: []),
       content: html
     }
   end
@@ -179,6 +110,20 @@ defmodule Home.Page do
       {{:ok, text}, {:ok, stat}} -> {:ok, text, stat.mtime |> DateTime.from_unix!()}
       {{:error, err}, _} -> {:error, err}
       {_, {:error, err}} -> {:error, err}
+    end
+  end
+
+  @doc """
+  Loads a file from `priv/pages`, raising if an error is encountered.
+  """
+  @spec load!(Path.t()) :: {String.t(), DateTime.t()}
+  def load!(path) do
+    case load(path) do
+      {:ok, text, date} ->
+        {text, date}
+
+      {:error, :enoent} ->
+        raise __MODULE__.NotFoundException, message: "File #{path} does not exist"
     end
   end
 
@@ -214,5 +159,82 @@ defmodule Home.Page do
   def split(text) do
     [head, tail] = text |> String.split(~r/\r?\n-{3,}(\r?\n)+/, parts: 2)
     {head |> String.replace(~r/-{3,}\r?\n/, ""), tail}
+  end
+
+  @doc """
+  Extracts a date from a filename that is formatted as `YYYY-MM-DD-restofname`.
+  """
+  @spec date_from_path(Path.t()) :: DateTime.t() | nil
+  def date_from_path(path) do
+    # Try to read date fragments from the filename
+    [y, m, d] =
+      case path |> Path.basename() |> String.split("-", parts: 4) do
+        [y, m, d, _rest] -> [y, m, d]
+        _ -> throw(nil)
+      end
+      |> Enum.map(fn part ->
+        case part |> Integer.parse() do
+          {num, ""} -> num
+          _ -> throw(nil)
+        end
+      end)
+
+    # Try to parse the fragments as a date
+    date =
+      case Date.new(y, m, d) do
+        {:ok, date} -> date
+        _ -> throw(nil)
+      end
+
+    # And then attach a time (midnight, since we don't have more precision)
+    case DateTime.new(date, ~T[00:00:00], "Etc/UTC") do
+      {:ok, date} -> date
+      _ -> throw(nil)
+    end
+  catch
+    nil -> nil
+  end
+
+  @doc """
+  Finishes some metadata attributes such as the date (which can be supplied by
+  the filename) and descriptive text.
+  """
+  def make_meta(meta, path_date, path) do
+    # Try to set the date
+    meta =
+      case {meta.date, path_date} do
+        {nil, nil} ->
+          Logger.warn("YAML frontmatter should have a `date` key", yaml: meta, path: path)
+          meta
+
+        {nil, date} ->
+          Logger.debug("Setting `date` from path",
+            path: path,
+            date: date |> Timex.format!("{ISOdate}")
+          )
+
+          %Home.Meta{meta | date: date}
+
+        {_, _} ->
+          meta
+      end
+
+    # If the metadata contains about-text, render it from Markdown
+    case meta.props |> Map.get("about") do
+      nil ->
+        meta
+
+      text ->
+        html = text |> Earmark.as_html!()
+        %Home.Meta{meta | props: %{meta.props | "about" => html}}
+    end
+  end
+
+  defp split_frontmatter!(path, text) do
+    split(text)
+  rescue
+    _ ->
+      raise __MODULE__.BadContentException,
+        message: "Invalid Yaml/Markdown source file in #{path}"
   end
 end
