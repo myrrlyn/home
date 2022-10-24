@@ -1,5 +1,3 @@
-// import "bootstrap";
-
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
 // in "webpack.config.js".
@@ -16,6 +14,6 @@ window.onload = () => {
 	let to = document.getElementById("date");
 	if ((from !== null) && (to !== null)) {
 		to.innerText = from.innerText;
-		from.parentNode.removeChild(from);
+		from.parentNode?.removeChild(from);
 	}
 };
