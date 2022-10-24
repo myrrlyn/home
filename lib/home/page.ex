@@ -204,15 +204,11 @@ defmodule Home.Page do
     meta =
       case {meta.date, path_date} do
         {nil, nil} ->
-          Logger.warn("YAML frontmatter should have a `date` key", yaml: meta, path: path)
+          Logger.warn("YAML frontmatter should have a `date` key: #{path}")
           meta
 
         {nil, date} ->
-          Logger.debug("Setting `date` from path",
-            path: path,
-            date: date |> Timex.format!("{ISOdate}")
-          )
-
+          Logger.debug("Setting date from path: #{path} (#{date |> Timex.format!("{ISOdate}")}")
           %Home.Meta{meta | date: date}
 
         {_, _} ->
