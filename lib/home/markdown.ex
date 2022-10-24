@@ -5,6 +5,7 @@ defmodule Home.Markdown do
   @opts %Earmark.Options{
     breaks: false,
     code_class_prefix: "lang- language-",
+    footnotes: true,
     gfm: true,
     postprocessor: &__MODULE__.walker/1,
     smartypants: false
