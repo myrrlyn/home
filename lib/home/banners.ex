@@ -7,13 +7,13 @@ defmodule Home.Banners.Banner do
             caption: nil,
             album: nil,
             freq: 1,
-            pos: {"center", "center"}
+            pos: {:center, :center}
 
   @doc """
   Gets the CSS position string for the banner.
   """
-  def position(%__MODULE__{pos: {x, y}}) do
-    "#{x} #{y}"
+  def position(%__MODULE__{pos: {v, h}}) do
+    "#{v} #{h}"
   end
 end
 
@@ -182,7 +182,8 @@ defmodule Home.Banners do
         :waterfront
       ],
       caption: "Rota-Kiwan Scout Reservation, waterfront, dusk",
-      album: :rksr
+      album: :rksr,
+      pos: {:bottom, :center}
     },
     %__MODULE__.Banner{
       path: "2015-05-27T16-22-02.jpg",
@@ -316,7 +317,7 @@ defmodule Home.Banners do
         :sky
       ],
       caption: "Backyard in Jonesville, MI",
-      pos: {"bottom", "right"}
+      pos: {:bottom, :right}
     },
     %__MODULE__.Banner{
       path: "2015-08-21T15-14-59.jpg",

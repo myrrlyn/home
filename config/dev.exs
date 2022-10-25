@@ -9,7 +9,7 @@ import Config
 config :home, HomeWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: 1312],
   code_reloader: true,
   check_origin: false,
   debug_errors: true,

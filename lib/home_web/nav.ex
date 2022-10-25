@@ -1,7 +1,18 @@
 defmodule HomeWeb.Nav do
+  @moduledoc """
+  Assists with the creation of navigation lists.
+  """
+
   defmodule Entry do
+    @moduledoc """
+    A single entry in a navigation list. Contains a display name, a URL, a date
+    (or other marking), and a list of HTML element attributes.
+    """
     defstruct name: nil, url: nil, date: nil, attrs: []
 
+    @doc """
+    Produces a new Nav.Entry from its components.
+    """
     def new(name, url, date \\ nil, attrs \\ []) do
       %__MODULE__{
         name: name,
@@ -11,6 +22,12 @@ defmodule HomeWeb.Nav do
       }
     end
 
+    @doc """
+    Marks a navigation entry as being the currently-viewed object.
+
+    This accepts `left:` and `right:` options, which are the decorators applied
+    to the entry's name to indicate that it is currently being viewed.
+    """
     def mark_current(%__MODULE__{name: name, attrs: attrs} = this, current, opts) do
       opts = Keyword.merge([left: "👉", right: "👈"], opts)
 
@@ -25,6 +42,17 @@ defmodule HomeWeb.Nav do
     end
   end
 
+  @doc """
+  Makes a stream of `Entry` objects from a stream of semi-structured
+  information.
+
+  `entries` can be a stream of:
+
+  - `{url, %Home.Meta{}}`
+  - `{name, url, decorator}`
+
+  The `current` and `opts` arguments are forwarded to `Entry.mark_current`.
+  """
   def make_listing(entries, current \\ nil, opts \\ []) do
     entries
     |> Stream.map(&process/1)
