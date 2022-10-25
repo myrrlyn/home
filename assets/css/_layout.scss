@@ -127,7 +127,7 @@ $about-clear: math.div($avi-height, 2) - $header-border;
 	@include media-breakpoint-up(md) {
 		.logo.gravatar a {
 			position: absolute;
-			top: $header-height + $header-border - math.div($avi-height, 2);
+			top: $header-height + (2 * $header-border) - math.div($avi-height, 2);
 		}
 
 		#about-text {

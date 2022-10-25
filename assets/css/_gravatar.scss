@@ -2,11 +2,15 @@
 
 #gravatar {
 	background: {
-		color: $bell-ochre;
+		image: linear-gradient(to bottom,
+			#{$bell-blue} 50%,
+			#{$bell-ochre} 50%);
 	}
+
 	border: {
 		radius: math.div($avi-size + (2 * $avi-rim), 2);
 	}
+
 	padding: $avi-rim;
 	width: $avi-size;
 	height: $avi-size;
@@ -20,6 +24,7 @@
 			right: auto;
 			bottom: 16px;
 		}
+
 		&.gravatar {
 			width: $avi-size + (2 * $avi-rim);
 		}
