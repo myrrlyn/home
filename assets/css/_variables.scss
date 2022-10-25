@@ -1,5 +1,5 @@
 $avi-size: 192px;
-$avi-rim: 8px;
+$avi-rim: 4px;
 $avi-height: $avi-size + (2 * $avi-rim);
 
 // The max width of *all* content on the screen.
@@ -29,6 +29,7 @@ $iso7010-image-size: 3em;
 		right: $lr-width solid transparent;
 		bottom: $tb-width solid transparent;
 	}
+
 	padding-left: 1em;
 }
 
