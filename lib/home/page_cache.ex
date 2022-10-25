@@ -138,7 +138,8 @@ defmodule Home.PageCache do
   @spec cached_many(Enumerable.t(), Keyword.t()) :: Enumerable.t()
   def cached_many(paths, opts \\ []) do
     paths
-    |> Task.async_stream(fn path -> {path, cached(path, opts)} end)
+    |> Task.async_stream(fn path -> {path, cached(path, opts)} end, timeout: :infinity)
+    |> Stream.filter(fn {status, _} -> status == :ok end)
     |> Stream.map(fn {:ok, {path, {status, payload}}} -> {status, {path, payload}} end)
   end
 

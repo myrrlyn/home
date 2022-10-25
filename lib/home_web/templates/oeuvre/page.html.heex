@@ -4,11 +4,11 @@
 		<h2 id="subtitle" class="title"><%= subtitle %></h2>
 	<% end %>
 	<p>
-		<a href={"//old.reddit.com/r/teslore/comments/" <> @meta.props["reddit"]}>
-			Originally published to /r/teslore
-		</a>
+		<%= link "Originally published to /r/teslore", to: "//old.reddit.com/r/teslore/comments/#{@meta.props["reddit"]}" %>
 		on
-		<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D} at {h24}:{m}") %>
+		<time datetime={Timex.format!(@meta.date, "{RFC3339z}")}>
+			<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D} at {h24}:{m}") %>
+		</time>
 	</p>
 	<%= if @page.toc != [] do %>
 		<nav aria-label="Table of Contents">

@@ -5,7 +5,9 @@
 	<% end %>
 	<p>
 		Published on
-		<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
+		<time datetime={Timex.format!(@meta.date, "{ISOdate}")}>
+			<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
+		</time>
 	</p>
 	<p>
 		<%= @meta.summary |> Earmark.as_html! |> raw %>

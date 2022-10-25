@@ -101,7 +101,7 @@ defmodule HomeWeb.BlogController do
       flavor: "app",
       classes: ["blog"],
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      navtree: fn -> __MODULE__.navtree(req_url) end,
+      navtree: fn -> navtree(req_url) end,
       scope: @root,
       req_url: req_url
     )
@@ -150,7 +150,7 @@ defmodule HomeWeb.BlogController do
       banner: Home.Banners.weighted_random(),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       classes: ["blog"],
-      navtree: fn -> navtree() end,
+      navtree: &navtree/0,
       page: nil,
       meta: %Home.Meta{title: title},
       scope: @root,
@@ -165,7 +165,7 @@ defmodule HomeWeb.BlogController do
   Articles are already sorted into category folders on the filesystem, so this
   function merely loads the contents of each category folder and keeps them
   clustered together, rather than returning one mixed collection like
-  `page_listing` does.
+  `get_articles` does.
 
   ## Parameters
 
@@ -195,16 +195,14 @@ defmodule HomeWeb.BlogController do
           end
         end).()
     |> Stream.filter(&([@dir, &1] |> Path.join() |> File.dir?()))
-    |> Enum.map(fn dir ->
-      Task.async(fn ->
-        dir
-        |> src_paths()
-        |> get_articles()
-        |> (fn pages -> {dir, pages} end).()
-      end)
+    |> Task.async_stream(fn dir ->
+      {dir,
+       dir
+       |> src_paths()
+       |> get_articles()}
     end)
-    |> Stream.map(&Task.await/1)
-    |> Stream.map(fn {slug, pages} ->
+    |> Stream.filter(fn {status, _} -> status == :ok end)
+    |> Stream.map(fn {:ok, {slug, pages}} ->
       name = slug |> String.split("-") |> Stream.map(&String.capitalize/1) |> Enum.join(" ")
 
       {case name do
@@ -217,37 +215,22 @@ defmodule HomeWeb.BlogController do
 
   def navtree(current \\ nil) do
     [
-      {"<code>.</code> <small>(Blog index)</small>", "#{@root}", "dr-x"},
-      {"<code>..</code> <small>(Site index)</small>", "/", "dr-x"}
-    ] ++ page_listing(current)
+      HomeWeb.Nav.Entry.new("📚 <small>(Blog index)</small>", @root, "dr-xr-xr-x"),
+      HomeWeb.Nav.Entry.new("🏡 <small>(Site index)</small>", "/", "dr-xr-xr-x")
+    ]
+    |> Stream.concat(HomeWeb.Nav.make_listing(get_articles(), current))
   end
 
-  @doc """
-  Lists all articles in the blog system, irrespective of category and sorted by
-  date.
-  """
-  @spec page_listing(Path.t() | nil) :: [{String.t(), Path.t(), String.t()}]
-  def page_listing(current \\ nil) do
+  def page_listing() do
     get_articles()
     |> Stream.map(fn {url, meta} ->
-      {"<span class=\"title\">" <> meta.title <> "</span>", url,
+      {meta.title, url,
        if meta.published do
          Timex.format!(meta.date, "{ISOdate}")
        else
          "DRAFT PAGE"
        end}
     end)
-    |> Stream.map(fn {name, url, date} ->
-      name =
-        if url == current do
-          "👉 " <> name <> " 👈"
-        else
-          name
-        end
-
-      {name, url, date}
-    end)
-    |> Enum.to_list()
   end
 
   @doc """

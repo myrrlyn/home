@@ -74,20 +74,10 @@ defmodule HomeWeb.PageController do
   end
 
   def navtree(current \\ nil) do
-    page_listing()
-    |> Enum.map(fn {name, url, attr} ->
-      name =
-        if url == current do
-          "👉 " <> name <> " 👈"
-        else
-          name
-        end
-
-      {name, url, attr}
-    end)
+    HomeWeb.Nav.make_listing(page_listing(), current)
   end
 
-  def page_listing do
+  def page_listing() do
     [
       {"Home", "/", "-r--"},
       {"About", "/about", "-r--"},

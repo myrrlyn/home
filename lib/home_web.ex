@@ -78,10 +78,12 @@ defmodule HomeWeb do
   @doc """
   Lists all the pages available on the site.
   """
-  @spec page_listing :: [{String.t(), Path.t(), String.t()}]
-  def page_listing do
-    HomeWeb.PageController.page_listing() ++
-      HomeWeb.BlogController.page_listing() ++ HomeWeb.OeuvreController.page_listing()
+  def page_listing() do
+    Stream.concat([
+      HomeWeb.PageController.page_listing(),
+      HomeWeb.BlogController.page_listing(),
+      HomeWeb.OeuvreController.page_listing()
+    ])
   end
 
   defp view_helpers do

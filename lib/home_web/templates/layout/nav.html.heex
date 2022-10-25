@@ -1,13 +1,13 @@
 <nav aria-label="Sitemap">
-	<code><%= "$ ls ~#{@scope}" %></code>
-	<ul style="list-style-type: none; padding-left: 0;">
-		<%= for {show, url, perm} <- (@navtree).() do %>
+	<code>$ ls ~<%= @scope %></code>
+	<ol style="list-style-type: none; padding-left: 0;">
+		<%= for %HomeWeb.Nav.Entry{name: name, url: url, date: date, attrs: attrs} <- (@navtree).() do %>
 			<li>
-				<%= if perm != nil do %>
-					<code class="inline"><%= perm %></code>
+				<%= if date != nil do %>
+					<code class="inline"><%= raw(date) %></code>
 				<% end %>
-				<a href={url}><%= show |> raw %></a>
+				<%= link raw(name), [{:to, url} | attrs] %>
 			</li>
 		<% end %>
-	</ul>
+	</ol>
 </nav>

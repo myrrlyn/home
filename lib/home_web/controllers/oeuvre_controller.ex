@@ -122,33 +122,22 @@ defmodule HomeWeb.OeuvreController do
 
   def navtree(current \\ nil) do
     [
-      {"Library desk <small>(Oeuvre index)</small>", "#{@root}", nil},
-      {"Lobby <small>(Site index)</small>", "/", nil}
-    ] ++
-      (page_listing(current)
-       |> Enum.map(fn {name, url, date} ->
-         {"<span class=\"title\">#{name}</span>", url, date}
-       end))
+      HomeWeb.Nav.Entry.new("Library desk <small>(Oeuvre index)</small>", @root),
+      HomeWeb.Nav.Entry.new("Lobby <small>(Site index)</small>", "/")
+    ]
+    |> Stream.concat(HomeWeb.Nav.make_listing(get_fanfic(), current, left: "📖", right: "🪶"))
   end
 
-  def page_listing(current \\ nil) do
+  def page_listing() do
     get_fanfic()
-    |> Stream.map(fn {path, meta} ->
-      {:ok, date} = meta.date |> Timex.format("{ISOdate}")
-
-      {meta.title, "#{path |> Path.rootname()}", date}
+    |> Stream.map(fn {url, meta} ->
+      {meta.title, url,
+       if meta.published do
+         Timex.format!(meta.date, "{ISOdate}")
+       else
+         "DRAFT WORK"
+       end}
     end)
-    |> Stream.map(fn {name, url, date} ->
-      name =
-        if url == current do
-          "👉 #{name} 👈"
-        else
-          name
-        end
-
-      {name, url, date}
-    end)
-    |> Enum.to_list()
   end
 
   def get_fanfic() do

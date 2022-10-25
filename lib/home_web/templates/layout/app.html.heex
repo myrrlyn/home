@@ -40,9 +40,13 @@
 					<%= render(view_module(@conn), "about.html", assigns) %>
 					<%= render("nav.html", conn: @conn, page: @page, navtree: @navtree, scope: @scope || "") %>
 					<small>
-						I recently rebuilt this site. I would appreciate bug reports, in
-						presentation, content, or formerly-working links, at
-						<a href="//github.com/myrrlyn/home">the GitHub repository</a>.
+						If something is wrong with this website, I would
+						appreciate it if you let me know at
+						<% base_url = "//github.com/myrrlyn/home/issues/new" %>
+						<% title = "?title=Content%20erratum" %>
+						<% body = "&body=I was browsing `#{@conn.request_path}` and saw %E2%80%A6" |> String.replace(" ", "%20") %>
+						<% new_issue = base_url <> title <> body %>
+						<%= link "the GitHub repository", to: new_issue %>.
 					</small>
 					<%= render("logos.html", conn: @conn) %>
 				</div>
