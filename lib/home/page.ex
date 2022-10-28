@@ -36,8 +36,32 @@ defmodule Home.Page do
   @spec compile(Path.t(), Range.t()) :: {:ok, __MODULE__.t()} | {:error, any}
   def compile(path, toc_filter \\ 2..3) do
     path = ["priv", "pages", path] |> Path.join()
+
+    # The fly.io system shows decomposed filenames for some reason.
+    decomposed = path |> String.normalize(:nfkd)
+    composed = path |> String.normalize(:nfkc)
+
+    path =
+      cond do
+        File.exists?(path) ->
+          path
+
+        File.exists?(composed) ->
+          Logger.notice("The path does not exist as given, but does exist when normalized NFKC")
+          composed
+
+        File.exists?(decomposed) ->
+          Logger.notice("The path does not exist as given, but does exist when normalized NFKD")
+          decomposed
+
+        # Give up, it's the loader’s problem now.
+        true ->
+          Logger.warning("The path does not exist as given, nor does it when normalized")
+          path
+      end
+
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
-    case path |> load do
+    case load(path) do
       {:ok, contents, mtime} ->
         {:ok, build(path, contents, mtime, toc_filter)}
 
