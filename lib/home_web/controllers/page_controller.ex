@@ -18,6 +18,23 @@ defmodule HomeWeb.PageController do
     |> resp(301, "I am pretentious and spell it with the accents")
   end
 
+  # On the Fly image, `résumé.md` renames to `resume.md`. I don’t know why. This
+  # tries to load the file that is *supposed* to exist, then looks for the
+  # modified name, but still retains the correct URL path.
+  def page(conn, %{"path" => ["résumé"]} = params) do
+    case Home.PageCache.cached("résumé.md") do
+      {:ok, page} -> throw(page)
+      _ -> nil
+    end
+
+    case Home.PageCache.cached("resume.md") do
+      {:ok, page} -> throw(page)
+      {:error, _} -> error(conn, 404, params)
+    end
+  catch
+    %Home.Page{} = page -> build(conn, params, "/résumé", page)
+  end
+
   def page(conn, %{"path" => path} = params) do
     path = path |> Path.join()
 
