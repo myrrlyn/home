@@ -7,6 +7,7 @@ defmodule Home.Markdown do
     code_class_prefix: "lang- language-",
     footnotes: true,
     gfm: true,
+    gfm_tables: true,
     postprocessor: &__MODULE__.walker/1,
     sub_sup: true,
     smartypants: false

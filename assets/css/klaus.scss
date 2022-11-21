@@ -30,6 +30,20 @@ main > article {
 	}
 }
 
+.float-left {
+	float: left;
+	margin-right: 1em;
+}
+
+.float-right {
+	float: right;
+	margin-left: 1em;
+}
+
+.clearfix {
+	clear: both;
+}
+
 #casual {
 	position: relative;
 	top: -3em;
