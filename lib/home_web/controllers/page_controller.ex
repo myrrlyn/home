@@ -10,12 +10,21 @@ defmodule HomeWeb.PageController do
     |> build(params, "/", Home.PageCache.cached!("index.md"))
   end
 
-  # Trap `/resume` and forward it to the real path
+  # Trap `/resume` and forward it to the real URL
   def page(conn, %{"path" => ["resume"]}) do
     conn
     |> put_resp_header("location", "/résumé")
     |> put_resp_content_type("text/plain")
     |> resp(301, "I am pretentious and spell it with the accents")
+  end
+
+  # Trap `/résumé` and load it from the ASCII filesystem entry.
+  #
+  # It is not worth fighting with the various systems which do not tolerate
+  # supra-ASCII filenames (my deployment system, Git, etc).
+  def page(conn, %{"path" => ["résumé"]} = params) do
+    page = Home.PageCache.cached!("resume.md")
+    conn |> build(params, "/résumé", page)
   end
 
   def page(conn, %{"path" => path} = params) do
