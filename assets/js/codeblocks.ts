@@ -45,7 +45,7 @@ export function mark_codeblocks() {
 						codespan.classList.add(klass);
 					}
 				}
-				hljs.highlightBlock(codespan as HTMLElement);
+				hljs.highlightElement(codespan as HTMLElement);
 				let marker = document.createElement("div");
 				marker.classList.add("lang-marker");
 				marker.innerText = lang_dict[lang];

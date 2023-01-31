@@ -4,5 +4,5 @@
 	</article>
 <% end %>
 <%= for {heading, images} <- @gallery do %>
-	<.images heading={heading} images={images} />
+	<.images heading={heading} images={images} root={@directory} />
 <% end %>

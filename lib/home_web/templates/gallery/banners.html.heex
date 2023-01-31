@@ -5,7 +5,7 @@
 	</p>
 	<%= for {heading, images} <- @gallery do %>
 		<section>
-			<.images heading={heading}, images={images} root={Routes.static_path(@conn, ["/images", "banners"] |> Path.join())} />
+			<.banners heading={heading}, images={images} root={Routes.static_path(@conn, ["/images", "banners"] |> Path.join())} />
 		</section>
 	<% end %>
 </article>

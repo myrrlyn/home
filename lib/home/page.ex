@@ -232,7 +232,7 @@ defmodule Home.Page do
           meta
 
         {nil, date} ->
-          Logger.debug("Setting date from path: #{path} (#{date |> Timex.format!("{ISOdate}")}")
+          Logger.debug("Setting date from path: #{path} (#{date |> Timex.format!("{ISOdate}")})")
           %Home.Meta{meta | date: date}
 
         {_, _} ->

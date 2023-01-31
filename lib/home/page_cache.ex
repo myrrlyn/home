@@ -79,20 +79,25 @@ defmodule Home.PageCache do
       throw(path |> load_from_fs(opts[:toc_filter]))
     end
 
-    Logger.debug("Found #{path}, last updated at #{page.updated_at}")
+    # Logger.debug("Found #{path}, last updated at #{page.updated_at}")
 
-    # The page is expired; attempt to reload from the filesystem.
     exp = page |> expired?(opts[:lifetime])
     # The page is not expired; return it as-is.
     unless exp do
       throw({:ok, page})
     end
 
+    # The page is expired; attempt to reload from the filesystem.
     res = path |> load_from_fs(opts[:toc_filter])
 
     # If the load succeeded, return.
-    if res == {:ok, page} do
-      throw(res)
+    case res do
+      {:ok, _} ->
+        Logger.debug("loaded from fs")
+        throw(res)
+
+      _ ->
+        nil
     end
 
     # If the filesystem fails, renew the prior entry instead.
@@ -238,8 +243,11 @@ defmodule Home.PageCache do
 
     # Test if (a) the file is newer than the in-memory object or (b) the
     # in-memory object is older than `lifetime` allows.
-    DateTime.compare(file_mtime, cache_mtime) == :gt ||
-      DateTime.diff(DateTime.utc_now(), cache_mtime) > lifetime
+    newer = DateTime.compare(file_mtime, cache_mtime) == :gt
+    now = DateTime.utc_now()
+    stale = DateTime.diff(now, cache_mtime) > lifetime
+
+    newer || stale
   catch
     thrown -> thrown
   end
