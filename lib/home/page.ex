@@ -164,7 +164,7 @@ defmodule Home.Page do
 
   This expects a file of the following structure:
 
-  ```text
+  ```plain
   ---
   key: value
   ...

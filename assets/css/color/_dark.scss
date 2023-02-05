@@ -1,22 +1,14 @@
-@import "highlight.js/scss/base16/atelier-seaside";
-// @import "highlight.js/scss/base16/atelier-cave";
-// @import "highlight.js/scss/arta";
-// @import "highlight.js/scss/an-old-hope";
-// @import "highlight.js/scss/paraiso-dark";
-// @import "highlight.js/scss/dracula";
-// @import "highlight.js/scss/shades-of-purple";
-// @import "highlight.js/scss/tomorrow-night-bright";
-// @import "highlight.js/scss/xt256";
+// @import "prism-themes/themes/prism-atom-dark"; // needs line-height fix the other way
+@import "prism-themes/themes/prism-vsc-dark-plus"; // needs line-height fix the other way
+// @import "prism-themes/themes/prism-solarized-dark-atom";
+// @import "prism-themes/themes/prism-cb"; // needs more token colors
 
-.codeblock-sh {
-	@import "highlight.js/scss/vs2015";
-}
-
-.codeblock-text,
-.codeblock-term,
-.codeblock-cosmos {
-	@import "highlight.js/scss/gradient-dark";
-}
+// @import "prism-themes/themes/prism-dracula"; // needs line-height fix
+// @import "prism-themes/themes/prism-gruvbox-dark"; // needs line-height fix
+// @import "prism-themes/themes/prism-holi-theme"; // needs line-height fix
+// @import "prism-themes/themes/prism-material-oceanic"; // needs line-height fix
+// @import "prism-themes/themes/prism-night-owl"; // needs line-height fix
+// @import "prism-themes/themes/prism-synthwave84"; // needs line-height fix and more token colors
 
 :root {
 	$ansi-red: lighten($ansi-red, 10%);
@@ -83,4 +75,20 @@ a {
 	&:visited {
 		color: var(--blue-capri);
 	}
+}
+
+pre[class*="language-"] {
+
+	&,
+	& code[class*="language-"] {
+		// background-color: lighten(#e0e0e0, 5%);
+		color: var(--text-fg);
+	}
+
+	// .token.operator,
+	// .token.entity,
+	// .token.url,
+	// .token.variable {
+	// 	background-color: inherit;
+	// }
 }

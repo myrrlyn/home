@@ -106,7 +106,7 @@ hr {
 	}
 }
 
-pre {
+div.code-container {
 	@include left-chevron(var(--charcoal));
 
 	&.codeblock-c {
@@ -149,7 +149,7 @@ pre {
 		margin-bottom: 0.25em;
 	}
 
-	&>.code-container {
+	pre.codeblock {
 		clear: both;
 	}
 

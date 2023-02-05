@@ -1,26 +1,22 @@
-// @import "highlight.js/scss/base16/atelier-cave-light";
-// @import "highlight.js/scss/a11y-light";
-// @import "highlight.js/scss/base16/atelier-forest-light";
-// @import "highlight.js/scss/base16/atelier-heath-light";
-// @import "highlight.js/scss/base16/atelier-seaside-light";
-// @import "highlight.js/scss/base16/atelier-sulphurpool-light";
-// @import "highlight.js/scss/atom-one-light";
-// @import "highlight.js/scss/github";
-// @import "highlight.js/scss/idea";
-// @import "highlight.js/scss/isbl-editor-light";
-// @import "highlight.js/scss/lightfair";
-// @import "highlight.js/scss/nnfx";
-// @import "highlight.js/scss/paraiso-light";
-// @import "highlight.js/scss/stackoverflow-light";
-// @import "highlight.js/scss/tomorrow";
-@import "highlight.js/scss/vs";
-// @import "highlight.js/scss/xcode";
+// @import "prism-themes/themes/prism-coy-without-shadows";
+// @import "prism-themes/themes/prism-material-light"; // needs line-height fix, font shrink
+// @import "prism-themes/themes/prism-vs"; // needs line-height fix
 
-.codeblock-text,
-.codeblock-term,
-.codeblock-cosmos {
-	@import "highlight.js/scss/gradient-light";
-}
+@import "prism-themes/themes/prism-duotone-light";
+// @import "prism-themes/themes/prism-one-light";
+
+// @import "prismjs/themes/prism-okaidia";
+// @import "prism-themes/themes/prism-coldark-dark";
+// @import "prism-themes/themes/prism-dracula";
+// @import "prism-themes/themes/prism-holi-theme";
+// @import "prism-themes/themes/prism-hopscotch";
+// @import "prism-themes/themes/prism-material-oceanic";
+// @import "prism-themes/themes/prism-night-owl";
+// @import "prism-themes/themes/prism-pojoaque";
+// @import "prism-themes/themes/prism-solarized-dark-atom";
+// @import "prism-themes/themes/prism-synthwave84";
+// @import "prism-themes/themes/prism-vsc-dark-plus";
+// @import "prism-themes/themes/prism-xonokai";
 
 :root {
 	--ansi-red: #{$ansi-red};
@@ -72,4 +68,22 @@
 	--bg: #e0e0e0;
 	--text-fg: #1f1f1f;
 	--header-color: #{$blue-capri};
+}
+
+pre[class*="language-"] {
+
+	&,
+	& code[class*="language-"] {
+		background-color: lighten(#e0e0e0, 5%);
+		color: var(--text-fg);
+	}
+
+	font-size: 0.875rem;
+
+	.token.operator,
+	.token.entity,
+	.token.url,
+	.token.variable {
+		background-color: inherit;
+	}
 }
