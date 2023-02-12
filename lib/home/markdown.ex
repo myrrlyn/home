@@ -126,7 +126,14 @@ defmodule Home.Markdown do
       end
 
     classes =
-      ["codeblock" | ["codeblock-#{code_lang}" | classes]] |> Enum.uniq() |> Enum.join(" ")
+      ([
+         "codeblock",
+         "codeblock-#{code_lang}",
+         "language-#{code_lang}",
+         "lang-#{code_lang}"
+       ] ++ classes)
+      |> Enum.uniq()
+      |> Enum.join(" ")
 
     {"pre", [{"class", classes} | rest], inner, meta}
   end

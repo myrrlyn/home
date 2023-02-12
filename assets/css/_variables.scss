@@ -51,7 +51,7 @@ $iso7010-image-size: 3em;
 @mixin vertical-border($side) {
 	border: {
 		#{$side}: {
-			color: $blue-carolina;
+			color: var(--pane-divider);
 			style: solid;
 			width: $vertical-border;
 		}

@@ -1,25 +1,29 @@
 <article>
-	<h1 id="title" class="title"><%= @meta.title %></h1>
-	<%= if subtitle = @meta.subtitle do %>
-		<h2 id="subtitle" class="title"><%= subtitle %></h2>
-	<% end %>
-	<p>
-		<%= link "Originally published to /r/teslore", to: "//old.reddit.com/r/teslore/comments/#{@meta.props["reddit"]}" %>
-		on
-		<time datetime={Timex.format!(@meta.date, "{RFC3339z}")}>
-			<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D} at {h24}:{m}") %>
-		</time>
-	</p>
-	<%= if @page.toc != [] do %>
-		<nav aria-label="Table of Contents">
-			<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
-		</nav>
-	<% end %>
+	<header class="frontmatter">
+		<h1 id="title" class="title"><%= @meta.title %></h1>
+		<%= if subtitle = @meta.subtitle do %>
+			<h2 id="subtitle" class="title"><%= subtitle %></h2>
+		<% end %>
+		<p>
+			<%= link "Originally published to /r/teslore", to: "//old.reddit.com/r/teslore/comments/#{@meta.props["reddit"]}" %>
+			on
+			<time datetime={Timex.format!(@meta.date, "{RFC3339z}")}>
+				<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D} at {h24}:{m}") %>
+			</time>
+		</p>
+		<%= if @page.toc != [] do %>
+			<nav aria-label="Table of Contents">
+				<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
+			</nav>
+		<% end %>
+	</header>
 	<hr />
 	<%= if intro = @meta.props |> Map.get("intro-music") do %>
 		<%= render(HomeWeb.LayoutView, "audio.html", ident: "intro", audio: intro) %>
 	<% end %>
-	<%= @page.content |> raw %>
+	<section>
+		<%= @page.content |> raw %>
+	</section>
 	<%= if outro = @meta.props |> Map.get("outro-music") do %>
 		<%= render(HomeWeb.LayoutView, "audio.html", ident: "outro", audio: outro ) %>
 	<% end %>

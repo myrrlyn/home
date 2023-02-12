@@ -93,54 +93,42 @@ blockquote {
 hr {
 	border: {
 		top: {
-			color: $bell-blue;
+			color: var(--bell-blue);
 			style: solid;
 			width: math.div($header-border + $footer-border, 2);
 		}
 
 		bottom: {
-			color: $bell-ochre;
+			color: var(--bell-ochre);
 			style: solid;
 			width: math.div($header-border + $footer-border, 2);
 		}
 	}
 }
 
+@mixin codeblock($lang, $color) {
+	&.codeblock-#{$lang} {
+		background-color: transparentize($color, 0.85);
+		border-left-color: $color;
+		border-right-color: $color;
+	}
+}
+
 div.code-container {
 	@include left-chevron(var(--charcoal));
+	border-right-color: var(--charcoal);
+	margin-bottom: 1em;
+	padding-right: 1em;
 
-	&.codeblock-c {
-		border-left-color: $lang-c;
-	}
-
-	&.codeblock-cpp {
-		border-left-color: $lang-cpp;
-	}
-
-	&.codeblock-elixir {
-		border-left-color: $lang-elixir;
-	}
-
-	&.codeblock-js {
-		border-left-color: $lang-js;
-	}
-
-	&.codeblock-rust {
-		border-left-color: $lang-rust;
-	}
-
-	&.codeblock-ps1 {
-		border-left-color: $lang-pwsh;
-	}
-
-	&.codeblock-sh,
-	&.codeblock-shell {
-		border-left-color: $lang-shell;
-	}
-
-	&.codeblock-toml {
-		border-left-color: $lang-toml;
-	}
+	@include codeblock(c, $lang-c);
+	@include codeblock(cpp, $lang-cpp);
+	@include codeblock(elixir, $lang-elixir);
+	@include codeblock(js, $lang-js);
+	@include codeblock(rust, $lang-rust);
+	@include codeblock(ps1, $lang-pwsh);
+	@include codeblock(sh, $lang-shell);
+	@include codeblock(shell, $lang-shell);
+	@include codeblock(toml, $lang-toml);
 
 	&>.lang-marker {
 		color: var(--text-fg);

@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title><%= @title || "myrrlyn.net" %></title>
 <link rel="stylesheet" type="text/css" href={Routes.static_path(@conn, "/css/#{@flavor}.css")} />
-<script type="text/javascript" src={Routes.static_path(@conn, "/js/#{@flavor}.js")} />
+<script type="text/javascript" src={Routes.static_path(@conn, "/js/#{@flavor}.js")}></script>
 
 <% mkpair = &"#{&1}x#{&1}" %>
 <%= for size <- [16, 32, 64, 128, 256, 512, 1024] do %>
@@ -38,10 +38,12 @@
 	<meta name="twitter:description" content={@meta.summary} />
 <% end %>
 
+<%#
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.css" />
+%>
 
 <%= for embed <- @meta.props |> Map.get("embeds", []) do %>
 	<%= if embed == "twitter" do %>

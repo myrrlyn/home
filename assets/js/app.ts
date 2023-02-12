@@ -14,6 +14,7 @@
 //
 //     import "some-package"
 //
+import { cite_blockquotes } from "./blockquote";
 import { mark_codeblocks } from "./codeblocks";
 import { load_images } from "./image_loader";
 import { set_jukebox } from "./jukebox";
@@ -37,9 +38,23 @@ live_socket.connect();
 declare let window: LiveSocketWindow;
 window.liveSocket = live_socket;
 
+function guess_reading_time() {
+	var words = 0;
+	for (var para of document.querySelectorAll("article > section p")) {
+		words += (para as HTMLElement).innerText.trim().split(/\s+/).length;
+	}
+	let time = Math.ceil(words / 200);
+	let span = document.getElementById("reading-time");
+	if (span !== null) {
+		span.innerText = `${time} minutes`;
+	}
+}
+
 window.onload = () => {
 	mark_headings([2, 3, 4, 5, 6]);
 	mark_codeblocks();
+	cite_blockquotes();
+	guess_reading_time();
 	set_jukebox();
 	load_images();
 };

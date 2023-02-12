@@ -1,27 +1,34 @@
 <article>
-	<h1 id="title" class="no-count"><%= @meta.title %></h1>
-	<%= if subtitle = @meta.subtitle do %>
-		<h2 id="subtitle" class="title no-count"><%= subtitle %></h2>
-	<% end %>
-	<p>
-		Published on
-		<time datetime={Timex.format!(@meta.date, "{ISOdate}")}>
-			<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
-		</time>
-	</p>
-	<p>
-		<%= @meta.summary |> Earmark.as_html! |> raw %>
-	</p>
-	<%= if @page.toc != [] do %>
-		<nav aria-label="Table of Contents">
-			<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
-		</nav>
-	<% end %>
+	<header class="frontmatter">
+		<h1 id="title" class="no-count"><%= @meta.title %></h1>
+		<%= if subtitle = @meta.subtitle do %>
+			<h2 id="subtitle" class="title no-count"><%= subtitle %></h2>
+		<% end %>
+		<p>
+			Published on
+			<time datetime={Timex.format!(@meta.date, "{ISOdate}")}>
+				<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
+			</time>
+		</p>
+		<p>
+			<%= @meta.summary |> Earmark.as_html! |> raw %>
+		</p>
+		<p>
+			Estimated reading time: <span id="reading-time"></span>.
+		</p>
+		<%= if @page.toc != [] do %>
+			<nav aria-label="Table of Contents">
+				<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
+			</nav>
+		<% end %>
+	</header>
 	<hr />
 	<%= if intro = @meta.props |> Map.get("intro-music") do %>
 		<%= render(HomeWeb.LayoutView, "audio.html", ident: "intro", audio: intro) %>
 	<% end %>
-	<%= @page.content |> raw %>
+	<section>
+		<%= @page.content |> raw %>
+	</section>
 	<%= if outro = @meta.props |> Map.get("outro-music") do %>
 		<%= render(HomeWeb.LayoutView, "audio.html", ident: "outro", audio: outro) %>
 	<% end %>

@@ -59,7 +59,7 @@ body {
 	}
 }
 
-header {
+header[role="banner"] {
 	background: {
 		color: var(--header-color);
 		position: center center;
@@ -68,7 +68,7 @@ header {
 	}
 
 	border-bottom: {
-		color: $bell-blue;
+		color: var(--bell-blue);
 		style: solid;
 		width: $header-border;
 	}
@@ -81,14 +81,14 @@ header {
 
 		//  Ochre stripe of the header border
 		top: {
-			color: $bell-ochre;
+			color: var(--bell-ochre);
 			style: solid;
 			width: $header-border;
 		}
 
 		//  Blue strip of the footer border
 		bottom: {
-			color: $bell-blue;
+			color: var(--bell-blue);
 			style: solid;
 			width: $footer-border;
 		}
@@ -164,7 +164,7 @@ main {
 
 footer {
 	border-top: {
-		color: $bell-ochre;
+		color: var(--bell-ochre);
 		style: solid;
 		width: $footer-border;
 	}

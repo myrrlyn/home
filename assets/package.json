@@ -12,6 +12,7 @@
     "phoenix_live_view": "file:../deps/phoenix_live_view",
     "@popperjs/core": "^2.11",
     "bootstrap": "^5.0",
+    "highlight.js": "^11.7",
     "jquery": "^3.6",
     "mathjax": "^3.2",
     "prismjs": "^1.29",

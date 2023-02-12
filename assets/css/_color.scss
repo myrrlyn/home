@@ -11,7 +11,7 @@ $iso-red: #9b2423 !default;
 $iso-yellow: #f9a800 !default;
 $iso-green: #237f52 !default;
 $iso-blue: #005387 !default;
-$iso-white: lighten(#ecece7, 8%) !default;
+$iso-white: lighten(#ececec, 4%) !default;
 $iso-black: darken(#2b2b2c, 8%) !default;
 
 $intl-aero-orange: #ff4f00 !default;
@@ -64,12 +64,17 @@ $amaranth: #a72a2a;
 $forest-green: darken(#228b22, 20%);
 $parchment: hsl(042.4, 048.2%, 83.3%);
 
+@import "color/12-bit-rainbow";
 @import "color/langs";
 
 :root {
 	--white: white;
 	--black: black;
 	--grey: gray;
+
+	--bell-blue: #{$bell-blue};
+	--bell-ochre: #{$bell-ochre};
+	--pane-divider: #{$blue-carolina};
 }
 
 @media (prefers-color-scheme: light) {

@@ -55,27 +55,27 @@ defmodule HomeWeb.GalleryController do
       directory: "/static/images/iso-7010",
       gallery: %{
         "E (Safe Condition)" =>
-          (Enum.to_list(1..13) ++ Enum.to_list(16..19))
+          Enum.to_list(1..70)
           |> Enum.map(fn num ->
             "e#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end),
         "F (Fire Protection)" =>
-          Enum.to_list(1..7)
+          Enum.to_list(1..19)
           |> Enum.map(fn num ->
             "f#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end),
         "M (Mandatory)" =>
-          Enum.to_list(1..55)
+          Enum.to_list(1..60)
           |> Enum.map(fn num ->
             "m#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end),
         "P (Prohibition)" =>
-          (Enum.to_list(1..8) ++ Enum.to_list(10..15) ++ Enum.to_list(17..34))
+          Enum.to_list(1..74)
           |> Enum.map(fn num ->
             "p#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end),
         "W (Warning)" =>
-          Enum.to_list(1..67)
+          Enum.to_list(1..78)
           |> Enum.map(fn num ->
             "w#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end)

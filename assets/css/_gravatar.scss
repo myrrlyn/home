@@ -3,8 +3,8 @@
 #gravatar {
 	background: {
 		image: linear-gradient(to bottom,
-			#{$bell-blue} 50%,
-			#{$bell-ochre} 50%);
+				var(--bell-blue) 50%,
+				var(--bell-ochre) 50%);
 	}
 
 	border: {

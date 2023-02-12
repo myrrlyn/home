@@ -1,4 +1,6 @@
-// import Prism from "prismjs";
+import hljs from "highlight.js";
+// import elixir from "highlight.js/lib/languages/elixir";
+// hljs.registerLanguage("elixir", elixir);
 
 /**
  * Maps each language identifier as carried in `.codeblock-` classes to a marker
@@ -16,6 +18,7 @@ let lang_dict = {
 	rust: "Rust code",
 	sh: "UNIX shell session",
 	plain: "Plain text",
+	plaintext: "Plain text",
 	term: "Text diagram",
 	toml: "TOML configuration",
 	xml: "XML",
@@ -38,13 +41,11 @@ export function mark_codeblocks() {
 					continue;
 				}
 				if (lang === "term" || lang == "cosmos" || lang == "irc") {
-					for (let klass of [`${lang}`, `lang-${lang}`, `language-${lang}`]) {
-						codespan.classList.remove(klass);
-					}
-					for (let klass of ["plain", "lang-plain", "language-plain"]) {
-						codespan.classList.add(klass);
-					}
+					codespan.classList.remove(`${lang}`, `lang-${lang}`, `language-${lang}`);
+					codespan.classList.add("plaintext", "lang-plaintext", "language-plaintext");
 				}
+				hljs.highlightElement(codespan as HTMLElement);
+
 				let marker = document.createElement("div");
 				marker.classList.add("lang-marker");
 				marker.innerText = lang_dict[lang];

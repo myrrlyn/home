@@ -64,12 +64,12 @@ h2 {
 }
 
 h2:not(.no-count) span::before {
-	content: counter(h2counter) ".\0000a0";
+	content: counter(h2counter) ".";
 	counter-increment: h2counter;
 }
 
 h3:not(.no-count) span::before {
-	content: counter(h2counter) "." counter(h3counter) ".\0000a0";
+	content: counter(h2counter) "." counter(h3counter) ".";
 	counter-increment: h3counter;
 }
 
@@ -78,7 +78,8 @@ main aside {
 }
 
 main aside,
-blockquote {
+:not(figure)>blockquote,
+figure.bq-cited {
 	@include left-chevron(var(--charcoal));
 
 	background: {

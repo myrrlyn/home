@@ -11,7 +11,7 @@ processing logic and other decorations.
 ## Installation
 
 ```sh
-git close https://github.com/myrrlyn/home.git
+git clone https://github.com/myrrlyn/home.git
 cd home
 mix do deps.get, deps.compile, compile
 cd assets

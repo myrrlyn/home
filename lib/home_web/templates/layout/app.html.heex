@@ -13,7 +13,7 @@
 		<% end %>
 		<% banner = Routes.static_path(@conn, ["/images", @banner.path] |> Path.join()) %>
 		<style type="text/css">
-			header {
+			header[role="banner"] {
 				background-image: url(<%= banner %>);
 				background-position: <%= @banner |> Home.Banners.Banner.position %>;
 			}
