@@ -5,6 +5,6 @@
 	<p>
 		Your browser does not appear to support the <code>&lt;audio&gt;</code>
 		element. The song is <em><%= @audio["title"] %></em>, and you can download
-		it <a href={@audio["src"]}>from this link</a>,
+		it <%= link "from this link", to: @audio["src"] %>.
 	</p>
 </audio>

@@ -75,6 +75,12 @@ defmodule HomeWeb.Router do
     end
   end
 
+  scope "/static", HomeWeb do
+    pipe_through(:browser)
+
+    get("/*path", AssetController, :asset)
+  end
+
   scope "/", HomeWeb do
     pipe_through(:browser)
 

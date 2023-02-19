@@ -42,15 +42,13 @@ defmodule HomeWeb.BlogController do
       {{:error, %Home.Page.NotFoundException{}}, nil} ->
         conn
         |> assign(:category, group)
-        |> error(404, "invalid-category.html", req_url, "Invalid category")
+        |> error(404, "invalid-category.html", req_url, "Invalid Category")
 
       {{:error, %Home.Page.NotFoundException{}}, {name, slug, pages}} ->
         conn
         |> assign(:name, name)
         |> assign(:slug, slug)
-        |> assign(:meta, %Home.Meta{title: name})
         |> assign(:pages, pages)
-        |> assign(:banner, "banners/2017-01-28T08-50-37.jpg")
         |> error(200, "missing-category.html", @root, name)
 
       {{:ok, %Home.Page{meta: meta}}, {_, _, pages}} ->
@@ -61,7 +59,7 @@ defmodule HomeWeb.BlogController do
         else
           conn
           |> assign(:category, group)
-          |> error(404, "invalid-category.html", req_url, "Invalid category")
+          |> error(404, "invalid-category.html", req_url, "Invalid Category")
         end
     end
   end
@@ -72,7 +70,7 @@ defmodule HomeWeb.BlogController do
 
     case url_to_path(group, page) do
       nil ->
-        conn |> error(404, "missing-article.html", req_url, "Missing article")
+        conn |> error(404, "missing-article.html", req_url, "Missing Article")
 
       path ->
         conn |> build(params, "page.html", req_url, path)
@@ -122,7 +120,7 @@ defmodule HomeWeb.BlogController do
 
         conn
         |> put_resp_header("location", redirect)
-        |> send_resp(301, "Moved to https://myrrlyn.net#{redirect}")
+        |> send_resp(301, "Moved to #{HomeWeb.Endpoint.url()}#{redirect}")
 
       {:error, :einval} ->
         case src_path |> Home.PageCache.cached() do
@@ -130,7 +128,15 @@ defmodule HomeWeb.BlogController do
             conn
             |> assign(:banner, Home.Banners.weighted_random())
             |> assign(:page, page)
-            |> assign(:meta, page.meta)
+            |> assign(:frontmatter, page.meta)
+            |> assign(
+              :tab_title,
+              case page.meta.title do
+                "Insufficiently Magical" -> "Insufficiently Magical"
+                other -> other <> " – Insufficiently Magical"
+              end
+            )
+            |> assign(:page_title, page.meta.title)
             |> assign(:src_path, src_path)
             |> build(params, template, req_url)
 
@@ -152,7 +158,9 @@ defmodule HomeWeb.BlogController do
       classes: ["blog"],
       navtree: &navtree/0,
       page: nil,
-      meta: %Home.Meta{title: title},
+      frontmatter: %Home.Meta{title: title, tab_title: title},
+      tab_title: title,
+      page_title: title,
       scope: @root,
       req_url: req_url
     )

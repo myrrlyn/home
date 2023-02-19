@@ -1,17 +1,17 @@
 <article>
 	<header class="frontmatter">
-		<h1 id="title" class="no-count"><%= @meta.title %></h1>
-		<%= if subtitle = @meta.subtitle do %>
-			<h2 id="subtitle" class="title no-count"><%= subtitle %></h2>
+		<h1 id="title" class="title no-count"><%= @page.meta.title %></h1>
+		<%= if subtitle = @page.meta.subtitle do %>
+			<h2 id="subtitle" class="title subtitle no-count"><%= subtitle %></h2>
 		<% end %>
-		<p>
+		<p class="timestamp">
 			Published on
-			<time datetime={Timex.format!(@meta.date, "{ISOdate}")}>
-				<%= Timex.format!(@meta.date, "{YYYY}, {Mshort} {D}") %>
+			<time datetime={Timex.format!(@page.meta.date, "{ISOdate}")}>
+				<%= Timex.format!(@page.meta.date, "{YYYY}, {Mshort} {D}") %>
 			</time>
 		</p>
 		<p>
-			<%= @meta.summary |> Earmark.as_html! |> raw %>
+			<%= @page.meta.summary |> Earmark.as_html! |> raw %>
 		</p>
 		<p>
 			Estimated reading time: <span id="reading-time"></span>.
@@ -23,13 +23,13 @@
 		<% end %>
 	</header>
 	<hr />
-	<%= if intro = @meta.props |> Map.get("intro-music") do %>
+	<%= if intro = @page.meta.props |> Map.get("intro-music") do %>
 		<%= render(HomeWeb.LayoutView, "audio.html", ident: "intro", audio: intro) %>
 	<% end %>
 	<section>
 		<%= @page.content |> raw %>
 	</section>
-	<%= if outro = @meta.props |> Map.get("outro-music") do %>
+	<%= if outro = @page.meta.props |> Map.get("outro-music") do %>
 		<%= render(HomeWeb.LayoutView, "audio.html", ident: "outro", audio: outro) %>
 	<% end %>
 </article>

@@ -10,6 +10,7 @@ defmodule Home.Meta do
 
   defstruct title: nil,
             subtitle: nil,
+            tab_title: nil,
             date: nil,
             summary: nil,
             show_toc: true,
@@ -26,6 +27,7 @@ defmodule Home.Meta do
   @type t :: %__MODULE__{
           title: String.t(),
           subtitle: String.t() | nil,
+          tab_title: String.t() | nil,
           date: DateTime.t() | nil,
           summary: String.t() | nil,
           show_toc: bool,
@@ -71,6 +73,8 @@ defmodule Home.Meta do
 
     {subtitle, yml} = yml |> Map.pop("subtitle")
 
+    {tab_title, yml} = yml |> Map.pop("tab_title")
+
     {summary, yml} =
       case yml |> Map.pop("summary") do
         {nil, yml} ->
@@ -90,6 +94,7 @@ defmodule Home.Meta do
     %__MODULE__{
       title: title,
       subtitle: subtitle,
+      tab_title: tab_title,
       date: date,
       summary: summary,
       published: published,

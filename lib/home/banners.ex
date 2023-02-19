@@ -32,7 +32,8 @@ defmodule Home.Banners do
         :rksr
       ],
       caption: "Rota-Kiwan Scout Reservation waterfront at dusk",
-      album: :rksr
+      album: :rksr,
+      pos: {:center, "33%"}
     },
     %__MODULE__.Banner{
       path: "2013-08-04_002.jpg",
@@ -440,7 +441,8 @@ defmodule Home.Banners do
         :sky
       ],
       caption: "Taken on Lake Huron, near St. Joseph Island, Ontario",
-      album: :lindsee
+      album: :lindsee,
+      pos: {:center, "85%"}
     },
     %__MODULE__.Banner{
       path: "2016-08-02T19-23-01.jpg",

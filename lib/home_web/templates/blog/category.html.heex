@@ -1,7 +1,7 @@
 <article>
 	<section>
-		<h1 id="title"><%= @meta.title %></h1>
-		<%= if summary = @meta.summary do %>
+		<h1 id="title"><%= @page.meta.title %></h1>
+		<%= if summary = @page.meta.summary do %>
 			<p><%= summary |> Earmark.as_html! |> raw %></p>
 		<% end %>
 		<%= if @page.toc != [] do %>
@@ -16,7 +16,7 @@
 		<ol reversed>
 			<%= for {url, meta} <- @pages do %>
 				<li>
-					<a class="title" href={url}><%= meta.title %></a>
+					<%= link meta.title, to: url, class: "title" %>
 					<%= "(#{Timex.format!(meta.date, "{ISOdate}")})" %>
 					<br />
 					<%= meta.summary |> Earmark.as_html! |> raw %>

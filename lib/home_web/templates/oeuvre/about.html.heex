@@ -1,6 +1,6 @@
-<%= if about = @meta.props |> Map.get("about") do %>
+<%= if about = @page.meta.props |> Map.get("about") do %>
 	<section>
-		<h2>About the Text</h2>
+		<h2 class="text-center">About the Text</h2>
 		<%= about |> raw %>
 	</section>
 <% end %>

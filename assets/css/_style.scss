@@ -1,7 +1,7 @@
 @use "sass:math";
 
 article img {
-	&:not(.unset):not(.gallery-img) {
+	&:not(.fullwidth):not(.unset):not(.gallery-img) {
 		display: block;
 
 		@include media-breakpoint-up(md) {
@@ -87,6 +87,49 @@ aside,
 blockquote {
 	pre {
 		clear: left;
+	}
+}
+
+main aside,
+:not(figure)>blockquote,
+figure.bq-cited {
+	@include left-chevron(var(--charcoal));
+
+	background: {
+		color: var(--charcoal-bg);
+	}
+
+	margin: {
+		left: 1em;
+		right: 2em;
+		bottom: 1em;
+	}
+
+	padding: {
+		top: 1em;
+		left: 1em;
+		right: 1em;
+		bottom: 1em;
+	}
+
+	:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.text-center {
+	text-align: center;
+}
+
+.frontmatter {
+	.title {
+		text-align: center;
+	}
+
+	.timestamp {
+		float: right;
+		border: 1px solid var(--text-fg);
+		padding: 0 0.5em;
 	}
 }
 

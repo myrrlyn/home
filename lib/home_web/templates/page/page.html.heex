@@ -1,7 +1,7 @@
 <article>
 	<header class="frontmatter">
-		<h1><%= @page.meta.title %></h1>
-		<%= if @meta.show_toc do %>
+		<h1 class="title"><%= @page.meta.title %></h1>
+		<%= if @page.meta.show_toc do %>
 			<nav aria-label="Table of Contents">
 				<%= render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
 			</nav>

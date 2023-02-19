@@ -1,7 +1,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title><%= @title || "myrrlyn.net" %></title>
+<title><%= @tab_title || Path.join(["~myrrlyn" | @conn.path_info]) %></title>
 <link rel="stylesheet" type="text/css" href={Routes.static_path(@conn, "/css/#{@flavor}.css")} />
 <script type="text/javascript" src={Routes.static_path(@conn, "/js/#{@flavor}.js")}></script>
 
@@ -15,27 +15,29 @@
 <link rel="apple-touch-startup-image" type="image/svg+xml" sizes="any" href="/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes" />
 
 <meta name="author" content="Alexander Payne (myrrlyn)" />
-<%= if @meta.summary do %>
-	<meta name="description" content={@meta.summary} />
+<%= if @frontmatter && @frontmatter.summary do %>
+	<meta name="description" content={@frontmatter.summary} />
 <% end %>
 
-<%= for {name, content} <- @meta.meta do %>
-	<meta name={name} content={content} />
+<%= if @frontmatter do %>
+	<%= for {name, content} <- @frontmatter.meta do %>
+		<meta name={name} content={content} />
+	<% end %>
 <% end %>
 
 <%# "https://ogp.me/" %>
-<meta name="og:title" content={@title} />
+<meta name="og:title" content={@page_title} />
 <%# TODO(myrrlyn): Bundle this into article metadata? %>
 <meta name="og:type" content="website" />
 <meta name="og:image" content="https://myrrlyn.net/static/favicons/favicon-512.png" />
-<meta name="og:url" content={"https://myrrlyn.net" <> (["/" | @conn.path_info] |> Path.join())} />
+<meta name="og:url" content={Path.join([HomeWeb.Endpoint.url() | @conn.path_info])} />
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@myrrlyn" />
-<meta name="twitter:title" content={@title} />
+<meta name="twitter:title" content={@page_title} />
 <meta name="twitter:image" content="https://myrrlyn.net/static/favicons/favicon-512.png" />
-<%= if @meta.summary do %>
-	<meta name="twitter:description" content={@meta.summary} />
+<%= if @frontmatter && @frontmatter.summary do %>
+	<meta name="twitter:description" content={@frontmatter.summary} />
 <% end %>
 
 <%#
@@ -45,13 +47,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.css" />
 %>
 
-<%= for embed <- @meta.props |> Map.get("embeds", []) do %>
-	<%= if embed == "twitter" do %>
-		<script type="text/javascript" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-	<% end %>
-	<%= if embed == "mathjax" do %>
-		<script type="text/javascript" src={Routes.static_path(@conn, "/js/mathjax.js")}></script>
-		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<%= if @frontmatter do %>
+	<%= for embed <- @frontmatter.props |> Map.get("embeds", []) do %>
+		<%= if embed == "twitter" do %>
+			<script type="text/javascript" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+		<% end %>
+		<%= if embed == "mathjax" do %>
+			<script type="text/javascript" src={Routes.static_path(@conn, "/js/mathjax.js")}></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+			<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<% end %>
 	<% end %>
 <% end %>

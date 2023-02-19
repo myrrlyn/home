@@ -2,13 +2,45 @@
 
 @import "bootstrap/scss/bootstrap";
 
+@import "color";
 @import "variables";
 
-main > article {
+article {
 	max-width: 60em;
 	margin: 0 auto;
 	padding: 0.25em 0.5em;
 	border: 1px solid navy;
+
+	aside {
+		@include left-chevron(var(--charcoal));
+		background-color: var(--charcoal-bg);
+
+		margin: {
+			left: 1em;
+			right: 2em;
+			bottom: 1em;
+		}
+
+		padding: {
+			top: 1em;
+			left: 1em;
+			right: 1em;
+			bottom: 1em;
+		}
+
+		:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: inherit;
 }
 
 .title {
@@ -22,7 +54,9 @@ main > article {
 
 .portrait {
 	@media all and (max-width: 500px) {
-		max-width: 50%;
+		max-width: 75%;
+		display: grid;
+		align-self: center;
 	}
 
 	@media all and (min-width: 500px) {
@@ -44,9 +78,25 @@ main > article {
 	clear: both;
 }
 
-#casual {
-	position: relative;
-	top: -3em;
+@include media-breakpoint-up(md) {
+	.portrait {
+		float: right;
+		margin-left: 1em;
+	}
+
+	// #formal {
+	// }
+
+	#casual {
+		position: relative;
+		top: -3em;
+	}
+}
+
+@include media-breakpoint-down(lg) {
+	#signature {
+		max-width: 100%;
+	}
 }
 
 #img-gallery {

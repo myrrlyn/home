@@ -73,37 +73,6 @@ h3:not(.no-count) span::before {
 	counter-increment: h3counter;
 }
 
-main aside {
-	margin-bottom: 1em;
-}
-
-main aside,
-:not(figure)>blockquote,
-figure.bq-cited {
-	@include left-chevron(var(--charcoal));
-
-	background: {
-		color: var(--charcoal-bg);
-	}
-
-	margin: {
-		left: 1em;
-		right: 2em;
-		bottom: 1em;
-	}
-
-	padding: {
-		top: 1em;
-		left: 1em;
-		right: 1em;
-		bottom: 1em;
-	}
-
-	:last-child {
-		margin-bottom: 0;
-	}
-}
-
 nav .title {
 	font-style: italic;
 }

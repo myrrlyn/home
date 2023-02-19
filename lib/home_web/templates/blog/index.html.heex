@@ -6,7 +6,7 @@
 		<ol>
 			<%= for {name, slug, count, desc} <- @groups do %>
 				<li value={count}>
-					<a href={"/blog/#{slug}"}><%= name %></a>
+					<%= link name, to: "/blog/" <> slug %>
 					<%= if desc do %>
 						<br />
 						<%= desc |> Earmark.as_html! |> raw %>

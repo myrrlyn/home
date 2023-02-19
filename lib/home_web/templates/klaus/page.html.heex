@@ -1,4 +1,7 @@
 <article>
-	<span id="date-src"><%= DateTime.utc_now |> Calendar.strftime("%A, %B %d, %Y") %></span>
+	<header class="frontmatter">
+		<h1 class="title"><%= @page.meta.title %></h1>
+		<span id="date-src"><%= DateTime.utc_now |> Calendar.strftime("%A, %B %d, %Y") %></span>
+	</header>
 	<%= @page.content |> raw %>
 </article>

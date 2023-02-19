@@ -2,7 +2,7 @@
 <%# https://cyber.harvard.edu/rss/rss.html %>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Insufficient Magic</title>
+        <title>Insufficiently Magical</title>
         <link>https://myrrlyn.net/blog</link>
         <description>myrrlyn’s sporadic blogging habit</description>
         <copyright><%= "2012—#{Date.utc_today.year} Alexander Payne (myrrlyn)" %></copyright>
@@ -17,7 +17,7 @@
         </pubDate>
         <image>
             <url>https://myrrlyn.net/static/favicons/favicon-128.png</url>
-            <title>Insufficient Magic</title>
+            <title>Insufficiently Magical</title>
             <link>https://myrrlyn.net/blog</link>
         </image>
         <atom:link rel="self" href="https://myrrlyn.net/blog/feed.rss" type="application/rss+xml" />
@@ -25,8 +25,8 @@
         <%= for {url, meta} <- @articles |> Enum.reverse() do %>
             <item>
                 <title><%= meta.title %></title>
-                <link><%= "https://myrrlyn.net" <> url %></link>
-                <guid><%= "https://myrrlyn.net" <> url %></guid>
+                <link><%= HomeWeb.Endpoint.url() <> url %></link>
+                <guid><%= HomeWeb.Endpoint.url() <> url %></guid>
                 <description>
                     <%= meta |> Home.Meta.summary("This article currently lacks a description") %>
                 </description>
