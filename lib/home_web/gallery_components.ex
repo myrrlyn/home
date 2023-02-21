@@ -39,10 +39,10 @@ defmodule HomeWeb.GalleryComponents do
   def banners(%{heading: heading, images: images, root: root} = assigns) do
     ~H"""
     <%= if heading && heading != "" do %>
-      <h2><%= heading %></h2>
+      <h2><%= Home.Banners.album_name(heading) %></h2>
     <% end %>
     <div class="container d-flex flex-wrap">
-      <%= for %Home.Banners.Banner{caption: caption, path: path} <- images do %>
+      <%= for %Home.Banners.Banner{caption: caption, file: path} <- images do %>
         <.image title={caption} caption={caption} path={[root, path] |> Path.join} />
       <% end %>
     </div>

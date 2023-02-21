@@ -141,6 +141,10 @@ $about-clear: math.div($avi-height, 2) - $header-border;
 	}
 }
 
+body.gallery #about {
+	display: none;
+}
+
 #about-logos {
 	margin-top: 1em;
 }
@@ -158,6 +162,16 @@ main {
 		@include media-breakpoint-up(md) {
 			flex: 4 0 0%;
 			order: 2;
+		}
+	}
+}
+
+.gallery main {
+	@include media-breakpoint-up(md) {
+
+		article,
+		section {
+			max-width: 100%;
 		}
 	}
 }

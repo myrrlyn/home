@@ -94,7 +94,7 @@ defmodule HomeWeb.OeuvreController do
   def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
   def build(conn, template, url, page) do
-    banner = page.meta.props |> Map.get("banner") |> Home.Banners.teslore()
+    banner = page.meta.props |> Map.get("banner", "") |> Home.Banners.teslore()
 
     conn
     |> PhoenixETag.render_if_stale(template,

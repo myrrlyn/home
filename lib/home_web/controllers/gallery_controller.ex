@@ -13,10 +13,10 @@ defmodule HomeWeb.GalleryController do
     |> render("gallery.html",
       flavor: "app",
       classes: ["general"],
-      title: "Icon Gallery",
-      banner: Home.Banners.weighted_random(),
+      tab_title: "Icon Gallery",
+      banner: Home.Banners.weighted_random(:main_banners),
       page: nil,
-      meta: %Home.Meta{title: "Icon Gallery"},
+      frontmatter: %Home.Meta{tab_title: "Icon Gallery"},
       navtree: fn -> __MODULE__.navtree() end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: @root,
@@ -29,14 +29,16 @@ defmodule HomeWeb.GalleryController do
     |> render("banners.html",
       flavor: "app",
       classes: ["gallery", "banners-gallery"],
-      banner: Home.Banners.weighted_random(),
+      banner: Home.Banners.weighted_random(:main_banners),
       page: nil,
-      meta: %Home.Meta{title: "Banner Images"},
+      frontmatter: %Home.Meta{tab_title: "Banner Images"},
+      tab_title: "Banner Images",
+      page_title: "Banner Images",
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: @root,
       directory: "/static/images/banners",
-      gallery: Home.Banners.by_albums()
+      gallery: Home.Banners.main_banners()
     )
   end
 
@@ -46,16 +48,18 @@ defmodule HomeWeb.GalleryController do
       flavor: "app",
       classes: ["gallery", "iso-7010-gallery"],
       title: "ISO 7010 Icons",
-      banner: Home.Banners.weighted_random(),
+      banner: Home.Banners.weighted_random(:main_banners),
       page: nil,
-      meta: %Home.Meta{title: "ISO 7010 Icons"},
+      frontmatter: %Home.Meta{tab_title: "ISO 7010 Icons"},
+      tab_title: "ISO 7010 Icons",
+      page_title: "ISO 7010 Icons",
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: @root,
       directory: "/static/images/iso-7010",
       gallery: %{
         "E (Safe Condition)" =>
-          Enum.to_list(1..70)
+          (Enum.to_list(1..65) ++ Enum.to_list(67..70))
           |> Enum.map(fn num ->
             "e#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end),
@@ -85,7 +89,7 @@ defmodule HomeWeb.GalleryController do
 
   def navtree(current \\ nil) do
     [
-      {"<code>.</code> <small>(Gallery index)</small>", "#{@root}", "dr-x"},
+      {"<code>.</code> <small>(Gallery index)</small>", @root, "dr-x"},
       {"<code>..</code> <small>(Site index)</small>", "/", "dr-x"}
     ]
   end

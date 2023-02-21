@@ -126,7 +126,7 @@ defmodule HomeWeb.BlogController do
         case src_path |> Home.PageCache.cached() do
           {:ok, page} ->
             conn
-            |> assign(:banner, Home.Banners.weighted_random())
+            |> assign(:banner, Home.Banners.weighted_random(:main_banners))
             |> assign(:page, page)
             |> assign(:frontmatter, page.meta)
             |> assign(
@@ -153,7 +153,7 @@ defmodule HomeWeb.BlogController do
     |> render(
       template,
       flavor: "app",
-      banner: Home.Banners.weighted_random(),
+      banner: Home.Banners.weighted_random(:main_banners),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       classes: ["blog"],
       navtree: &navtree/0,
