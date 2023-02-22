@@ -156,7 +156,7 @@ defmodule Home.Page do
   """
   @spec gravatar(String.t(), number()) :: String.t()
   def gravatar(email, size \\ 192) do
-    email |> Gravatar.new() |> Gravatar.secure() |> Gravatar.size(size) |> to_string
+    email |> Exgravatar.gravatar_url(size: size)
   end
 
   @doc """

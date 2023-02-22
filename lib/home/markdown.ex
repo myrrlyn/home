@@ -32,6 +32,8 @@ defmodule Home.Markdown do
   `{:ok, HTML, TOC, warnings}`, where HTML is a string of HTML text and TOC is
   a recursive list of `[name, ident, TOC]`.
   """
+  @spec render(String.t(), Range.t()) ::
+          {:ok, String.t(), any} | {:error, %Home.Page.NotFoundException{}}
   def render(markdown, tocs \\ 1..6) do
     idents =
       case __MODULE__.Idents.start_link([]) do

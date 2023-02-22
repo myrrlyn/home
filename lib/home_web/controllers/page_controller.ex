@@ -91,7 +91,7 @@ defmodule HomeWeb.PageController do
   def page_listing() do
     [
       {"Home", "/", "-r--"},
-      {"About", "/about", "-r--"},
+      {"About Me", "/about", "-r--"},
       {"Blog", "/blog", "dr-x"},
       {"Crates", "/crates", "dr-x"},
       {"Hermaeus", "/hermaeus", "-r--"},
