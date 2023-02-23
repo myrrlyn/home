@@ -93,7 +93,7 @@ tags = ["sea", "sky", "sunset"]
 [[banners.rksr]]
 file = "2014-08-04_002.jpg"
 caption = "Rota-Kiwan Scout Reservation, waterfront, dusk"
-pos = { x = "bottom", y = "center"}
+pos = { x = "center", y = "bottom"}
 tags = ["sky", "sunset", "waterfront"]
 
 [[banners.misc]]
@@ -169,7 +169,7 @@ tags = ["clouds", "sky"]
 [[banners.misc]]
 file = "2015-08-21T15-14-30.jpg"
 caption = "Backyard in Jonesville, MI"
-pos = { x = "bottom", y = "right"}
+pos = { x = "right", y = "bottom"}
 tags = ["sky"]
 
 [[banners.misc]]
@@ -337,31 +337,26 @@ tags = ["sky"]
 file = "2016-09-04T09-16-38.jpg"
 caption = "Atlantic Ocean from Ogunquit, ME"
 tags = ["sea"]
-album = "maine"
 
 [[banners.maine]]
 file = "2016-09-05T12-40-00.jpg"
 caption = "Atlantic Ocean from Ogunquit, ME"
 tags = ["sea", "waves"]
-album = "maine"
 
 [[banners.maine]]
 file = "2016-09-05T12-41-06.jpg"
 caption = "Atlantic Ocean from Ogunquit, ME"
 tags = ["sea", "waves"]
-album = "maine"
 
 [[banners.maine]]
 file = "2016-09-05T12-41-10.jpg"
 caption = "Atlantic Ocean from Ogunquit, ME"
 tags = ["sea", "waves"]
-album = "maine"
 
 [[banners.maine]]
 file = "2016-09-05T12-41-16.jpg"
 caption = "Atlantic Ocean from Ogunquit, ME"
 tags = ["sea", "waves"]
-album = "maine"
 
 [[banners.rksr]]
 file = "2016-09-16T20-16-05.jpg"

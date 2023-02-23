@@ -5,7 +5,7 @@ defmodule HomeWeb.GalleryController do
   @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _) do
-    conn |> PhoenixETag.render_if_stale("")
+    conn |> render("")
   end
 
   def gallery(conn, %{"gallery" => gallery}) do

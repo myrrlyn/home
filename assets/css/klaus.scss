@@ -3,6 +3,7 @@
 @import "bootstrap/scss/bootstrap";
 
 @import "color";
+@import "font";
 @import "variables";
 
 article {
@@ -78,7 +79,7 @@ h6 {
 	clear: both;
 }
 
-@include media-breakpoint-up(md) {
+@media screen and (min-width: 600px) {
 	.portrait {
 		float: right;
 		margin-left: 1em;
@@ -93,85 +94,35 @@ h6 {
 	}
 }
 
-@include media-breakpoint-down(lg) {
+@media screen and (max-width: 599px) {
 	#signature {
 		max-width: 100%;
 	}
 }
 
-#img-gallery {
-	padding: 0;
-	margin: 0;
+.img-flex {
+	display: flex;
+	flex-flow: row wrap;
+	column-gap: 0.25em;
+	row-gap: 0.25em;
 
-	div {
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		display: inline-block;
-	}
-}
+	p {
+		display: inline;
+		margin: 0;
 
-$inblpad: 4px;
+		&:has(.flex-1) {
+			flex: 1 1 0;
+		}
 
-#klaus-lamp {
-	background-image: url("/static/images/klaus/lamp.png");
-}
-
-#klaus-clock {
-	background-image: url("/static/images/klaus/clock.jpg");
-}
-
-#klaus-logos {
-	background-image: url("/static/images/klaus/logos.jpg");
-}
-
-$width-thin: 22.6;
-$width-thick: 54.8;
-
-@media all and (min-width: 60em) {
-
-	#klaus-lamp,
-	#klaus-clock {
-		height: calc((#{$width-thin} * 60em / 100 - #{$inblpad}) * 1.37686567164179);
-		width: calc(#{$width-thin}% - #{$inblpad});
+		&:has(.flex-2) {
+			flex: 2 1 0;
+		}
 	}
 
-	#klaus-logos {
-		height: calc((#{math.div($width-thick, 100)} * 60em - #{$inblpad}) * 0.563);
-		width: calc(#{$width-thick}% - #{$inblpad});
-	}
-}
-
-@media all and (min-width: 600px) and (max-width: 60em) {
-	#klaus-lamp {
-		height: calc(calc(#{$width-thin}vw - #{$inblpad}) * 1.37686567164179);
-		width: calc(#{$width-thin}% - #{$inblpad});
-	}
-
-	#klaus-clock {
-		height: calc(calc(#{$width-thin}vw - #{$inblpad}) * 1.37686567164179);
-		width: calc(#{$width-thin}% - #{$inblpad});
-	}
-
-	#klaus-logos {
-		height: calc(calc(#{$width-thick}vw - #{$inblpad}) * 0.563);
-		width: calc(#{$width-thick}% - #{$inblpad});
-	}
-}
-
-@media all and (max-width: 599px) {
-	#klaus-lamp {
-		height: calc(calc(50vw - #{$inblpad}) * 1.37686567164179);
-		width: calc(50% - #{$inblpad});
-	}
-
-	#klaus-clock {
-		height: calc(calc(50vw - #{$inblpad}) * 1.37686567164179);
-		width: calc(50% - #{$inblpad});
-	}
-
-	#klaus-logos {
-		height: calc(calc(100vw - #{$inblpad}) * 0.563);
-		width: 100%;
+	img {
+		min-width: 10em;
+		max-width: 100%;
+		border-radius: 1em;
 	}
 }
 
@@ -187,17 +138,14 @@ $width-thick: 54.8;
 	}
 }
 
-@include media-breakpoint-up(lg) {
-	@media only screen and (min-height: 800px) {
+@media only screen and (min-height: 800px) {
 
-		body:not(.hide-panels) #flex-focus,
-		body #flex-focus {
-			height: 100%;
-		}
+	body #flex-focus {
+		height: 100%;
+	}
 
-		main {
-			overflow-y: auto;
-			height: inherit;
-		}
+	main {
+		overflow-y: auto;
+		height: inherit;
 	}
 }

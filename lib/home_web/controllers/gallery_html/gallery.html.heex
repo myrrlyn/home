@@ -1,0 +1,7 @@
+<article :if={assigns[:page]}><%= @page.content |> raw %></article>
+<.images
+	:for={{heading, images} <- @gallery}
+	heading={heading}
+	images={images}
+	root={@directory}
+/>

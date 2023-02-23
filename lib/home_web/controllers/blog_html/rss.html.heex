@@ -1,0 +1,28 @@
+<%# https://cyber.harvard.edu/rss/rss.html %>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Insufficiently Magical</title>
+        <atom:link><%= HomeWeb.Endpoint.url() %>/blog</atom:link>
+        <description>myrrlyn’s sporadic blogging habit</description>
+        <copyright><%= "2012—#{Date.utc_today.year} Alexander Payne (myrrlyn)" %></copyright>
+        <generator>Phoenix (Elixir + Erlang/OTP)</generator>
+        <language>en-us</language>
+        <lastBuildDate><% {_, meta} = @articles |> Enum.at(0) %><%= meta.date |> Timex.format!("{RFC822}") %></lastBuildDate>
+        <pubDate><%= DateTime.new!(Date.utc_today(), ~T[00:00:00], "Etc/UTC") |> Timex.format!("{RFC822}") %></pubDate>
+        <image>
+            <url><%= HomeWeb.Endpoint.url() %>/static/favicons/favicon-128.png</url>
+            <title>Insufficiently Magical</title>
+            <atom:link><%= HomeWeb.Endpoint.url() %>/blog</atom:link>
+        </image>
+        <atom:link rel="self" href={HomeWeb.Endpoint.url() <> "/blog/feed.rss"} type="application/rss+xml" />
+        <item :for={{url, meta} <- @articles}>
+            <title><%= meta.title %></title>
+            <atom:link><%= HomeWeb.Endpoint.url() <> url %></atom:link>
+            <guid><%= HomeWeb.Endpoint.url() <> url %></guid>
+            <description><%= meta |> Home.Meta.summary("This article currently lacks a description") %></description>
+            <author>self@myrrlyn.dev (Alexander Payne)</author>
+            <pubDate><%= meta.date |> Timex.format!("{RFC822}") %></pubDate>
+            <category :for={tag <- Home.Meta.tags(meta, [])}><%= tag %></category>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,12 @@
+<article>
+	<%= @page.content |> raw %>
+	<h2>Tags</h2>
+	<div :for={{tag, posts} <- @tagset} class="tagset">
+		<h3>#<%= tag %></h3>
+		<ul>
+			<li :for={{name, path} <- posts}>
+				<.link href={path} class="title"><%= name %></.link>
+			</li>
+		</ul>
+	</div>
+</article>

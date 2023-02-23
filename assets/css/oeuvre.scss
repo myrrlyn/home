@@ -11,6 +11,11 @@ $avi-rim: 0;
 	--border-color: #{$amaranth};
 }
 
+.oeuvre {
+	--current-page-left: "📖";
+	--current-page-right: "🪶";
+}
+
 @import "layout";
 @import "gravatar";
 @import "style";

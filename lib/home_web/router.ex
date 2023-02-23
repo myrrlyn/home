@@ -4,8 +4,9 @@ defmodule HomeWeb.Router do
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(HomeWeb.Boycott, nil)
-    # plug(:fetch_session)
-    # plug(:fetch_flash)
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, {HomeWeb.Layouts, :root}
     # plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(HomeWeb.CacheControl)
@@ -17,6 +18,16 @@ defmodule HomeWeb.Router do
 
   pipeline :xml do
     plug(:accepts, ["xml"])
+    plug :put_format, :html
+    plug :put_root_layout, {HomeWeb.Layouts, :xml}
+    plug :put_layout, {HomeWeb.Layouts, :bare}
+  end
+
+  pipeline :svg do
+    # Phoenix doesn't actually support anything other than HTML and JSON here.
+    plug :put_format, :html
+    plug :put_root_layout, {HomeWeb.Layouts, :svg}
+    plug :put_layout, {HomeWeb.Layouts, :bare}
   end
 
   # Other scopes may use custom stacks.
@@ -28,17 +39,24 @@ defmodule HomeWeb.Router do
   scope "/", HomeWeb do
     pipe_through(:xml)
 
-    get("/blog.rss", BlogController, :feed)
-    get("/blog/feed.rss", BlogController, :feed)
     get("/sitemap.xml", PageController, :sitemap)
     get("/feed.rss", BlogController, :feed)
+    get("/blog.rss", BlogController, :feed)
+    get("/blog/feed.rss", BlogController, :feed)
+    get("/oeuvre.rss", OeuvreController, :feed)
+    get("/oeuvre/feed.rss", OeuvreController, :feed)
+  end
+
+  scope "/oeuvre", HomeWeb do
+    pipe_through(:svg)
+
+    get("/images/tones.svg", OeuvreController, :tones)
   end
 
   scope "/blog", HomeWeb do
     pipe_through(:browser)
 
     get("/", BlogController, :index)
-
     get("/*path", BlogController, :page)
   end
 
@@ -46,7 +64,6 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", OeuvreController, :index)
-
     get("/*path", OeuvreController, :page)
   end
 

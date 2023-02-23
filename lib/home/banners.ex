@@ -131,8 +131,6 @@ defmodule Home.Banners do
            |> File.stream!()
            |> Toml.decode_stream!(keys: :atoms, transforms: [__MODULE__.TomlTransform])
 
-  def static_path(%__MODULE__.Banner{file: file}), do: ["/images", "banners", file] |> Path.join()
-
   @doc """
   Produces all banners, grouped by their album.
   """
@@ -214,12 +212,20 @@ defmodule Home.Banners do
 
   The input stream must be flat, as is the output stream.
   """
-  @spec filter_tag(banners(), atom() | nil) :: banners()
+  @spec filter_tag(banners(), atom() | String.t() | nil) :: banners()
   def filter_tag(banners, tag \\ nil) do
-    banners
-    |> Stream.filter(fn %__MODULE__.Banner{tags: tags} ->
-      if tag, do: Enum.member?(tags, tag), else: true
-    end)
+    filter =
+      if tag do
+        fn tags ->
+          tag = tag |> to_string()
+          tags = tags |> Enum.map(&to_string/1) |> Enum.to_list()
+          Enum.member?(tags, tag)
+        end
+      else
+        fn _ -> true end
+      end
+
+    banners |> Stream.filter(filter)
   end
 
   @doc """
@@ -313,6 +319,20 @@ defmodule Home.Banners do
     out
   end
 
+  @spec random_from_album(String.t()) :: __MODULE__.Banner.t()
+  def random_from_album(album_id) do
+    album_id = get_album_id(album_id)
+
+    banners =
+      case main_banners()[album_id] do
+        unnamed when is_list(unnamed) -> unnamed
+        named when is_map(named) -> named |> Map.values()
+        _ -> raise "unreachable"
+      end
+
+    weighted_random(banners)
+  end
+
   @spec teslore(String.t()) :: __MODULE__.Banner.t()
   def teslore(name \\ "") do
     banners =
@@ -325,5 +345,23 @@ defmodule Home.Banners do
       name |> String.replace("-", "_"),
       banners["text_oghma"]
     )
+  end
+
+  @spec get_album_id(String.t()) :: atom()
+  defp get_album_id(album_id) when is_binary(album_id) do
+    lookup = albums() |> Enum.map(fn {k, _} -> {to_string(k), k} end) |> Enum.into(%{})
+    Map.get(lookup, album_id, :misc)
+  end
+end
+
+defimpl Phoenix.Param, for: Home.Banners.Banner do
+  def to_param(%Home.Banners.Banner{} = banner) do
+    to_string(banner)
+  end
+end
+
+defimpl String.Chars, for: Home.Banners.Banner do
+  def to_string(%Home.Banners.Banner{file: file}) do
+    ["static", "images", "banners", file] |> Path.join()
   end
 end

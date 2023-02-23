@@ -89,12 +89,21 @@ defmodule Home.Markdown do
   @spec walker(Earmark.ast_node(), pid() | nil) :: Earmark.ast_node()
   def walker(ast, collector \\ nil)
 
-  # Translate <blockquote role="complementary"> into <aside>
+  # Translate marked blockquotes into other tags.
   def walker({"blockquote", attrs, inner, meta} = bq, _) do
     case attrs |> List.keytake("role", 0) do
-      {{"role", "complementary"}, rest} -> {"aside", rest, inner, meta}
-      _ -> bq
+      {{"role", "complementary"}, rest} -> throw({"aside", rest, inner, meta})
+      _ -> nil
     end
+
+    case attrs |> List.keytake("tag", 0) do
+      {{"tag", tagname}, rest} -> throw({tagname, rest, inner, meta})
+      _ -> nil
+    end
+
+    bq
+  catch
+    thrown -> thrown
   end
 
   # <h1> receives a .title class

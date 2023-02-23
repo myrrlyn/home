@@ -22,7 +22,7 @@ config :logger, :console,
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.17.10",
   default: [
     args:
       ~w(js/app.ts js/klaus.ts js/mathjax.js js/oeuvre.ts --bundle --target=es2017 --outdir=../priv/static/js --external:/fonts/* --external:/images/*),
@@ -35,7 +35,7 @@ config :phoenix, :json_library, Jason
 
 # Use the Dart SASS driver for CSS compilation.
 config :dart_sass,
-  version: "1.55.0",
+  version: "1.58.3",
   default: [
     args: ~w(-Inode_modules css:../priv/static/css),
     cd: Path.expand("../assets", __DIR__)

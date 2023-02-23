@@ -11,6 +11,11 @@
 @import "gallery";
 @import "style";
 
+:root {
+	--current-page-left: "👉";
+	--current-page-right: "👈"
+}
+
 /* Alerts and form errors */
 .alert {
 	padding: 15px;

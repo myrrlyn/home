@@ -5,12 +5,11 @@ defmodule HomeWeb.KlausController do
     page = Home.PageCache.cached!("klaus.md")
 
     conn
-    |> PhoenixETag.render_if_stale("page.html",
-      layout: {HomeWeb.KlausView, "plain.html"},
+    |> put_layout(html: :plain)
+    |> render(:page,
       flavor: "klaus",
       classes: ["klaus", "no-index"],
       page: page,
-      meta: page.meta,
       title: page.meta.title,
       tab_title: page.meta.tab_title
     )

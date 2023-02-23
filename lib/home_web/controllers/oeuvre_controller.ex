@@ -7,21 +7,7 @@ defmodule HomeWeb.OeuvreController do
   def index(conn, _params) do
     page = Home.PageCache.cached!("oeuvre/index.md")
 
-    conn |> assign(:tagset, by_tags()) |> build("index.html", nil, page)
-  end
-
-  # Renders a single article
-  def page(conn, %{"path" => [page]} = params) do
-    req_url = [@root, page] |> Path.join()
-    path = "oeuvre/#{page}.md"
-
-    case Home.PageCache.cached(path) do
-      {:ok, page} ->
-        build(conn, "page.html", req_url, page)
-
-      {:error, _} ->
-        conn |> HomeWeb.PageController.error(404, params)
-    end
+    conn |> assign(:tagset, by_tags()) |> build(:index, page)
   end
 
   # Data used to procgen the Tones image
@@ -54,7 +40,7 @@ defmodule HomeWeb.OeuvreController do
   ]
 
   # Renders the Tones SVG
-  def page(conn, %{"path" => ["images", "tones.svg"]} = params) do
+  def tones(conn, params) do
     {key, params} = params |> Map.pop("key", "d-major")
     {color, params} = params |> Map.pop("color", "hsl")
 
@@ -71,11 +57,21 @@ defmodule HomeWeb.OeuvreController do
     conn
     # Because Phoenix can’t use any other filename, set the MIME type directly.
     |> put_resp_content_type(MIME.type("svg"))
-    |> render("tones.html",
-      layout: {HomeWeb.LayoutView, "svg.html"},
+    |> render(:tones,
       classes: [key, color] ++ animation ++ classes,
       table: @table
     )
+  end
+
+  # Renders a single article
+  def page(conn, %{"path" => [page]} = params) do
+    case Home.PageCache.cached("oeuvre/#{page}.md") do
+      {:ok, page} ->
+        conn |> build(:page, page)
+
+      {:error, _} ->
+        conn |> HomeWeb.PageController.error(404, params)
+    end
   end
 
   # Gets associated resources
@@ -93,24 +89,29 @@ defmodule HomeWeb.OeuvreController do
 
   def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
-  def build(conn, template, url, page) do
+  @doc "Render an RSS feed"
+  def feed(conn, _params) do
+    conn
+    |> put_resp_content_type("application/rss+xml")
+    |> render(:rss, articles: get_fanfic())
+  end
+
+  def build(conn, template, page) do
     banner = page.meta.props |> Map.get("banner", "") |> Home.Banners.teslore()
 
     conn
-    |> PhoenixETag.render_if_stale(template,
+    |> render(template,
       flavor: "oeuvre",
       classes: ["oeuvre"],
       banner: banner,
       page: page,
-      frontmatter: page.meta,
       tab_title:
         case page.meta.title do
           "oeuvre myrrlyn" -> "oeuvre myrrlyn"
           other -> other <> " – oeuvre myrrlyn"
         end,
-      page_title: page.meta.title,
       gravatar: "/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes",
-      navtree: fn -> __MODULE__.navtree(url) end,
+      navtree: fn -> __MODULE__.navtree(conn.request_path) end,
       scope: @root
     )
   end
@@ -131,7 +132,7 @@ defmodule HomeWeb.OeuvreController do
       HomeWeb.Nav.Entry.new("Library desk <small>(Oeuvre index)</small>", @root),
       HomeWeb.Nav.Entry.new("Lobby <small>(Site index)</small>", "/")
     ]
-    |> Stream.concat(HomeWeb.Nav.make_listing(get_fanfic(), current, left: "📖", right: "🪶"))
+    |> Stream.concat(HomeWeb.Nav.make_listing(get_fanfic(), current))
   end
 
   def page_listing() do

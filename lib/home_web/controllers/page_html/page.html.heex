@@ -1,0 +1,8 @@
+<article>
+    <header class="frontmatter">
+        <.page_title page_title={@page_title} page_subtitle={assigns[:page_subtitle]} />
+        <nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
+        <p :if={@page.meta.summary}><%= @page.meta.summary |> Earmark.as_html! |> raw %></p>
+    </header>
+    <section><%= @page.content |> raw %></section>
+</article>

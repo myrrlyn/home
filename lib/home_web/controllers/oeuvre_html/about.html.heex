@@ -1,0 +1,4 @@
+<section :if={about = @page.meta.props["about"]}>
+	<h2 class="text-center">About the Text</h2>
+	<%= about |> raw %>
+</section>

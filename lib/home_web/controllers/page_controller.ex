@@ -7,6 +7,7 @@ defmodule HomeWeb.PageController do
   # This might be able to be folded into `page`
   def home(conn, params) do
     conn
+    |> Plug.Conn.assign(:tab_title, "~myrrlyn")
     |> build(params, "/", Home.PageCache.cached!("index.md"))
   end
 
@@ -45,19 +46,19 @@ defmodule HomeWeb.PageController do
   end
 
   def sitemap(conn, _) do
-    out = Phoenix.View.render(HomeWeb.PageView, "sitemap.xml", [])
-    conn |> put_resp_content_type("text/xml") |> resp(200, out)
+    conn |> put_resp_content_type("text/xml") |> render(:sitemap)
   end
 
   defp build(conn, _params, path, page) do
     conn
-    |> PhoenixETag.render_if_stale("page.html",
+    |> render(:page,
       flavor: "app",
       classes: ["general"],
       frontmatter: page.meta,
-      tab_title: page.meta.tab_title || ["~myrrlyn" | conn.path_info] |> Path.join(),
+      tab_title:
+        conn.assigns[:tab_title] || page.meta.tab_title ||
+          ["~myrrlyn" | conn.path_info] |> Path.join(),
       page_title: page.meta.title,
-      banner: Home.Banners.weighted_random(:main_banners),
       page: page,
       navtree: fn -> __MODULE__.navtree(path) end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
@@ -68,15 +69,12 @@ defmodule HomeWeb.PageController do
   def error(conn, status, _params) do
     conn
     |> put_status(status)
-    |> put_view(HomeWeb.ErrorView)
+    |> put_view(HomeWeb.ErrorHTML)
     |> render(
-      "404.html",
+      :"404",
       flavor: "app",
       classes: ["general"],
-      banner: Home.Banners.weighted_random(:main_banners),
-      frontmatter: %Home.Meta{title: "Not Found"},
       tab_title: "Not Found",
-      page_title: "Not Found",
       page: nil,
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
@@ -88,12 +86,24 @@ defmodule HomeWeb.PageController do
     HomeWeb.Nav.make_listing(page_listing(), current)
   end
 
+  # TODO(myrrlyn): Figure out how to load this from the filesystem?
+  @spec page_listing() :: [
+          {String.t(), Path.t(), String.t()}
+          | {String.t(), Path.t(), String.t(), [{String.t(), Path.t(), String.t()}]}
+        ]
   def page_listing() do
     [
       {"Home", "/", "-r--"},
       {"About Me", "/about", "-r--"},
       {"Blog", "/blog", "dr-x"},
-      {"Crates", "/crates", "dr-x"},
+      {"Crates", "/crates", "dr-x",
+       [
+         {"<code>bitvec</code>", "/bitvec", "-r--"},
+         {"<code>calm_io</code>", "/calm_io", "-r--"},
+         {"<code>radium</code>", "/radium", "-r--"},
+         {"<code>tap</code>", "/tap", "-r--"},
+         {"<code>wyz</code>", "/wyz", "-r--"}
+       ]},
       {"Hermaeus", "/hermaeus", "-r--"},
       {"Oeuvre", "/oeuvre", "dr-x"},
       {"Portfolio", "/portfolio", "-r--"},

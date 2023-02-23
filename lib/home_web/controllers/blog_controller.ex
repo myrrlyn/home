@@ -20,19 +20,18 @@ defmodule HomeWeb.BlogController do
 
     conn
     |> assign(:groups, groups)
-    |> build(params, "index.html", @root, "blog/index.md")
+    |> build(params, :index, "blog/index.md")
   end
 
   @doc "Render an RSS feed"
   def feed(conn, _params) do
     conn
     |> put_resp_content_type("application/rss+xml")
-    |> render("rss.xml", layout: nil, articles: get_articles())
+    |> render(:rss, articles: get_articles())
   end
 
   # Render a group index page
   def page(conn, %{"path" => [group]} = params) do
-    req_url = [@root, group] |> Path.join()
     src_path = ["blog", group, "index.md"] |> Path.join()
 
     index = src_path |> Home.PageCache.cached()
@@ -42,38 +41,34 @@ defmodule HomeWeb.BlogController do
       {{:error, %Home.Page.NotFoundException{}}, nil} ->
         conn
         |> assign(:category, group)
-        |> error(404, "invalid-category.html", req_url, "Invalid Category")
+        |> error(404, :"invalid-category", "Invalid Category")
 
       {{:error, %Home.Page.NotFoundException{}}, {name, slug, pages}} ->
         conn
-        |> assign(:name, name)
-        |> assign(:slug, slug)
-        |> assign(:pages, pages)
-        |> error(200, "missing-category.html", @root, name)
+        |> merge_assigns(name: name, slug: slug, pages: pages)
+        |> error(200, :"missing-category", name)
 
       {{:ok, %Home.Page{meta: meta}}, {_, _, pages}} ->
         if meta.published || Application.get_env(:home, :show_drafts) do
           conn
           |> assign(:pages, pages)
-          |> build(params, "category.html", req_url, src_path)
+          |> build(params, :category, src_path)
         else
           conn
           |> assign(:category, group)
-          |> error(404, "invalid-category.html", req_url, "Invalid Category")
+          |> error(404, :"invalid-category", "Invalid Category")
         end
     end
   end
 
   # Map categorized pages correctly.
   def page(conn, %{"path" => [group, page]} = params) do
-    req_url = [@root, group, page] |> Path.join()
-
     case url_to_path(group, page) do
       nil ->
-        conn |> error(404, "missing-article.html", req_url, "Missing Article")
+        conn |> error(404, :"missing-article", "Missing Article")
 
       path ->
-        conn |> build(params, "page.html", req_url, path)
+        conn |> build(params, :page, path)
     end
   end
 
@@ -92,20 +87,19 @@ defmodule HomeWeb.BlogController do
 
   def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
-  def build(conn, _params, template, req_url) do
+  def build(conn, _params, template) do
     conn
-    |> PhoenixETag.render_if_stale(
+    |> render(
       template,
       flavor: "app",
       classes: ["blog"],
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
-      navtree: fn -> navtree(req_url) end,
-      scope: @root,
-      req_url: req_url
+      navtree: fn -> navtree(conn.request_path) end,
+      scope: @root
     )
   end
 
-  def build(conn, params, template, req_url, src_path) do
+  def build(conn, params, template, src_path) do
     case ["priv", "pages", src_path] |> Path.join() |> File.read_link() do
       {:ok, redirect} ->
         Logger.notice("Accessed a deprecated path")
@@ -126,9 +120,14 @@ defmodule HomeWeb.BlogController do
         case src_path |> Home.PageCache.cached() do
           {:ok, page} ->
             conn
-            |> assign(:banner, Home.Banners.weighted_random(:main_banners))
-            |> assign(:page, page)
-            |> assign(:frontmatter, page.meta)
+            |> merge_assigns(page: page, src_path: src_path)
+            |> assign(
+              :banner,
+              case page.meta.props["album"] do
+                nil -> nil
+                album -> Home.Banners.random_from_album(album)
+              end
+            )
             |> assign(
               :tab_title,
               case page.meta.title do
@@ -136,33 +135,28 @@ defmodule HomeWeb.BlogController do
                 other -> other <> " – Insufficiently Magical"
               end
             )
-            |> assign(:page_title, page.meta.title)
-            |> assign(:src_path, src_path)
-            |> build(params, template, req_url)
+            |> build(params, template)
 
           {:error, _err} ->
-            conn |> error(500, "invalid-article.html", req_url, "Broken article")
+            conn |> error(500, :"invalid-article", "Broken Article")
         end
     end
   end
 
-  def error(conn, status, template, req_url, title) do
+  def error(conn, status, template, title) do
     conn
     |> put_status(status)
-    |> put_view(HomeWeb.ErrorView)
+    |> put_view(HomeWeb.ErrorHTML)
     |> render(
       template,
       flavor: "app",
-      banner: Home.Banners.weighted_random(:main_banners),
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       classes: ["blog"],
       navtree: &navtree/0,
       page: nil,
-      frontmatter: %Home.Meta{title: title, tab_title: title},
       tab_title: title,
       page_title: title,
-      scope: @root,
-      req_url: req_url
+      scope: @root
     )
   end
 

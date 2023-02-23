@@ -147,6 +147,11 @@ body.gallery #about {
 
 #about-logos {
 	margin-top: 1em;
+
+	img {
+		height: 3em;
+		padding: 0 0.25em;
+	}
 }
 
 main {
@@ -249,4 +254,8 @@ body.hide-panels {
 		width: 100%;
 		height: 100%;
 	}
+}
+
+mjx-container {
+	overflow-x: scroll;
 }

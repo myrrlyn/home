@@ -1,0 +1,10 @@
+<audio id={"#{@ident}-sound"} controls
+	{[loop: Map.get(@audio, "repeat", false)]}
+>
+	<source src={@audio["src"]} />
+	<p>
+		Your browser does not appear to support the <code>&lt;audio&gt;</code>
+		element. The song is <em><%= @audio["title"] %></em>, and you can download
+		it <.link href={@audio["src"]}>from this link</.link>.
+	</p>
+</audio>

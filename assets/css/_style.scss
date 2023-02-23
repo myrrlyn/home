@@ -200,3 +200,30 @@ div.code-container {
 		}
 	}
 }
+
+nav[aria-label="Sitemap"] {
+	summary {
+		list-style: none;
+	}
+
+	details:not([open]) summary::after {
+		content: "◂";
+	}
+
+	details[open] summary::after {
+		content: "▾";
+	}
+
+	// a[aria-current="page"],
+	span:has(a[aria-current="page"]) {
+		&::before {
+			content: var(--current-page-left);
+			padding-inline-end: 0.25em;
+		}
+
+		&::after {
+			content: var(--current-page-right);
+			padding-inline-start: 0.25em;
+		}
+	}
+}

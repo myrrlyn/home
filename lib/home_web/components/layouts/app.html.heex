@@ -1,0 +1,32 @@
+<.banner banner={assigns[:banner]} />
+<div id="main" class="flex-wrapper flex-cols hide-scroll">
+    <main class="container-md flex-item" role="main"><%= @inner_content %></main>
+    <aside id="about" class="flex-item screen-only">
+        <div class="logo gravatar">
+            <.link href="/">
+                <img id="gravatar" src={@gravatar} alt="Gravatar" />
+            </.link>
+        </div>
+        <div id="about-text" class="container-md">
+            <aside><%= view_module(@conn).about(assigns) %></aside>
+            <nav role="navigation" aria-label="Sitemap">
+                <code>$ exa -TL2 ~<%= @scope %></code>
+                <.sitenav scope={@scope} navtree={@navtree}>
+                    <:item :let={item}>
+                        <code :if={item.date} class="inline"><%= raw(item.date) %></code>
+                        <span {if Enum.member?(item.attrs, {:"aria-current", :page}), do: %{class: "current-page"}, else: %{}}>
+                            <.link href={item.url} {item.attrs}><%= raw(item.name) %></.link>
+                        </span>
+                    </:item>
+                </.sitenav>
+            </nav>
+            <small>
+                If something is wrong with this website, I would
+                appreciate it if you
+                <.github_issue title="Content Erratum" body={"I was browsing #{@conn.request_path} and saw %E2%80%A6"} />
+            </small>
+            <.logos />
+        </div>
+    </aside>
+</div>
+<.footer />

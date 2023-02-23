@@ -8,17 +8,26 @@ defmodule HomeWeb.Nav do
     A single entry in a navigation list. Contains a display name, a URL, a date
     (or other marking), and a list of HTML element attributes.
     """
-    defstruct name: nil, url: nil, date: nil, attrs: []
+    defstruct(name: nil, url: nil, date: nil, attrs: [], children: nil)
+
+    @type t :: %__MODULE__{
+            name: String.t(),
+            url: String.t(),
+            date: String.t() | nil,
+            attrs: Keyword.t(),
+            children: [__MODULE__.t()] | nil
+          }
 
     @doc """
     Produces a new Nav.Entry from its components.
     """
-    def new(name, url, date \\ nil, attrs \\ []) do
+    def new(name, url, date \\ nil, attrs \\ [], children \\ nil) do
       %__MODULE__{
         name: name,
         url: url,
         date: date,
-        attrs: attrs
+        attrs: attrs,
+        children: children
       }
     end
 
@@ -28,17 +37,24 @@ defmodule HomeWeb.Nav do
     This accepts `left:` and `right:` options, which are the decorators applied
     to the entry's name to indicate that it is currently being viewed.
     """
-    def mark_current(%__MODULE__{name: name, attrs: attrs} = this, current, opts) do
-      opts = Keyword.merge([left: "👉", right: "👈"], opts)
-
-      {name, attrs} =
+    def mark_current(%__MODULE__{} = this, current, opts \\ []) do
+      attrs =
         if this.url == current do
-          {"#{opts[:left]} #{name} #{opts[:right]}", [{:"aria-current", :page} | attrs]}
+          [{:"aria-current", :page} | this.attrs] ++ opts
         else
-          {name, attrs}
+          this.attrs
         end
 
-      %__MODULE__{this | name: name, attrs: attrs}
+      children =
+        if this.children do
+          this.children
+          |> Enum.map(fn child -> mark_current(child, current, opts) end)
+          |> Enum.to_list()
+        else
+          nil
+        end
+
+      %__MODULE__{this | attrs: attrs, children: children}
     end
   end
 
@@ -75,5 +91,17 @@ defmodule HomeWeb.Nav do
 
   defp process({name, url, decorator}) do
     __MODULE__.Entry.new(name, url, decorator, [])
+  end
+
+  defp process({name, url, decorator, children}) do
+    children =
+      children
+      |> Stream.map(fn {name, child_url, decorator} ->
+        {name, Path.join(url, child_url), decorator}
+      end)
+      |> Stream.map(&process/1)
+      |> Enum.to_list()
+
+    __MODULE__.Entry.new(name, url, decorator, [], children)
   end
 end
