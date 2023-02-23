@@ -29,6 +29,20 @@ defmodule HomeWeb.AssetController do
     end
   end
 
+  def banner_by_album(conn, %{"album" => album} = _params) do
+    banner = Home.Banners.random_from_album(album)
+
+    conn
+    |> Plug.Conn.send_file(
+      200,
+      Path.join(["priv", banner |> Phoenix.Param.to_param()])
+    )
+  end
+
+  def banner_by_tag(conn, %{"tag" => tag} = _params) do
+    nil
+  end
+
   def asset(conn, %{"path" => path} = _params) do
     path = Path.join(["priv", "static"] ++ path)
 

@@ -333,6 +333,11 @@ defmodule Home.Banners do
     weighted_random(banners)
   end
 
+  @spec random_from_tag(String.t()) :: __MODULE__.Banner.t()
+  def random_from_tag(tag) do
+    main_banners() |> make_stream() |> weighted_random(tag)
+  end
+
   @spec teslore(String.t()) :: __MODULE__.Banner.t()
   def teslore(name \\ "") do
     banners =

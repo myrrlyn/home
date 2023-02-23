@@ -95,6 +95,8 @@ defmodule HomeWeb.Router do
   scope "/static", HomeWeb do
     pipe_through(:browser)
 
+    get("/banners/album/:album", AssetController, :banner_by_album)
+    get("/banners/tag/:tag", AssetController, :banner_by_tag)
     get("/*path", AssetController, :asset)
   end
 
