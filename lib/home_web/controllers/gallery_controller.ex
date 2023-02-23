@@ -2,7 +2,6 @@ defmodule HomeWeb.GalleryController do
   use HomeWeb, :controller
 
   @root "/gallery"
-  @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _) do
     conn |> render("")
@@ -10,13 +9,11 @@ defmodule HomeWeb.GalleryController do
 
   def gallery(conn, %{"gallery" => gallery}) do
     conn
-    |> render("gallery.html",
+    |> render(:gallery,
       flavor: "app",
       classes: ["general"],
       tab_title: "Icon Gallery",
-      banner: Home.Banners.weighted_random(:main_banners),
       page: nil,
-      frontmatter: %Home.Meta{tab_title: "Icon Gallery"},
       navtree: fn -> __MODULE__.navtree() end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
       scope: @root,
@@ -26,12 +23,10 @@ defmodule HomeWeb.GalleryController do
 
   def banners(conn, _) do
     conn
-    |> render("banners.html",
+    |> render(:banner_page,
       flavor: "app",
       classes: ["gallery", "banners-gallery"],
-      banner: Home.Banners.weighted_random(:main_banners),
       page: nil,
-      frontmatter: %Home.Meta{tab_title: "Banner Images"},
       tab_title: "Banner Images",
       page_title: "Banner Images",
       navtree: &navtree/0,
@@ -44,13 +39,11 @@ defmodule HomeWeb.GalleryController do
 
   def iso7010(conn, _) do
     conn
-    |> render("gallery.html",
+    |> render(:gallery,
       flavor: "app",
       classes: ["gallery", "iso-7010-gallery"],
       title: "ISO 7010 Icons",
-      banner: Home.Banners.weighted_random(:main_banners),
       page: nil,
-      frontmatter: %Home.Meta{tab_title: "ISO 7010 Icons"},
       tab_title: "ISO 7010 Icons",
       page_title: "ISO 7010 Icons",
       navtree: &navtree/0,
@@ -87,7 +80,7 @@ defmodule HomeWeb.GalleryController do
     )
   end
 
-  def navtree(current \\ nil) do
+  def navtree(_current \\ nil) do
     [
       {"<code>.</code> <small>(Gallery index)</small>", @root, "dr-x"},
       {"<code>..</code> <small>(Site index)</small>", "/", "dr-x"}

@@ -39,8 +39,8 @@ defmodule HomeWeb.AssetController do
     )
   end
 
-  def banner_by_tag(conn, %{"tag" => tag} = _params) do
-    nil
+  def banner_by_tag(conn, %{"tag" => _tag} = _params) do
+    conn
   end
 
   def asset(conn, %{"path" => path} = _params) do

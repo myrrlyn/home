@@ -4,6 +4,6 @@
 		the banners I currently serve.
 	</p>
 	<section :for={{heading, images} <- @gallery}>
-		<.banners heading={heading}, images={images} root="/static/images/banners" />
+		<.banners heading={heading} images={images} root="/static/images/banners" />
 	</section>
 </article>
