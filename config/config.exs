@@ -9,6 +9,7 @@ import Config
 
 # Configures the endpoint
 config :home, HomeWeb.Endpoint,
+  adapter: Bandit.PhoenixAdapter,
   url: [host: "localhost"],
   render_errors: [view: HomeWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Home.PubSub,
