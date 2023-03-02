@@ -1,50 +1,40 @@
-<feed xmlns:atom="http://www.w3.org/2005/Atom">
-  <title><%= @title %></title>
-  <subtitle><%= @description %></subtitle>
-  <id><%= HomeWeb.Endpoint.url() <> @section %></id>
+<atom:feed xmlns:atom="http://www.w3.org/2005/Atom">
+  <atom:title><%= @title %></atom:title>
+  <atom:subtitle><%= @description %></atom:subtitle>
+  <atom:id><%= HomeWeb.Endpoint.url() <> @section %></atom:id>
   <atom:link rel="self" href={HomeWeb.Endpoint.url() <> @section <> "/atom.xml"} />
   <atom:link rel="alternate" href={HomeWeb.Endpoint.url() <> @section} />
   <% {_, newest} = @articles |> Enum.at(0) %>
-  <updated><%= Timex.format!(newest.date, "{RFC3339}") %></updated>
-  <author>
-    <name>Alexander Payne (myrrlyn)</name>
-    <email>self@myrrlyn.dev</email>
-  </author>
-  <generator>Phoenix (Elixir + Erlang/OTP)</generator>
-  <icon>/static/favicons/favicon-128.png</icon>
-  <rights>© 2012–<%= Date.utc_today().year %> Alexander Payne (myrrlyn)</rights>
+  <atom:updated><%= Timex.format!(newest.date, "{RFC3339}") %></atom:updated>
+  <atom:author>
+    <atom:name>Alexander Payne (myrrlyn)</atom:name>
+    <atom:email>self@myrrlyn.dev</atom:email>
+  </atom:author>
+  <atom:generator>Phoenix (Elixir + Erlang/OTP)</atom:generator>
+  <atom:icon>/static/favicons/favicon-128.png</atom:icon>
+  <atom:rights>© 2012–<%= Date.utc_today().year %> Alexander Payne (myrrlyn)</atom:rights>
 
   <%= for {url, meta} <- @articles do %>
-    <entry>
-      <title><%= meta.title %></title>
-      <id><%= HomeWeb.Endpoint.url() <> url %></id>
-      <link rel="alternate" href={HomeWeb.Endpoint.url() <> url} />
-      <content type="text/html" src={HomeWeb.Endpoint.url() <> url}></content>
+    <atom:entry>
+      <atom:title><%= meta.title %></atom:title>
+      <atom:id><%= HomeWeb.Endpoint.url() <> url %></atom:id>
+      <atom:link rel="alternate" href={HomeWeb.Endpoint.url() <> url} />
+      <atom:content type="text/html" src={HomeWeb.Endpoint.url() <> url}></atom:content>
 
-      <published><%= Timex.format!(meta.date, "{RFC3339}") %></published>
-      <updated><%= Timex.format!(Home.Meta.updated(meta) || meta.date, "{RFC3339}") %></updated>
-      <author :if={author = Home.Meta.author(meta, nil)}>
+      <atom:published><%= Timex.format!(meta.date, "{RFC3339}") %></atom:published>
+      <atom:updated><%= Timex.format!(Home.Meta.updated(meta) || meta.date, "{RFC3339}") %></atom:updated>
+      <atom:author :if={author = Home.Meta.author(meta, nil)}>
         <% [email, name] = author |> String.split(" ", parts: 2) %>
-        <name><%= String.slice(name, 1..-2//1) %></name>
-        <email><%= email %></email>
-      </author>
-      <summary>
-        <%=
-          # The description tag can contain HTML, but it must be escaped so that
-          # the XML parser consuming the Atom document does not consider it to be
-          # part of the parsed feed structure.
-          ("<![CDATA["
-          <> (meta
-          |> Home.Meta.summary("This article currently lacks a description")
-          |> Earmark.as_html!()
-          |> String.trim())
-          <> "]]>")
-          |> Phoenix.HTML.raw()
-          %>
-        </summary>
-        <%= for tag <- Home.Meta.tags(meta, []) do %>
-          <category term={tag} />
-        <% end %>
-    </entry>
+        <atom:name><%= String.slice(name, 1..-2//1) %></atom:name>
+        <atom:email><%= email %></atom:email>
+      </atom:author>
+      <atom:summary><%= meta
+        |> Home.Meta.summary("This article currently lacks a description")
+        |> String.trim()
+      %></atom:summary>
+      <%= for tag <- Home.Meta.tags(meta, []) do %>
+        <atom:category term={tag} />
+      <% end %>
+    </atom:entry>
   <% end %>
-</feed>
+</atom:feed>
