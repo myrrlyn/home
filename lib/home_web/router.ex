@@ -46,12 +46,6 @@ defmodule HomeWeb.Router do
     get("/blog/atom.xml", BlogController, :atom)
     get("/oeuvre.atom", OeuvreController, :atom)
     get("/oeuvre/atom.xml", OeuvreController, :atom)
-
-    get("/feed.rss", BlogController, :rss)
-    get("/blog.rss", BlogController, :rss)
-    get("/blog/feed.rss", BlogController, :rss)
-    get("/oeuvre.rss", OeuvreController, :rss)
-    get("/oeuvre/feed.rss", OeuvreController, :rss)
   end
 
   scope "/oeuvre", HomeWeb do

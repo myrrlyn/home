@@ -1,9 +1,9 @@
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns:atom="http://www.w3.org/2005/Atom">
   <title><%= @title %></title>
   <subtitle><%= @description %></subtitle>
   <id><%= HomeWeb.Endpoint.url() <> @section %></id>
-  <link rel="self" href={HomeWeb.Endpoint.url() <> @section <> "/atom.xml"} />
-  <link rel="alternate" href={HomeWeb.Endpoint.url() <> @section} />
+  <atom:link rel="self" href={HomeWeb.Endpoint.url() <> @section <> "/atom.xml"} />
+  <atom:link rel="alternate" href={HomeWeb.Endpoint.url() <> @section} />
   <% {_, newest} = @articles |> Enum.at(0) %>
   <updated><%= Timex.format!(newest.date, "{RFC3339}") %></updated>
   <author>
@@ -14,31 +14,37 @@
   <icon>/static/favicons/favicon-128.png</icon>
   <rights>© 2012–<%= Date.utc_today().year %> Alexander Payne (myrrlyn)</rights>
 
-  <entry :for={{url, meta} <- @articles}>
-    <title><%= meta.title %></title>
-    <id><%= HomeWeb.Endpoint.url() <> url %></id>
-    <link rel="alternate" href={HomeWeb.Endpoint.url() <> url} />
-    <content type="text/html" src={HomeWeb.Endpoint.url() <> url}></content>
+  <%= for {url, meta} <- @articles do %>
+    <entry>
+      <title><%= meta.title %></title>
+      <id><%= HomeWeb.Endpoint.url() <> url %></id>
+      <link rel="alternate" href={HomeWeb.Endpoint.url() <> url} />
+      <content type="text/html" src={HomeWeb.Endpoint.url() <> url}></content>
 
-    <published><%= Timex.format!(meta.date, "{RFC3339}") %></published>
-    <updated><%= Timex.format!(Home.Meta.updated(meta) || meta.date, "{RFC3339}") %></updated>
-    <author :if={author = Home.Meta.author(meta, nil)}>
-      <% [email, name] = author |> String.split(" ", parts: 2) %>
-      <name><%= String.slice(name, 1..-2//1) %></name>
-      <email><%= email %></email>
-    </author>
-    <summary><%=
-      # The description tag can contain HTML, but it must be escaped so that the
-      # XML parser consuming the Atom document does not consider it to be part
-      # of the parsed feed structure.
-      ("<![CDATA["
-      <> (meta
-      |> Home.Meta.summary("This article currently lacks a description")
-      |> Earmark.as_html!()
-      |> String.trim())
-      <> "]]>")
-      |> Phoenix.HTML.raw()
-      %></summary>
-      <category :for={tag <- Home.Meta.tags(meta, [])} term={tag} />
-  </entry>
+      <published><%= Timex.format!(meta.date, "{RFC3339}") %></published>
+      <updated><%= Timex.format!(Home.Meta.updated(meta) || meta.date, "{RFC3339}") %></updated>
+      <author :if={author = Home.Meta.author(meta, nil)}>
+        <% [email, name] = author |> String.split(" ", parts: 2) %>
+        <name><%= String.slice(name, 1..-2//1) %></name>
+        <email><%= email %></email>
+      </author>
+      <summary>
+        <%=
+          # The description tag can contain HTML, but it must be escaped so that
+          # the XML parser consuming the Atom document does not consider it to be
+          # part of the parsed feed structure.
+          ("<![CDATA["
+          <> (meta
+          |> Home.Meta.summary("This article currently lacks a description")
+          |> Earmark.as_html!()
+          |> String.trim())
+          <> "]]>")
+          |> Phoenix.HTML.raw()
+          %>
+        </summary>
+        <%= for tag <- Home.Meta.tags(meta, []) do %>
+          <category term={tag} />
+        <% end %>
+    </entry>
+  <% end %>
 </feed>
