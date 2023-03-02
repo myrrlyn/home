@@ -1,0 +1,6 @@
+<link rel="alternate" type="application/rss+xml" href={HomeWeb.Endpoint.url() <> "/blog/feed.rss"} />
+<link rel="alternate" type="application/atom+xml" href={HomeWeb.Endpoint.url() <> "/blog/atom.xml"} />
+<%= for script <- @page.meta.props |> Map.get("scripts", []) do %>
+  <% src = ["/", @src_path |> Path.dirname(), script] |> Path.join() |> Path.expand() %>
+  <script type="text/javascript" src={src}> </script>
+<% end %>

@@ -17,7 +17,7 @@
           <.link class="title" href={url}>
             <%= meta.title %>
           </.link>
-          (<%= Timex.format!(meta.date, "{ISOdate}") %>)
+          (<.timestamp time={meta.date} />)
           <br />
           <%= meta.summary |> Earmark.as_html! |> raw %>
         </li>

@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title><%= @title %></title>
-    <link href={HomeWeb.Endpoint.url() <> @section} />
+    <link><%= HomeWeb.Endpoint.url() <> @section %></link>
     <description><%= @description %></description>
     <copyright>2012—<%= Date.utc_today().year %> Alexander Payne (myrrlyn)</copyright>
     <generator>Phoenix (Elixir + Erlang/OTP)</generator>
@@ -15,12 +15,12 @@
     <image>
       <url><%= HomeWeb.Endpoint.url() %>/static/favicons/favicon-128.png</url>
       <title><%= @title %></title>
-        <link href={HomeWeb.Endpoint.url() <> @section} />
+      <link><%= HomeWeb.Endpoint.url() <> @section %></link>
     </image>
-    <link rel="self" href={HomeWeb.Endpoint.url() <> @section <> "/feed.rss"} type="application/rss+xml" />
+    <link rel="self" type="application/rss+xml"><%= HomeWeb.Endpoint.url() <> @section <> "/feed.rss" %></link>
     <item :for={{url, meta} <- @articles}>
       <title><%= meta.title %></title>
-      <link href={HomeWeb.Endpoint.url() <> url} />
+      <link><%= HomeWeb.Endpoint.url() <> url %></link>
       <guid isPermaLink="true"><%= HomeWeb.Endpoint.url() <> url %></guid>
       <description><%=
         # The description tag can contain HTML, but it must be escaped so that
