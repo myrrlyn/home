@@ -62,100 +62,92 @@ $baby-powder: #fffffa !default;
 
 $amaranth: #a72a2a;
 $forest-green: darken(#228b22, 20%);
-$parchment: hsl(042.4, 048.2%, 83.3%);
+$parchment: hsl(042.4, 048.2%, 83.3%) !default;
+$parchment-dark: darken($parchment, 20%);
 
 @import "color/12-bit-rainbow";
 @import "color/langs";
 
 :root {
-	--white: white;
-	--black: black;
-	--grey: gray;
+  color-scheme: light dark;
 
-	--bell-blue: #{$bell-blue};
-	--bell-ochre: #{$bell-ochre};
-	--pane-divider: #{$blue-carolina};
+  --white: white;
+  --black: black;
+  --grey: gray;
+
+  --bell-blue: #{$bell-blue};
+  --bell-ochre: #{$bell-ochre};
+  --pane-divider: #{$blue-carolina};
+
+  --text-code: #d63384;
+}
+
+.light-only {
+  color-scheme: light;
+
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
+}
+
+.dark-only {
+  color-scheme: dark;
+
+  @media (prefers-color-scheme: light) {
+    filter: invert(1);
+  }
 }
 
 @media (prefers-color-scheme: light) {
-	@import "color/light";
+  @import "color/light";
 
-	:root {
-		--parchment: #{$parchment};
-	}
+  :root {
+    --parchment: #{$parchment};
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-	@import "color/dark";
+  @import "color/dark";
 
-	:root {
-		--parchment: #{darken($parchment, 25%)};
-	}
+  :root {
+    --parchment: #{$parchment-dark};
+  }
 }
 
 body {
-	background-color: var(--bg);
-	color: var(--text-fg);
+  background-color: var(--bg);
+  color: var(--text-fg);
 }
 
 pre {
-	code {
-		color: var(--text-fg);
-	}
+  code {
+    color: var(--text-fg);
+  }
 }
 
 main aside,
 blockquote {
-	&.bq-harm {
-		background-color: var(--iso-red-bg);
-		border-left-color: var(--iso-red);
-		border-right-color: var(--iso-red);
-	}
+  &.bq-harm {
+    background-color: var(--iso-red-bg);
+    border-left-color: var(--iso-red);
+    border-right-color: var(--iso-red);
+  }
 
-	&.bq-warn {
-		background-color: var(--iso-yellow-bg);
-		border-left-color: var(--iso-yellow);
-		border-right-color: var(--iso-yellow);
-	}
+  &.bq-warn {
+    background-color: var(--iso-yellow-bg);
+    border-left-color: var(--iso-yellow);
+    border-right-color: var(--iso-yellow);
+  }
 
-	&.bq-safe {
-		background-color: var(--iso-green-bg);
-		border-left-color: var(--iso-green);
-		border-right-color: var(--iso-green);
-	}
+  &.bq-safe {
+    background-color: var(--iso-green-bg);
+    border-left-color: var(--iso-green);
+    border-right-color: var(--iso-green);
+  }
 
-	&.bq-info {
-		background-color: var(--iso-blue-bg);
-		border-left-color: var(--iso-blue);
-		border-right-color: var(--iso-blue);
-	}
-}
-
-h1 {
-	color: var(--ansi-green);
-}
-
-h2 {
-	color: var(--ansi-blue);
-}
-
-h3 {
-	color: var(--ansi-purple);
-}
-
-h4 {
-	color: var(--ansi-red);
-}
-
-h5 {
-	color: var(--ansi-orange);
-}
-
-h6 {
-	color: var(--ansi-yellow);
-}
-
-hr {
-	border-top-color: var(--text-fg);
-	color: var(--text-fg);
+  &.bq-info {
+    background-color: var(--iso-blue-bg);
+    border-left-color: var(--iso-blue);
+    border-right-color: var(--iso-blue);
+  }
 }

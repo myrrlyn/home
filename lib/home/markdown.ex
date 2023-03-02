@@ -13,6 +13,8 @@ defmodule Home.Markdown do
     smartypants: false
   }
 
+  require Logger
+
   @doc """
   Renders a Markdown string, producing a table of contents as well as the HTML.
 
@@ -91,27 +93,48 @@ defmodule Home.Markdown do
 
   # Translate marked blockquotes into other tags.
   def walker({"blockquote", attrs, inner, meta} = bq, _) do
-    case attrs |> List.keytake("role", 0) do
-      {{"role", "complementary"}, rest} -> throw({"aside", rest, inner, meta})
-      _ -> nil
-    end
-
     case attrs |> List.keytake("tag", 0) do
-      {{"tag", tagname}, rest} -> throw({tagname, rest, inner, meta})
-      _ -> nil
+      {{"tag", tagname}, rest} -> {tagname, rest, inner, meta}
+      _ -> bq
     end
-
-    bq
-  catch
-    thrown -> thrown
   end
 
-  # <h1> receives a .title class
-  def walker({"h1", _, _, _} = node, collector) do
-    node |> Earmark.AstTools.merge_atts_in_node(class: "title") |> process_header(collector)
+  # Translate marked inline-code spans into other tags.
+  def walker({"code", attrs, inner, meta} = code, _) do
+    case attrs |> List.keytake("tag", 0) do
+      {{"tag", tagname}, rest} ->
+        inner =
+          case inner do
+            text when is_binary(text) -> text |> String.trim()
+            other -> other
+          end
+
+        {tagname, rest, inner, meta}
+
+      _ ->
+        code
+    end
+  end
+
+  # Paragraphs can also be retagged.
+  def walker({"p", attrs, inner, meta} = para, _) do
+    case attrs |> List.keytake("tag", 0) do
+      {{"tag", tagname}, rest} -> {tagname, rest, inner, meta}
+      _ -> para
+    end
   end
 
   # Match against any of the subheadings and send them to the headings processor.
+  # The <h1> element is injected by the templates; <h1> coming from Markdown
+  # gets demoted.
+  def walker({"h1", a, i, m}, collector) do
+    Logger.warning(
+      "demoting <h1> element to <h2>. Markdown documents should not contain <h1> elements, as this is injected by the template system"
+    )
+
+    process_header({"h2", a, i, m}, collector)
+  end
+
   def walker({"h2", _, _, _} = ast, collector), do: process_header(ast, collector)
   def walker({"h3", _, _, _} = ast, collector), do: process_header(ast, collector)
   def walker({"h4", _, _, _} = ast, collector), do: process_header(ast, collector)

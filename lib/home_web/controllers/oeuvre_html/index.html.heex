@@ -1,12 +1,17 @@
 <article>
-	<%= @page.content |> raw %>
-	<h2>Tags</h2>
-	<div :for={{tag, posts} <- @tagset} class="tagset">
-		<h3>#<%= tag %></h3>
-		<ul>
-			<li :for={{name, path} <- posts}>
-				<.link href={path} class="title"><%= name %></.link>
-			</li>
-		</ul>
-	</div>
+  <header class="frontmatter">
+    <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
+    <nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
+  </header>
+  <hr />
+  <%= @page.content |> raw %>
+  <h2>Tags</h2>
+  <div :for={{tag, posts} <- @tagset} class="tagset">
+    <h3>#<%= tag %></h3>
+    <ul>
+      <li :for={{name, path} <- posts}>
+        <.link href={path} class="title"><%= name %></.link>
+      </li>
+    </ul>
+  </div>
 </article>

@@ -1,0 +1,9 @@
+<% banner = assigns[:banner] || Home.Banners.weighted_random(:main_banners) %>
+<header id="banner" role="banner" class="screen-only" title={banner.caption}>
+  <style type="text/css">
+    #banner {
+      background-image: url(<%= "/#{banner}" %>);
+      background-position: <%= Home.Banners.Banner.position(banner) %>;
+    }
+  </style>
+</header>

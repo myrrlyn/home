@@ -163,7 +163,7 @@ defmodule Home.Banners do
   """
   @spec main_banners :: %{atom() => album_unnamed()}
   def main_banners() do
-    all_banners() |> Stream.reject(fn {k, _v} -> k == :teslore end) |> Enum.into(%{})
+    all_banners() |> Map.drop([:teslore])
   end
 
   @doc """

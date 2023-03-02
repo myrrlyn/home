@@ -31,9 +31,16 @@ defmodule HomeWeb.PageController do
   def page(conn, %{"path" => path} = params) do
     path = path |> Path.join()
 
+    classes =
+      if path |> IO.inspect() |> String.starts_with?("crates") do
+        ["crate"]
+      else
+        []
+      end
+
     case Home.PageCache.cached("#{path}.md") do
       {:ok, page} ->
-        conn |> build(params, "/#{path}", page)
+        conn |> build(params, "/#{path}", page, classes)
 
       {:error, _} ->
         conn
@@ -49,16 +56,15 @@ defmodule HomeWeb.PageController do
     conn |> put_resp_content_type("text/xml") |> render(:sitemap)
   end
 
-  defp build(conn, _params, path, page) do
+  defp build(conn, _params, path, page, classes \\ []) do
     conn
     |> render(:page,
       flavor: "app",
-      classes: ["general"],
+      classes: ["general" | classes],
       frontmatter: page.meta,
       tab_title:
         conn.assigns[:tab_title] || page.meta.tab_title ||
           ["~myrrlyn" | conn.path_info] |> Path.join(),
-      page_title: page.meta.title,
       page: page,
       navtree: fn -> __MODULE__.navtree(path) end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
@@ -99,10 +105,14 @@ defmodule HomeWeb.PageController do
       {"Crates", "/crates", "dr-x",
        [
          {"<code>bitvec</code>", "/bitvec", "-r--"},
-         {"<code>calm_io</code>", "/calm_io", "-r--"},
          {"<code>radium</code>", "/radium", "-r--"},
+         {"<code>funty</code>", "/funty", "-r--"},
+         {"Ferrilab", "/ferrilab", "dr-x"},
          {"<code>tap</code>", "/tap", "-r--"},
-         {"<code>wyz</code>", "/wyz", "-r--"}
+         {"<code>calm_io</code>", "/calm_io", "-r--"},
+         {"<code>wyz</code>", "/wyz", "-r--"},
+         {"Cosmonaut", "/cosmonaut", "----"},
+         {"<code>lilliput</code>", "/lilliput", "-r--"}
        ]},
       {"Hermaeus", "/hermaeus", "-r--"},
       {"Oeuvre", "/oeuvre", "dr-x"},

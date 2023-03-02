@@ -40,11 +40,18 @@ defmodule HomeWeb.Router do
     pipe_through(:xml)
 
     get("/sitemap.xml", PageController, :sitemap)
-    get("/feed.rss", BlogController, :feed)
-    get("/blog.rss", BlogController, :feed)
-    get("/blog/feed.rss", BlogController, :feed)
-    get("/oeuvre.rss", OeuvreController, :feed)
-    get("/oeuvre/feed.rss", OeuvreController, :feed)
+
+    get("/atom.xml", BlogController, :atom)
+    get("/blog.atom", BlogController, :atom)
+    get("/blog/atom.xml", BlogController, :atom)
+    get("/oeuvre.atom", OeuvreController, :atom)
+    get("/oeuvre/atom.xml", OeuvreController, :atom)
+
+    get("/feed.rss", BlogController, :rss)
+    get("/blog.rss", BlogController, :rss)
+    get("/blog/feed.rss", BlogController, :rss)
+    get("/oeuvre.rss", OeuvreController, :rss)
+    get("/oeuvre/feed.rss", OeuvreController, :rss)
   end
 
   scope "/oeuvre", HomeWeb do
@@ -57,6 +64,9 @@ defmodule HomeWeb.Router do
     pipe_through(:browser)
 
     get("/", BlogController, :index)
+    get("/:category", BlogController, :category)
+    get("/:category/:article", BlogController, :article)
+    get("/:category/:article/:resource", BlogController, :resource)
     get("/*path", BlogController, :page)
   end
 
@@ -93,21 +103,21 @@ defmodule HomeWeb.Router do
   end
 
   scope "/static", HomeWeb do
-    pipe_through(:browser)
-
     get("/banners/album/:album", AssetController, :banner_by_album)
     get("/banners/tag/:tag", AssetController, :banner_by_tag)
     get("/*path", AssetController, :asset)
   end
 
   scope "/", HomeWeb do
-    pipe_through(:browser)
-
-    get("/", PageController, :home)
-
     get("/favicon.ico", AssetController, :favicon_ico)
     get("/keybase.txt", AssetController, :keybase_txt)
     get("/.well-known/*file", AssetController, :well_known)
+  end
+
+  scope "/", HomeWeb do
+    pipe_through(:browser)
+
+    get("/", PageController, :home)
 
     get("/hn", PageController, :refuse)
     get("/klaus", KlausController, :page)

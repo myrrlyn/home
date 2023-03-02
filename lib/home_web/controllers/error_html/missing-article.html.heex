@@ -1,11 +1,11 @@
 <article>
-	<.page_title page_title="Article Not Found" />
-	<p>
-		No article could be found at the requested path
-		<code><%= @conn.request_path %></code>. If you are following a URL that
-		used to work, please contact me or
-		<.github_issue title="Broken Blog Link" body={"There used to be an article at `#{@conn.request_path}` and now it is 404ing."}/>.
-		All articles currently live are listed in the directory to the left or
-		below.
-	</p>
+  <.page_title page_title="Article Not Found" />
+  <p>
+    No article could be found at the requested path
+    <code><%= @conn.request_path %></code>. If you are following a URL that used
+    to work, please contact me or
+    <.github_issue title="Broken Blog Link" body={"There used to be an article at `#{@conn.request_path}` and now it is 404ing."}/>.
+    All articles currently live are listed in the directory to the left or
+    below.
+  </p>
 </article>

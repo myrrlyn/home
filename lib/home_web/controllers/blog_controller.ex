@@ -23,15 +23,21 @@ defmodule HomeWeb.BlogController do
     |> build(params, :index, "blog/index.md")
   end
 
+  def atom(conn, _params) do
+    conn
+    |> put_resp_content_type("application/atom+xml")
+    |> render(:atom, articles: get_articles())
+  end
+
   @doc "Render an RSS feed"
-  def feed(conn, _params) do
+  def rss(conn, _params) do
     conn
     |> put_resp_content_type("application/rss+xml")
     |> render(:rss, articles: get_articles())
   end
 
   # Render a group index page
-  def page(conn, %{"path" => [group]} = params) do
+  def category(conn, %{"category" => group} = params) do
     src_path = ["blog", group, "index.md"] |> Path.join()
 
     index = src_path |> Home.PageCache.cached()
@@ -62,7 +68,7 @@ defmodule HomeWeb.BlogController do
   end
 
   # Map categorized pages correctly.
-  def page(conn, %{"path" => [group, page]} = params) do
+  def article(conn, %{"category" => group, "article" => page} = params) do
     case url_to_path(group, page) do
       nil ->
         conn |> error(404, :"missing-article", "Missing Article")
@@ -73,7 +79,10 @@ defmodule HomeWeb.BlogController do
   end
 
   # Map nested resources correctly.
-  def page(conn, %{"path" => [group, folder, resource]} = _params) do
+  def resource(
+        conn,
+        %{"category" => group, "article" => folder, "resource" => resource} = _params
+      ) do
     path = [@dir, group, folder, resource] |> Path.join()
 
     if path |> File.regular?() do

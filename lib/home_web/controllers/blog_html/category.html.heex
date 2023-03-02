@@ -1,27 +1,27 @@
 <article>
-	<section>
-		<h1 id="title"><%= @page.meta.title %></h1>
-		<%= if summary = @page.meta.summary do %>
-			<p><%= summary |> Earmark.as_html! |> raw %></p>
-		<% end %>
-		<nav :if={@page.toc != []} aria-label="Table of Contents">
-			<%# render(HomeWeb.LayoutView, "toc.html", toc: @page.toc) %>
-		</nav>
-		<hr />
-		<%= @page.content |> raw %>
-	</section>
-	<section>
-		<ol reversed>
-			<%= for {url, meta} <- @pages do %>
-				<li>
-					<.link class="title" href={url}>
-						<%= meta.title %>
-					</.link>
-					(<%= Timex.format!(meta.date, "{ISOdate}") %>)
-					<br />
-					<%= meta.summary |> Earmark.as_html! |> raw %>
-				</li>
-			<% end %>
-		</ol>
-	</section>
+  <section>
+    <h1 id="title"><%= @page.meta.title %></h1>
+    <%= if summary = @page.meta.summary do %>
+      <p><%= summary |> Earmark.as_html! |> raw %></p>
+    <% end %>
+    <nav :if={@page.toc != []} aria-label="Table of Contents">
+      <.toc toc={@page.toc} />
+    </nav>
+    <hr />
+    <%= @page.content |> raw %>
+  </section>
+  <section>
+    <ol reversed>
+      <%= for {url, meta} <- @pages do %>
+        <li>
+          <.link class="title" href={url}>
+            <%= meta.title %>
+          </.link>
+          (<%= Timex.format!(meta.date, "{ISOdate}") %>)
+          <br />
+          <%= meta.summary |> Earmark.as_html! |> raw %>
+        </li>
+      <% end %>
+    </ol>
+  </section>
 </article>

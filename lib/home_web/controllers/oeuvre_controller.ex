@@ -13,30 +13,30 @@ defmodule HomeWeb.OeuvreController do
   # Data used to procgen the Tones image
 
   @table [
-    {"Mara & Dibella", "C", "aedra", 22, [cube_helix: "#c73cab", hcl: "#ff0088"]},
-    {"Namira", "C♯♭", "daedra minor", 23, [cube_helix: "#e5409c", hcl: "#ff005d"]},
-    {"Malacath", "C♯", "daedra major", 0, [cube_helix: "#fb4985", hcl: "#ff0033"]},
-    {"Vaermina", "C♯♯", "daedra minor", 1, [cube_helix: "#ff586c", hcl: "#fa3600"]},
-    {"Zenithar", "D", "aedra", 2, [cube_helix: "#ff6b52", hcl: "#e15800"]},
-    {"Clavicus Vile", "D♯♭", "daedra minor", 3, [cube_helix: "#ff833d", hcl: "#c47000"]},
-    {"Mehrunes Dagon", "D♯", "daedra major", 4, [cube_helix: "#f59d30", hcl: "#a18100"]},
-    {"Peryite", "D♯♯", "daedra minor", 5, [cube_helix: "#e0b92e", hcl: "#798d00"]},
-    {"Arkay", "E", "aedra", 6, [cube_helix: "#c9d339", hcl: "#449600"]},
-    {"Azura", "E♯", "daedra major", 7, [cube_helix: "#b4e950", hcl: "#009d00"]},
-    {"Kyne", "F", "aedra", 8, [cube_helix: "#94f356", hcl: "#00a11d"]},
-    {"Meridia", "F♯♭", "daedra minor", 9, [cube_helix: "#6cf65b", hcl: "#00a353"]},
-    {"Molag Bal", "F♯", "daedra major", 10, [cube_helix: "#49f46c", hcl: "#00a581"]},
-    {"Hircine", "F♯♯", "daedra minor", 11, [cube_helix: "#2eed83", hcl: "#00a6af"]},
-    {"Stendarr", "G", "aedra", 12, [cube_helix: "#1ee09f", hcl: "#00a6d9"]},
-    {"Sanguine", "G♯♭", "daedra minor", 13, [cube_helix: "#19ceb9", hcl: "#00a5fe"]},
-    {"Boethiah", "G♯", "daedra major", 14, [cube_helix: "#1db7cf", hcl: "#00a1ff"]},
-    {"Nocturnal", "G♯♯", "daedra minor", 15, [cube_helix: "#299edd", hcl: "#009bff"]},
-    {"Akatosh", "A", "aedra", 16, [cube_helix: "#3a85e1", hcl: "#0091ff"]},
-    {"Hermaeus Mora", "A♯♭", "daedra minor", 17, [cube_helix: "#4d6cda", hcl: "#0081ff"]},
-    {"Sheogorath", "A♯", "daedra major", 18, [cube_helix: "#5e57ca", hcl: "#696cff"]},
-    {"Jyggalag", "A♯♯", "daedra minor", 19, [cube_helix: "#6a44b3", hcl: "#b74eff"]},
-    {"Julianos", "B", "aedra", 20, [cube_helix: "#833eb0", hcl: "#e61edc"]},
-    {"Mephala", "B♯", "daedra major", 21, [cube_helix: "#a63cb2", hcl: "#ff00b3"]}
+    {"Mara & Dibella", "C", ~w(aedra), 22, [cube_helix: "#c73cab", hcl: "#ff0088"]},
+    {"Namira", "C♯♭", ~w(daedra minor), 23, [cube_helix: "#e5409c", hcl: "#ff005d"]},
+    {"Malacath", "C♯", ~w(daedra major), 0, [cube_helix: "#fb4985", hcl: "#ff0033"]},
+    {"Vaermina", "C♯♯", ~w(daedra minor), 1, [cube_helix: "#ff586c", hcl: "#fa3600"]},
+    {"Zenithar", "D", ~w(aedra), 2, [cube_helix: "#ff6b52", hcl: "#e15800"]},
+    {"Clavicus Vile", "D♯♭", ~w(daedra minor), 3, [cube_helix: "#ff833d", hcl: "#c47000"]},
+    {"Mehrunes Dagon", "D♯", ~w(daedra major), 4, [cube_helix: "#f59d30", hcl: "#a18100"]},
+    {"Peryite", "D♯♯", ~w(daedra minor), 5, [cube_helix: "#e0b92e", hcl: "#798d00"]},
+    {"Arkay", "E", ~w(aedra), 6, [cube_helix: "#c9d339", hcl: "#449600"]},
+    {"Azura", "E♯", ~w(daedra major), 7, [cube_helix: "#b4e950", hcl: "#009d00"]},
+    {"Kyne", "F", ~w(aedra), 8, [cube_helix: "#94f356", hcl: "#00a11d"]},
+    {"Meridia", "F♯♭", ~w(daedra minor), 9, [cube_helix: "#6cf65b", hcl: "#00a353"]},
+    {"Molag Bal", "F♯", ~w(daedra major), 10, [cube_helix: "#49f46c", hcl: "#00a581"]},
+    {"Hircine", "F♯♯", ~w(daedra minor), 11, [cube_helix: "#2eed83", hcl: "#00a6af"]},
+    {"Stendarr", "G", ~w(aedra), 12, [cube_helix: "#1ee09f", hcl: "#00a6d9"]},
+    {"Sanguine", "G♯♭", ~w(daedra minor), 13, [cube_helix: "#19ceb9", hcl: "#00a5fe"]},
+    {"Boethiah", "G♯", ~w(daedra major), 14, [cube_helix: "#1db7cf", hcl: "#00a1ff"]},
+    {"Nocturnal", "G♯♯", ~w(daedra minor), 15, [cube_helix: "#299edd", hcl: "#009bff"]},
+    {"Akatosh", "A", ~w(aedra), 16, [cube_helix: "#3a85e1", hcl: "#0091ff"]},
+    {"Hermaeus Mora", "A♯♭", ~w(daedra minor), 17, [cube_helix: "#4d6cda", hcl: "#0081ff"]},
+    {"Sheogorath", "A♯", ~w(daedra major), 18, [cube_helix: "#5e57ca", hcl: "#696cff"]},
+    {"Jyggalag", "A♯♯", ~w(daedra minor), 19, [cube_helix: "#6a44b3", hcl: "#b74eff"]},
+    {"Julianos", "B", ~w(aedra), 20, [cube_helix: "#833eb0", hcl: "#e61edc"]},
+    {"Mephala", "B♯", ~w(daedra major), 21, [cube_helix: "#a63cb2", hcl: "#ff00b3"]}
   ]
 
   # Renders the Tones SVG
@@ -59,6 +59,7 @@ defmodule HomeWeb.OeuvreController do
     |> put_resp_content_type(MIME.type("svg"))
     |> render(:tones,
       classes: [key, color] ++ animation ++ classes,
+      dim: 1024,
       table: @table
     )
   end
@@ -89,8 +90,14 @@ defmodule HomeWeb.OeuvreController do
 
   def page(conn, params), do: conn |> HomeWeb.PageController.error(404, params)
 
+  def atom(conn, _params) do
+    conn
+    |> put_resp_content_type("application/atom+xml")
+    |> render(:atom, articles: get_fanfic())
+  end
+
   @doc "Render an RSS feed"
-  def feed(conn, _params) do
+  def rss(conn, _params) do
     conn
     |> put_resp_content_type("application/rss+xml")
     |> render(:rss, articles: get_fanfic())

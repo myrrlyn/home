@@ -1,32 +1,23 @@
 @use "sass:math";
 
 #gravatar {
-	background: {
-		image: linear-gradient(to bottom,
-				var(--bell-blue) 50%,
-				var(--bell-ochre) 50%);
-	}
+  background: {
+    image: linear-gradient(to bottom,
+        var(--bell-blue) 50%,
+        var(--bell-ochre) 50%);
+  }
 
-	border: {
-		radius: math.div($avi-size + (2 * $avi-rim), 2);
-	}
+  border: {
+    radius: math.div($avi-size + (2 * $avi-rim), 2);
+  }
 
-	padding: $avi-rim;
-	width: $avi-size;
-	height: $avi-size;
+  padding: $avi-rim;
+  width: $avi-size;
+  height: $avi-size;
 }
 
-#about {
-	.logo {
-		margin: {
-			top: 16px;
-			left: auto;
-			right: auto;
-			bottom: 16px;
-		}
-
-		&.gravatar {
-			width: $avi-size + (2 * $avi-rim);
-		}
-	}
+#page-logo {
+  margin-left: auto;
+  margin-right: auto;
+  width: $avi-size + (2 * $avi-rim);
 }

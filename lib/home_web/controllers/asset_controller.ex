@@ -25,7 +25,7 @@ defmodule HomeWeb.AssetController do
     if File.exists?(path) do
       conn |> Plug.Conn.send_file(200, path)
     else
-      conn |> HomeWeb.PageController.error(404, params)
+      conn |> Plug.Conn.send_resp(404, "No such asset")
     end
   end
 
@@ -47,7 +47,9 @@ defmodule HomeWeb.AssetController do
     path = Path.join(["priv", "static"] ++ path)
 
     if File.exists?(path) do
-      conn |> Plug.Conn.send_file(200, path)
+      conn
+      |> Plug.Conn.put_resp_content_type(MIME.from_path(path))
+      |> Plug.Conn.send_file(200, path)
     else
       conn |> Plug.Conn.send_resp(404, "No such asset")
     end

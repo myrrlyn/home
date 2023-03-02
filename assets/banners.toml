@@ -669,6 +669,20 @@ file = "2018-08-15T13-18-22.jpg"
 caption = "Mesa Falls, near Island Park, ID"
 tags = ["waterfall"]
 
+
+[banners.teslore.dragons]
+file = "dragons.jpg"
+caption = "Dragons flying around the White-Gold Tower"
+pos = { x = "center", y = "top" }
+
+[banners.teslore.kel]
+file = "elder-scroll.jpg"
+caption = "Some text from an Elder Scroll"
+
+[banners.teslore.magnus]
+file = "magnus.jpg"
+caption = "The Eye of Magnus"
+
 [banners.teslore.map_cyrod]
 file = "map-cyrod.jpg"
 caption = "A section of the map of Tamriel, centered on Imperial City"
@@ -689,6 +703,15 @@ file = "map-wilderness.jpg"
 caption = "A section of the map of Tamriel, showing wilderness"
 tags = ["map"]
 
+[banners.teslore.oblivion]
+file = "oblivion.jpg"
+caption = "The Battlespire, floating in Oblivion"
+pos = { x = "right", y = "center" }
+
+[banners.teslore.seas]
+file = "seas.jpg"
+caption = "A ship of the Empire"
+
 [banners.teslore.text_daedric]
 file = "text-daedric.jpg"
 caption = "Some Daedric text"
@@ -698,3 +721,9 @@ tags = ["text"]
 file = "text-oghma.jpg"
 caption = "A section of the Oghma Infinium"
 tags = ["text"]
+
+[banners.teslore.wilds-3]
+file = "wilds.jpg"
+caption = "Wilderness of Tamriel"
+pos = { x = "center", y = "bottom" }
+tags = ["scene"]

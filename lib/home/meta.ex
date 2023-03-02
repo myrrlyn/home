@@ -53,37 +53,32 @@ defmodule Home.Meta do
   on parse or structural error.
   """
   def from_string!(yaml) do
-    yaml =
-      case yaml |> YamlElixir.read_from_string() do
+    yml =
+      case YamlElixir.read_from_string(yaml) do
         {:ok, yml} ->
           yml
 
         {:error, _} ->
-          Logger.error("Received invalid YAML", yaml: yaml)
-          raise BadContent, message: "Could not parse YAML", contents: yaml
+          Logger.error("received invalid YAML", yaml: yaml)
+          raise BadContent, message: "could not parse YAML", contents: yaml
       end
 
-    {date, yml} = yaml |> multiparse_date!()
     {title, yml} = yml |> Map.pop("title")
 
-    if title == nil do
+    unless title do
       Logger.error("YAML frontmatter must have a `title` key", yaml: yaml)
       raise BadContent, message: "YAML frontmatter must have a `title` key", contents: yaml
     end
 
+    {date_str, yml} = yml |> Map.pop("date")
+    date = multiparse_date!(date_str)
+
     {subtitle, yml} = yml |> Map.pop("subtitle")
-
     {tab_title, yml} = yml |> Map.pop("tab_title")
+    {summary, yml} = yml |> Map.pop("summary", "")
 
-    {summary, yml} =
-      case yml |> Map.pop("summary") do
-        {nil, yml} ->
-          Logger.warning("YAML frontmatter should include a `summary` key", yaml: yaml)
-          {"", yml}
-
-        found ->
-          found
-      end
+    if summary == "",
+      do: Logger.warning("YAML frontmatter should include a `summary` key", yaml: yaml)
 
     {show_toc, yml} = yml |> Map.pop("toc", true)
     {published, yml} = yml |> Map.pop("published", true)
@@ -105,6 +100,12 @@ defmodule Home.Meta do
     }
   end
 
+  @doc "Gets the page’s author, if any."
+  def author(this, default \\ "") do
+    this.props["author"] || default
+  end
+
+  @doc "Gets the page’s summary, if any."
   def summary(this, default \\ "") do
     case this.summary do
       "" -> default
@@ -112,6 +113,11 @@ defmodule Home.Meta do
     end
   end
 
+  def updated(this) do
+    this.props["updated"] |> multiparse_date!()
+  end
+
+  @doc "Gets the page’s tags, if any."
   def tags(this, default \\ []) do
     case this.tags do
       [] -> default
@@ -120,60 +126,35 @@ defmodule Home.Meta do
   end
 
   @doc """
-  Parses the contents of a YAML frontmatter `date:` key.
+  Parses the contents of a date string.
 
   Currently this attempts to parse using the Timex formats `RFC3339z`,
-  `RFC3339`, and `{ISOdate}`, in that order. If none succed, this raises a
-  `BadContent` exception.
+  `RFC3339`, `ISO:Extended`, and `ISOdate`, in that order. If none succed, this
+  raises a `BadContent` exception.
   """
-  def multiparse_date!(yaml) do
-    {datestr, yml} =
-      case yaml |> Map.pop("date") do
-        {nil, yml} ->
-          throw({nil, yml})
+  @spec multiparse_date!(String.t() | nil) :: NaiveDateTime.t() | nil
+  def multiparse_date!(_arg)
 
-        found ->
-          found
-      end
+  def multiparse_date!(nil), do: nil
 
-    # Insert successive parsers here. Each throws on success and allows
+  def multiparse_date!(date_str) when is_binary(date_str) do
+    # Insert successive parsers here. Each bails on success and allows
     # continuing on error. If control flow passes the last parser, raise an
     # error.
-    case datestr |> Timex.parse("{RFC3339z}") do
-      {:ok, date} ->
-        throw({date, yml})
+    with {:error, _} <- Timex.parse(date_str, "{RFC3339z}"),
+         {:error, _} <- Timex.parse(date_str, "{RFC3339}"),
+         {:error, _} <- Timex.parse(date_str, "{ISO:Extended}"),
+         {:isodate, {:error, _}} <- {:isodate, Timex.parse(date_str, "{ISOdate}")} do
+      # If none of the above parsers throw a success, then raise an error.
+      Logger.error("the provided string is not parseable as a date", date_str: date_str)
 
-      {:error, _} ->
-        Logger.debug("Datestring #{datestr} is not RFC3339z")
+      raise BadContent,
+        message:
+          "frontmatter date values must be a well-formed RFC-3339 or ISO-8601 date or date-time string",
+        contents: date_str
+    else
+      {:ok, date} -> date
+      {:isodate, {:ok, date}} -> DateTime.from_naive!(date, "Etc/UTC")
     end
-
-    case datestr |> String.replace(" ", "") |> Timex.parse("{RFC3339}") do
-      {:ok, date} ->
-        throw({date, yml})
-
-      {:error, _} ->
-        Logger.debug("Datestring #{datestr} is not RFC3339")
-    end
-
-    case datestr |> Timex.parse("{ISOdate}") do
-      {:ok, date} ->
-        throw({date |> DateTime.from_naive!("Etc/UTC"), yml})
-
-      {:error, _} ->
-        Logger.debug("Datestring #{datestr} is not an ISO-8601 date")
-    end
-
-    # If none of the above parsers throw a success, then raise an error.
-    Logger.error(
-      "YAML frontmatter must have a `date` key whose value is parsable as a date",
-      datestr: datestr,
-      yaml: yaml
-    )
-
-    raise BadContent,
-      message: "YAML `date` value must be a well-formed RFC3339 date or datetime string",
-      contents: datestr
-  catch
-    parsed -> parsed
   end
 end

@@ -1,16 +1,17 @@
 <article>
-	<header class="frontmatter">
-	    <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
-		<p>
-			<.link href={"//old.reddit.com/r/teslore/comments/#{@page.meta.props[:reddit]}"}>Originally published to /r/teslore</.link>
-			on <.timestamp time={@page.meta.date} />
-		</p>
-		<nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
-	</header>
-	<hr />
-	<.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />
-	<section>
-		<%= @page.content |> raw %>
-	</section>
-	<.audio :if={@page.meta.props["outro-music"]} ident="outro" audio={@page.meta.props["outro-music"]} />
+  <header class="frontmatter">
+    <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
+    <p>
+      <.link href={"//old.reddit.com/r/teslore/comments/#{@page.meta.props["reddit"]}"}>Originally published to /r/teslore</.link>
+      <%= if author = @page.meta.props["author"] do %>by <%= author %><% end %>
+      on <.timestamp time={@page.meta.date} />
+    </p>
+    <nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
+  </header>
+  <hr />
+  <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />
+  <section>
+    <%= @page.content |> raw %>
+  </section>
+  <.audio :if={@page.meta.props["outro-music"]} ident="outro" audio={@page.meta.props["outro-music"]} />
 </article>

@@ -1,261 +1,226 @@
 @use "sass:math";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 //  Ensure that the body will always be rendered to the full height of the
 //  viewport, even if the content is short enough that the body would not
 //  ordinarily reach the bottom.
-html {
-	height: 100%;
-}
-
 body {
-	min-height: 100%;
+  height: 100dvh;
+  margin: 0;
+
+  // Prevent iOS from changing font size when rotating the screen, or from
+  // showing a highlight span in the default case
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-hightlight-color: rgba(black, 0);
 }
 
 .screen-only {
-	@media not screen {
-		display: none !important;
-	}
+  @media not screen {
+    display: none !important;
+  }
 }
 
-.flex-wrapper {
-	@include media-breakpoint-up(sm) {
-		display: -webkit-box;
-		display: -moz-box;
-		display: -ms-flexbox;
-		display: -webkit-flex;
-		display: flex;
-	}
+header#banner {
+  border-bottom: $header-border solid var(--bell-blue);
+  flex-shrink: 0;
+  height: $header-height;
+  min-height: math.div($avi-height, 2);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-.flex-rows {
-	flex: {
-		direction: column;
-		wrap: wrap;
-	}
+// Set the size ratio for the two major blocks.
+main {
+  flex: 4 1 24em;
+  max-width: 48em;
 }
 
-.flex-cols {
-	flex: {
-		direction: row;
-		wrap: wrap;
-	}
+aside#about {
+  flex: 2 2 12em;
+  max-width: 24em;
 }
 
-.flex-item {
-	flex: {
-		basis: 100%;
-	}
+// Put vertical spacing inside `main` but *outside* `article`.
+main {
+  padding: 0.5em 0;
 }
 
-.grid-wrapper {
-	display: -moz-grid;
-	display: -ms-grid;
-	display: grid;
+// Put horizontal spacing inside the least-common text container in both blocks.
+// This is done because the scrollbar renders in the padding zone of a node
+// containing text, and ignores padding zones imposed by ancestor
+main article,
+#about-text {
+  padding: 0 1em;
 }
 
-@include media-breakpoint-up(sm) {
-	.grid-cols {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
-header[role="banner"] {
-	background: {
-		color: var(--header-color);
-		position: center center;
-		repeat: no-repeat;
-		size: cover;
-	}
-
-	border-bottom: {
-		color: var(--bell-blue);
-		style: solid;
-		width: $header-border;
-	}
-
-	height: $header-height;
-}
-
-#main {
-	border: {
-
-		//  Ochre stripe of the header border
-		top: {
-			color: var(--bell-ochre);
-			style: solid;
-			width: $header-border;
-		}
-
-		//  Blue strip of the footer border
-		bottom: {
-			color: var(--bell-blue);
-			style: solid;
-			width: $footer-border;
-		}
-	}
-
-	justify-content: center;
-
-	margin: {
-		left: auto;
-		right: auto;
-	}
-
-	max-width: $content-width-max;
-
-	@include media-breakpoint-up(xl) {
-		@include vertical-border("left");
-		@include vertical-border("right");
-	}
-}
-
-$about-clear: math.div($avi-height, 2) - $header-border;
-
-#about {
-	@include media-breakpoint-up(md) {
-		flex: 1.5 1 0%;
-	}
-
-	@include media-breakpoint-up(md) {
-		@include vertical-border("right");
-		order: 1;
-		min-width: 15em;
-		max-width: 25em;
-	}
-
-	//  Get ready for some fuckery
-	@include media-breakpoint-up(md) {
-		.logo.gravatar a {
-			position: absolute;
-			top: $header-height + $header-border - math.div($avi-height, 2);
-		}
-
-		#about-text {
-			margin-top: $about-clear;
-		}
-	}
-
-	>.contents {
-		margin: 0 auto;
-		max-width: 30em;
-	}
-}
-
-body.gallery #about {
-	display: none;
+// These don’t need to be of uniform width, they just have to flow reasonably.
+footer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  border-top: 2px solid var(--bell-ochre);
 }
 
 #about-logos {
-	margin-top: 1em;
+  padding: 1em 0;
 
-	img {
-		height: 3em;
-		padding: 0 0.25em;
-	}
+  img {
+    height: 3em;
+    display: initial;
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
-main {
-	@include media-breakpoint-up(md) {
+// For small screens, center the infobar and put a horizontal divider between it
+// and the main content.
+@media screen and ((max-height: 39.9em) or (max-width: 37.9em)) {
+  #content {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
 
-		article,
-		section {
-			max-width: 60em;
-		}
-	}
+    &>* {
+      max-width: 100%;
+    }
+  }
 
-	&.flex-item {
-		@include media-breakpoint-up(md) {
-			flex: 4 0 0%;
-			order: 2;
-		}
-	}
+  main {
+    border-block-end: 2px solid var(--bell-blue);
+  }
+
+  aside#about {
+    padding-top: 0.5em;
+  }
 }
 
-.gallery main {
-	@include media-breakpoint-up(md) {
+// Only flex the header/content/footer stack when the viewport is large enough
+// to have the `<aside>` and `<main>` blocks in two columns. On smaller
+// viewports, leave it as a plain vertical stack.
+@media screen and (min-width: 38em) {
 
-		article,
-		section {
-			max-width: 100%;
-		}
-	}
-}
+  // Put vertical boundaries around the content blocks.
+  main {
+    border-inline-start: 2px solid var(--bell-blue);
+    border-inline-end: 2px solid var(--bell-blue);
+  }
 
-footer {
-	border-top: {
-		color: var(--bell-ochre);
-		style: solid;
-		width: $footer-border;
-	}
+  aside#about {
+    border-inline-start: 2px solid var(--bell-ochre);
+    border-inline-end: 2px solid var(--bell-ochre);
+  }
 
-	.flex-item {
-		flex: 1 0 0%;
-		height: 1em;
-	}
-}
+  @media (min-height: 40em) {
+    body {
+      display: flex;
+      flex-flow: column nowrap;
+      // Prevent the body from going below the viewport.
+      max-height: 100dvh;
+      overflow-y: clip;
+    }
 
-body.hide-panels {
+    #content {
+      // Take all, but *only*, the unclaimed space in `<body>` not used by
+      // `<header>` or `<footer>`.
+      min-height: 0;
 
-	#about,
-	#nav,
-	#anchor-wrap,
-	header,
-	footer {
-		display: none;
-	}
-}
+      // This is itself a flex container for `<main>` and `<aside #about>`.
+      display: flex;
+      // `<aside>` comes after `<main>` in markup, but before it in flow.
+      flex-direction: row-reverse;
+      // Permit vertical stacking on narrow viewports.
+      flex-wrap: wrap;
+      // Shove both children to the center of the screen on wide viewports.
+      justify-content: center;
 
-@include media-breakpoint-up(md) {
-	@media only screen and (min-height: 800px) {
-		body:not(.hide-panels) {
-			#main {
-				// not sure where the extra 4px are coming from
-				height: calc(100vh - #{core-height()} + 4px);
-			}
-		}
+      border-top: $header-border solid var(--bell-ochre);
+      border-bottom: 2px solid var(--bell-blue);
+    }
 
-		main,
-		#about {
-			height: 100%;
-		}
+    // The top-level containers need to be constrained to the height of
+    // `<#content>`.
+    main,
+    aside#about {
+      max-height: 100%;
+    }
 
-		#about-text {
-			height: calc(100% - #{$about-clear});
-		}
+    main {
+      margin-inline-start: 0.125em;
+    }
 
-		main,
-		#about-text {
-			overflow-y: auto;
-		}
-	}
+    aside#about {
+      margin-inline-end: 0.125em;
+    }
+
+    // Shunt the logo upwards by the `<aside> top-margin and then half its
+    // height. The horizon of the logo is now even with the boundary between
+    // `<header>` and `<#content>`.
+    #page-logo {
+      position: relative;
+      top: -#{math.div($avi-height, 2)};
+
+      a {
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    // The *text* containers need to scroll on overflow.
+    main,
+    #about-text {
+      overflow-y: scroll;
+    }
+
+    // And the infobar needs to exclude the logo’s half-height.
+    #about-text {
+      max-height: calc(100% - math.div($avi-height, 2));
+      // Margins are *outside* borders, this needs to account for the
+      // border width.
+      // max-height: 100%;
+      // margin-top: calc(4px - math.div($avi-height, 2));
+      // padding-top: calc(math.div($avi-height, 2) - 4px);
+      position: relative;
+      top: calc(4px - math.div($avi-height, 2));
+
+      &>aside {
+        border-bottom: 2px solid var(--bell-blue);
+        margin-bottom: 0.5em;
+      }
+    }
+  }
 }
 
 //  Centers and clamps YouTube embeds to look reasonable.
 .youtube {
-	//  Centering
-	margin: 0 auto 1em;
-	width: 100%;
-	//  Constrain the width of the interior containers
-	max-width: 480px;
+  //  Centering
+  margin: 0 auto 1em;
+  width: 100%;
 
-	//  Unsure what this does, but it's necessary.
-	position: relative;
+  //  Unsure what this does, but it's necessary.
+  position: relative;
 
-	//  The divs are vertically empty(?), so force the inner to have height
-	&>div {
-		padding-bottom: 56.25%;
-	}
+  //  The divs are vertically empty(?), so force the inner to have height
+  &>div {
+    padding-bottom: 56.25%;
+  }
 
-	//  Pin the embed window within its wrappers to exactly fill them.
-	iframe {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-	}
+  //  Pin the embed window within its wrappers to exactly fill them.
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 mjx-container {
-	overflow-x: scroll;
+  overflow-x: scroll;
 }

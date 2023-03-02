@@ -1,18 +1,28 @@
 <urlset
-	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
 >
-    <url :for={{_, url, _} <- HomeWeb.PageController.page_listing()}>
-        <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
-        <priority>0.6</priority>
+  <url :for={{_, url, _} <- HomeWeb.PageController.page_listing()}>
+    <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
+    <priority>0.6</priority>
+  </url>
+  <%= for {_, url, _, children} <- HomeWeb.PageController.page_listing() do %>
+    <url>
+      <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
+      <priority>0.6</priority>
     </url>
-    <url :for={{_, url, _} <- HomeWeb.BlogController.page_listing()}>
-        <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
-        <priority>0.5</priority>
+    <url :for={{_, child_url, _} <- children}>
+      <loc><%= Path.join([HomeWeb.Endpoint.url(), url, child_url]) %></loc>
+      <priority>0.6</priority>
     </url>
-    <url :for={{_, url, _} <- HomeWeb.OeuvreController.page_listing()}>
-        <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
-        <priority>0.4</priority>
-    </url>
+  <% end %>
+  <url :for={{_, url, _} <- HomeWeb.BlogController.page_listing()}>
+    <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
+    <priority>0.5</priority>
+  </url>
+  <url :for={{_, url, _} <- HomeWeb.OeuvreController.page_listing()}>
+    <loc><%= Path.join(HomeWeb.Endpoint.url(), url) %></loc>
+    <priority>0.4</priority>
+  </url>
 </urlset>

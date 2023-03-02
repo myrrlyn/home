@@ -1,262 +1,385 @@
-@import "bootstrap/scss/bootstrap";
+@use "sass:list";
 
 @import "variables";
 @import "font";
 @import "color";
 
-$avi-rim: 0;
-
-:root {
-	--header-color: #{$amethyst};
-	--border-color: #{$amaranth};
-}
-
 .oeuvre {
-	--current-page-left: "📖";
-	--current-page-right: "🪶";
+  --current-page-left: "📖";
+  --current-page-right: "🪶";
 }
 
 @import "layout";
 @import "gravatar";
 @import "style";
 
-$T1: hsla(000, 00%, 20%, 0.38);
-
-hr.afterword {
-	border-top-color: var(--border-color);
-}
-
-#gravatar {
-	background-color: var(--border-color);
-}
-
-.title,
-.subtitle {
-	font-style: italic;
-	text-align: center;
-}
-
-main article,
-main section {
-
-	// border-right: 2px solid var(--border-color);
-	@include media-breakpoint-up(md) {
-		max-width: 46em;
-		padding-right: 1em;
-	}
-}
-
-main aside,
-blockquote {
-	@include left-chevron(var(--charcoal));
-
-	&:not(.handwriting) {
-		background: {
-			color: var(--charcoal-bg);
-		}
-	}
-
-	&.handwriting {
-		background: {
-			color: var(--parchment);
-		}
-	}
-
-	border: {
-		top-right-radius: 1em;
-		bottom-right-radius: 1em;
-		right: none !important;
-	}
-
-	padding: {
-		top: 1px;
-		left: 5px;
-		right: 2px;
-		bottom: 1px;
-	}
-
-	margin: {
-		left: 1em;
-		right: 2em;
-		bottom: 1em;
-	}
-
-	&.special-font {
-		&:not(:hover, :active) {
-			blockquote {
-				display: none;
-			}
-		}
-
-		&:hover,
-		&:active {
-			@extend %text-serif;
-
-			blockquote {
-				display: block;
-			}
-		}
-	}
-
-	&.piano-key {
-
-		&:not(.last),
-		blockquote {
-			margin: {
-				bottom: 0;
-			}
-		}
-
-		blockquote {
-			margin: {
-				left: 0.25em;
-			}
-		}
-
-		p {
-			margin: {
-				bottom: 0;
-			}
-		}
-
-		&.aedra {
-
-			&,
-			blockquote,
-			blockquote blockquote {
-				border-left-color: var(--white);
-			}
-		}
-
-		&.daedra.cothot {
-
-			&,
-			blockquote {
-				border-left-color: var(--black);
-			}
-		}
-
-		&.daedra:not(.cothot) {
-			border-left-color: var(--grey);
-		}
-	}
-}
-
-table#color-table tbody {
-	@function hue-for($angle) {
-		@return hsl(($angle - 3) * 15, 75%, 50%);
-	}
-
-	@mixin row($num) {
-		tr:nth-of-type(#{$num}) {
-			background-image: linear-gradient(hue-for($num - 0.5), hue-for($num), hue-for($num + 0.5));
-		}
-	}
-
-	@include row(1);
-	@include row(2);
-	@include row(3);
-	@include row(4);
-	@include row(5);
-	@include row(6);
-	@include row(7);
-	@include row(8);
-	@include row(9);
-	@include row(10);
-	@include row(11);
-	@include row(12);
-	@include row(13);
-	@include row(14);
-	@include row(15);
-	@include row(16);
-	@include row(17);
-	@include row(18);
-	@include row(19);
-	@include row(20);
-	@include row(21);
-	@include row(22);
-	@include row(23);
-	@include row(24);
-	@include row(25);
-}
-
-.handwriting {
-	font-family: "Skyrim Handwriting";
-	font-size: 1.2em;
-	letter-spacing: 0.05ch;
-}
-
-.translation,
-.transliteration {
-	@extend %text-serif;
-}
-
 @mixin font($name, $file: $name) {
-	@font-face {
-		font-family: $name;
-		src: url("/static/fonts/oeuvre/#{$file}.ttf");
-	}
+  @font-face {
+    font-family: $name;
+    src: url("/static/fonts/oeuvre/#{$file}.ttf");
+  }
 }
 
 @include font("Skyrim Handwriting", "Skyrim-Books-Hand");
 @include font("Dovah");
 @include font("Dwemer");
+@include font("Mage Script", "Mage");
 
-%inline-lang {
-	color: var(--text-fg);
-
-	&:hover {
-		text-decoration: none;
-	}
+h1 {
+  color: var(--ansi-green);
 }
 
-@mixin lang($href, $font) {
+h2 {
+  color: var(--ansi-red);
 
-	a[href$="##{$href}"],
-	.#{$href} {
-		@extend %inline-lang;
-		font-family: $font;
-	}
+  &.subtitle {
+    @media (prefers-color-scheme: light) {
+      color: var(--ansi-orange);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: var(--ansi-yellow);
+    }
+  }
+}
+
+h3 {
+  color: var(--ansi-blue);
+}
+
+h4 {
+  color: var(--ansi-orange);
+}
+
+h5 {
+  color: var(--ansi-purple);
+}
+
+h6 {
+  color: var(--ansi-yellow);
+}
+
+.sz-1 p {
+  font-size: 2em;
+}
+
+.sz-2 p {
+  font-size: 1.75em;
+}
+
+.sz-3 p {
+  font-size: 1.5em;
+}
+
+.sz-4 p {
+  font-size: 1.25em;
+}
+
+%inline-lang {
+  color: var(--text-fg);
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+@mixin lang($lang, $font) {
+
+  .#{$lang},
+  [lang="#{$lang}"] {
+    @extend %inline-lang;
+    font-family: $font;
+  }
 }
 
 @include lang("dovah", "Dovah");
 @include lang("dwemer", "Dwemer");
-@include lang("ehlnofex", "Mage");
+@include lang("ehlnofex", "Mage Script");
+
+.handwriting {
+  color: $iso-black;
+  font-family: "Skyrim Handwriting";
+  font-size: 1.2em;
+  letter-spacing: 0.05ch;
+}
+
+.translation,
+.transliteration {
+  @extend %text-serif;
+}
 
 blockquote {
-	&.scourge {
-		background-color: transparentize($tyrian-purple, 0.75);
-		border-left-color: $tyrian-purple;
-		font-style: italic;
-	}
+  &.handwriting {
+    border-left-color: darken($parchment, 60%);
 
-	&.spellbreaker {
-		background-color: transparentize($yellow-selective, 0.75);
-		border-left-color: $yellow-selective;
-		font-variant: small-caps;
-	}
+    @media (prefers-color-scheme: light) {
+      background-color: transparentize($parchment, 0.15);
+    }
 
-	&.malacath,
-	&.volendrung {
-		background-color: transparentize($forest-green, 0.75);
-		border-left-color: $forest-green;
-		font-weight: bold;
-		text-align: center;
-	}
+    @media (prefers-color-scheme: dark) {
+      background-color: transparentize($parchment-dark, 0.15);
+    }
+  }
+
+  border: {
+    top-right-radius: 1em;
+    bottom-right-radius: 1em;
+    right: none;
+  }
+
+  padding: {
+    top: 1px;
+    left: 5px;
+    right: 2px;
+    bottom: 1px;
+  }
+
+  &.flyer {
+    border-color: transparent;
+    border-left-color: var(--charcoal);
+  }
+
+  &.ehlnofex {
+    background-image: repeating-linear-gradient(120deg,
+      #{$krm-wine} 0,
+      #{$krm-burgundy} 4%,
+      #{$krm-coral} 8%,
+      #{$krm-orange} 12%,
+      #{$krm-yellow} 16%,
+      #{$krm-lime} 20%,
+      #{$krm-green} 25%,
+
+      #{$krm-teal} 30%,
+      #{$krm-sea} 34%,
+      #{$krm-sky} 38%,
+      #{$krm-blue} 42%,
+      #{$krm-navy} 46%,
+      #{$krm-wine} 50%);
+    border-color: var(--bg);
+    border-left-color: $blue-carolina;
+    color: var(--text-fg);
+    text-shadow: 0 0 1em var(--bg),
+      0 0 0.5em var(--bg), 0 0 0.5em var(--bg);
+  }
+
+  &.dovah {
+    border-left-color: $red-violet;
+  }
+
+  &.special-font {
+    font-size: 1.1rem;
+
+    &:not(:hover, :active)>:is(.transliteration, .translation),
+    &:is(:hover, :active)>:not(.transliteration, .translation) {
+      display: none;
+    }
+
+    &:is(:hover, :active)>:is(.transliteration, .translation),
+    &:not(:hover, :active)>:not(.transliteration, .translation) {
+      display: initial;
+    }
+  }
+
+  &.piano-key {
+    margin-top: 0.5em;
+    padding: 0;
+
+    &:not(.last),
+    blockquote,
+    p {
+      margin-bottom: 0;
+    }
+
+    p {
+      padding-left: 0.5em;
+    }
+
+    blockquote {
+      background-color: transparent;
+      border-color: transparent;
+      margin-top: 0;
+      margin-left: 0.25em;
+      padding: 0;
+    }
+
+    &.aedra {
+
+      &,
+      blockquote,
+      blockquote blockquote {
+        border-left-color: var(--iso-white);
+      }
+    }
+
+    &.daedra.cothot {
+
+      &,
+      blockquote {
+        border-left-color: var(--iso-black);
+      }
+    }
+
+    &.daedra:not(.cothot) {
+      border-left-color: gray;
+    }
+  }
 }
 
-.sz-1 {
-	font-size: 200%;
+blockquote.special-font,
+span.special-font {
+  text-decoration: underline dotted;
+
+  &:is(:hover, :active) {
+    @extend %text-serif;
+  }
 }
 
-.sz-2 {
-	font-size: 150%;
+blockquote.special-font:is(:hover, :active) p,
+span.special-font:is(:hover, :active) {
+  &::after {
+    content: "(" attr(data-lang) ")";
+    font-size: 0.9em;
+    font-style: italic;
+  }
 }
 
-.sz-4 {
-	font-size: 90%;
+span.special-font:is(:hover, :active) {
+  &::after {
+    content: "(" attr(data-lang) ": " attr(title) ")";
+  }
 }
 
-.sz-5 {
-	font-size: 80%;
+blockquote.special-font p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+blockquote {
+  &.scourge {
+    background-color: transparentize($tyrian-purple, 0.75);
+    border-left-color: $tyrian-purple;
+    font-style: italic;
+  }
+
+  &.spellbreaker {
+    background-color: transparentize($yellow-selective, 0.75);
+    border-left-color: $yellow-selective;
+    font-variant: small-caps;
+  }
+
+  &.malacath,
+  &.volendrung {
+    background-color: transparentize($forest-green, 0.75);
+    border-left-color: $forest-green;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1em;
+  }
+}
+
+table {
+  border-collapse: collapse;
+}
+
+$hcl: (
+  // Mara
+  #ff0088,
+  #ff005d,
+  #ff0033,
+  #fa3600,
+  #e15800,
+  #c47000,
+  #a18100,
+  #798d00,
+  #449600,
+  #009d00,
+  #00a11d,
+  #00a353,
+  #00a581,
+  #00a6af,
+  #00a6d9,
+  #00a5fe,
+  #00a1ff,
+  #009bff,
+  #0091ff,
+  #0081ff,
+  #696cff,
+  #b74eff,
+  #e61edc,
+  #ff00b3,
+  // Dibella
+  #ff0088,
+);
+$cube-helix: (
+  // Mara
+  #c73cab,
+  #e5409c,
+  #fb4985,
+  #ff586c,
+  #ff6b52,
+  #ff833d,
+  #f59d30,
+  #e0b92e,
+  #c9d339,
+  #b4e950,
+  #94f356,
+  #6cf65b,
+  #49f46c,
+  #2eed83,
+  #1ee09f,
+  #19ceb9,
+  #1db7cf,
+  #299edd,
+  #3a85e1,
+  #4d6cda,
+  #5e57ca,
+  #6a44b3,
+  #833eb0,
+  #a63cb2,
+  // Dibella
+  #c73cab,
+);
+
+@function hue-for($angle) {
+  @return hsl($angle + 7.5, 75%, 50%);
+}
+
+table#color-table {
+
+  tbody {
+    text-shadow: 0 0 1em black,
+      0 0 0.5em black;
+  }
+
+  &.cube-helix tbody {
+    @for $num from 1 through list.length($cube-helix) {
+      tr:nth-of-type(#{$num}) {
+        background-color: list.nth($cube-helix, $num);
+      }
+    }
+  }
+
+  &.hcl tbody {
+    @for $num from 1 through list.length($hcl) {
+      tr:nth-of-type(#{$num}) {
+        background-color: list.nth($hcl, $num);
+      }
+    }
+  }
+
+  &.hsl tbody {
+    background-image: linear-gradient(hue-for(-30),
+        hue-for(0),
+        hue-for(30),
+        hue-for(60),
+        hue-for(90),
+        hue-for(120),
+        hue-for(150),
+        hue-for(180),
+        hue-for(210),
+        hue-for(240),
+        hue-for(270),
+        hue-for(300),
+        hue-for(330));
+  }
 }

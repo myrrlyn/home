@@ -1,259 +1,349 @@
 <defs>
-	<path id="keystone-aedra" class="keystone aedra" d="
-		M -52.211 -396.578
-		L -65.263 -495.722
-		A 500 500 0 0 1 65.263 -495.722
-		L 52.211 -396.578
-		A 400 400 1 0 0 -52.11 -396.578
-		" />
-	<path id="keystone-major" class="keystone major" d="
-		M -52.211 -396.678
-		L -60.825 -462.013
-		A 466 466 0 0 1 60.825 -462.013
-		L 52.211 -396.578
-		A 400 400 1 0 0 -52.211 -396.678
-		" />
-	<path id="keystone-minor" class="keystone minor" d="
-		M -52.211 -396.678
-		L -56.518 -429.296
-		A 466 466 0 0 1 56.5118 -429.296
-		L 52.211 -396.578
-		A 400 400 1 0 0 -52.211 -396.678
-		" />
-	<path id="spoke" d="
-		M 0 0
-		L -52.211 -396.578
-		A 400 400 0 0 1 52.211 -396.578
-		Z
-		" />
-	<path id="narrow" d="
-		M 0 0
-		L -3.491 -399.985
-		A 400 400 0 0 1 3.491 -399.985
-		Z
-		" />
-	<!-- This is a weak approximation of Fermat’s spiral. It is made by taking
-	semicircular arcs of geometrically widening distance. Take the winding
-	number (half-turns from center to rim), sum it, and make each step outward
-	from center take $$(wind - step) / sum(1, wind) * radius$$. The geometric
-	decrease roughly approximates Fermat’s algorithm, though it is obviously
-	neither exact nor differentiable. For added flavor, each arc can be
-	geometrically flattened to be a true circle at the rim and an increasingly
-	damped ellipse towards the center.
+  <path id="keystone-aedra" class={~w(keystone aedra)} d="
+    M               -52.211 -396.578
+    L               -65.263 -495.722
+    A 500 500 0 0 1  65.263 -495.722
+    L                52.211 -396.578
+    A 400 400 1 0 0 -52.211 -396.578
+    " />
+  <path id="keystone-major" class={~w(keystone major)} d="
+    M               -52.211 -396.678
+    L               -60.825 -462.013
+    A 466 466 0 0 1  60.825 -462.013
+    L                52.211 -396.578
+    A 400 400 1 0 0 -52.211 -396.678
+    " />
+  <path id="keystone-minor" class={~w(keystone minor)} d="
+    M               -52.211 -396.678
+    L               -56.518 -429.296
+    A 466 466 0 0 1  56.518 -429.296
+    L                52.211 -396.578
+    A 400 400 1 0 0 -52.211 -396.678
+    " />
+  <path id="spoke" d="
+    M                0        0
+    L              -52.211 -396.578
+    A 400 400 0 0 1 52.211 -396.578
+    Z
+    " />
+  <path id="narrow" d="
+    M 0 0
+    L -3.491 -399.985
+    A 400 400 0 0 1 3.491 -399.985
+    Z
+    " />
+  <clipPath id="color-clip">
+    <path d="
+      M           -400 0
+      A 1 1 0 0 1  400 0
+      M             50 0
+      A 1 1 0 0 0  -50 0
+      A 1 1 0 0 0   50 0
+      M            400 0
+      A 1 1 0 0 1 -400 0
+      " />
+  </clipPath>
+  <!-- This is a weak approximation of Fermat’s spiral. It is made by taking
+  semicircular arcs of geometrically widening distance. Take the winding number
+  (half-turns from center to rim), sum it, and make each step outward from
+  center take $$(wind - step) / sum(1, wind) * radius$$. The geometric decrease
+  roughly approximates Fermat’s algorithm, though it is obviously neither exact
+  nor differentiable. For added flavor, each arc can be geometrically flattened
+  to be a true circle at the rim and an increasingly damped ellipse towards the
+  center.
 
-	I don’t know enough about Quadratic Bézier curves to use them instead of
-	elliptical arcs.
-	-->
-	<path id="spiral" d="
-		M 0 0
-		A 45 50 0 0 1 0  133.33
-		A 46 50 0 0 1 0 -240.00
-		A 47 50 0 0 1 0  320.00
-		A 48 50 0 0 1 0 -373.33
-		A 49 50 0 0 1 0  400.00
-		A 50 50 0 0 1 0 -400.00
-		A 49 50 1 0 0 0  373.33
-		A 48 50 1 0 0 0 -320.00
-		A 47 50 1 0 0 0  240.00
-		A 46 50 1 0 0 0 -133.33
-		A 45 50 1 0 0 0  0
-	" />
+  I don’t know enough about Quadratic Bézier curves to use them instead of
+  elliptical arcs.
+  -->
+  <path id="spiral" d="
+    M             0    0
+    A 50 50 0 0 1 0  133.33
+    A 50 50 0 0 1 0 -240
+    A 50 50 0 0 1 0  320
+    A 50 50 0 0 1 0 -373.33
+    A 50 50 0 0 1 0  400
+    A 50 50 0 0 1 0 -400
+    A 50 50 1 0 0 0  373.33
+    A 50 50 1 0 0 0 -320
+    A 50 50 1 0 0 0  240
+    A 50 50 1 0 0 0 -133.33
+    A 50 50 1 0 0 0    0
+    " />
+  <radialGradient id="tunnel-white">
+    <stop offset="15%" stop-color="white" stop-opacity="1"></stop>
+    <stop offset="30%" stop-color="white" stop-opacity="0.6"></stop>
+    <stop offset="50%" stop-color="white" stop-opacity="0.3"></stop>
+    <stop offset="85%" stop-color="white" stop-opacity="0"></stop>
+  </radialGradient>
+  <radialGradient id="tunnel-black">
+    <stop offset="15%" stop-color="black" stop-opacity="1"></stop>
+    <stop offset="30%" stop-color="black" stop-opacity="0.6"></stop>
+    <stop offset="50%" stop-color="black" stop-opacity="0.3"></stop>
+    <stop offset="85%" stop-color="black" stop-opacity="0"></stop>
+  </radialGradient>
 </defs>
-<g id="all" class={@classes |> Enum.join(" ")}>
-	<g id="inner">
-		<circle cx="0" cy="0" r="500" stroke="black" stroke-width="1px" fill="transparent" />
-		<circle class="keyring minor"/>
-		<circle class="keyring major" />
-		<circle class="keyring aedra" />
-		<g id="swirl">
-			<g>
-				<use href="#spiral" class="white" />
-				<use href="#spiral" class="black" transform="rotate(180)" />
-			</g>
-		</g>
-		<g id="main">
-			<%= for {name, note, class, num, _opts} <- @table do %>
-				<% ident = name |> Home.str_to_ident() %>
-				<% keystone = class |> String.split() |> Enum.at(-1) %>
-				<g id={ident} class={"spoke-#{num} #{class}"}>
-					<linearGradient id={"fill-#{ident}"} gradientTransform="rotate(90)">
-						<stop offset="20%" stop-opacity="1" />
-						<stop offset="60%" stop-opacity="0.6" />
-						<stop offset="80%" stop-opacity="0.3" />
-						<stop offset="95%" stop-opacity="0" />
-					</linearGradient>
-					<use href={"#keystone-" <> keystone} class={["keystone", keystone]} />
-					<use href="#spoke" class="spoke" fill={"url('#fill-#{ident}')"} />
-					<text class="name"><%= name %></text>
-					<text class="note"><%= note %></text>
-				</g>
-			<% end %>
-		</g>
-	</g>
+<g id="all" class={@classes}>
+  <g id="etada">
+    <g id="ring">
+      <circle cx="0" cy="0" r="500" stroke="black" stroke-width="1px" fill="transparent" />
+      <circle class={~w(keyring minor)} />
+      <circle class={~w(keyring major)} />
+      <circle class={~w(keyring aedra)} />
+    </g>
+    <foreignObject id="color-embed" x="-400" y="-400" width="800" height="800" >
+      <div id="color-wheel" class="gradient" xmlns="http://www.w3.org/1999/xhtml"></div>
+    </foreignObject>
+    <g id="main">
+      <%= for {name, note, class, num, _opts} <- @table do %>
+        <% ident = name |> Home.str_to_ident() %>
+        <% keystone = class |> Enum.at(-1) %>
+        <g id={ident} class={["spoke-#{num}" | class]}>
+          <use href={"#keystone-#{keystone}"} class={["keystone", keystone]} />
+          <use href="#spoke" class="spoke" />
+          <text class="name"><%= name %></text>
+          <text class="note"><%= note %></text>
+        </g>
+      <% end %>
+    </g>
+  </g>
+  <g id="swirl">
+    <use id="anu" href="#spiral"></use>
+    <use id="padhome" href="#spiral" transform="rotate(180)"></use>
+  </g>
 </g>
 <script type="text/javascript">
-	let this = document.ElementById("all");
-	let swirl = document.getElementById("swirl");
-	this.onclick = () => {
-		swirl.toggleClass("animated");
-	};
+  let this = document.ElementById("all");
+  let swirl = document.getElementById("swirl");
+  this.onclick = () => {
+    swirl.toggleClass("animated");
+  };
 </script>
 <style type="text/css">
-	@font-face {
-		font-family: "Daedric";
-		src: url("//myrrlyn.net/static/fonts/oeuvre/Daedra.otf");
-	}
+  @font-face {
+    font-family: "Daedric";
+    src: url("/static/fonts/oeuvre/Daedra.otf");
+  }
 
-	.keyring {
-		cx: 0;
-		cy: 0;
-		fill: transparent;
-		stroke-width: 34;
-	}
-	.keyring.minor {
-		r: 415px;
-		stroke: grey;
-	}
-	.keyring.major {
-		r: 449px;
-		stroke: black;
-	}
-	.keyring.aedra {
-		r: 483px;
-		stroke: white;
-	}
+  .keyring {
+    cx: 0;
+    cy: 0;
+    fill: transparent;
+    stroke-width: 34;
+  }
 
-	.keystone.minor,
-	.grey {
-		fill: grey;
-	}
-	.keystone.major,
-	.black {
-		fill: black;
-	}
-	.keystone.aedra,
-	.white {
-		fill: white;
-	}
+  .keyring.minor {
+    r: 415px;
+    stroke: grey;
+  }
 
-	text.name {
+  .keyring.major {
+    r: 449px;
+    stroke: black;
+  }
+
+  .keyring.aedra {
+    r: 483px;
+    stroke: white;
+  }
+
+  .keystone.minor {
+    fill: grey;
+  }
+
+  .keystone.major {
+    fill: black;
+  }
+
+  .keystone.aedra {
+    fill: white;
+  }
+
+  #anu {
+    fill: url("#tunnel-white");
+  }
+
+  #padhome {
+    fill: url("#tunnel-black");
+  }
+
+  #color-embed {
+    opacity: 100%;
+    clip-path: url("#color-clip");
+  }
+
+  #color-wheel {
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+  }
+
+  text {
+    fill: black;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.1em;
+    font-variant: small-caps;
+  }
+
+  .daedric .daedra text.name {
+    font-family: Daedric;
+    font-variant: normal;
+  }
+
+  text.name {
+    transform: translateY(-420px);
+    text-orientation: upright;
+    writing-mode: vertical-rl;
+  }
+
+  .no-names text.name {
+    display: none;
+  }
+
+  text.note {
+    transform: translateY(-475px);
+    font-size: 1.2em;
+  }
+
+  .no-notes text.note {
+    display: none;
+  }
+
+  <%= for {key, angle} <- [
+    {"db", 0},
+    {"c", 30},
+    {"b", 60},
+    {"bb", 90},
+    {"a", 120},
+    {"ab", 150},
+    {"g", 180},
+    {"gb", -150},
+    {"f", -120},
+    {"e", -90},
+    {"eb", -60},
+    {"d", -30},
+  ] do %>
+    .<%= key %>-major #swirl {
+      transform: rotate(<%= -angle %>deg);
+    }
+    .<%= key %>-major #etada {
+      transform: rotate(<%= angle %>deg);
+    }
+  <% end %>
+
+  #all:not(.no-animation) #swirl {
+    animation: chase 120s linear 0s infinite reverse;
+  }
+
+  .no-swirl #swirl {
+    display: none;
+  }
+
+  .no-ring .keyring {
+    display: none;
+  }
+
+  .no-spokes .keystone,
+  .no-spokes .spoke {
+    display: none;
+  }
+
+  @keyframes chase {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(359deg);
+    }
+  }
+
+  .fifths {
+    animation: fifths 120s linear 0s infinite;
+  }
+
+  @keyframes fifths {
+    <%= for pct <- 0..11 do %>
+      <% step = ((pct * 100) / 12) |> Float.round(3) %>
+      <%= step %>% {
+        transform: rotate(<%= (pct * 150) |> round() %>deg);
+      }
+      <%= step + 7.5 %>% {
+        transform: rotate(<%= (pct * 150) |> round() %>deg);
+      }
+    <% end %>
+    100% {
+      transform: rotate(5turn);
+    }
+  }
+
+  #all:not(.no-color) .spoke {
+    fill: transparent;
+  }
+
+  .no-color .aedra .spoke {
+    fill: white;
+  }
+
+  .no-color .daedra.minor .spoke {
+    fill: grey;
+  }
+
+  .no-color .daedra.major .spoke {
+    fill: black;
+  }
+
+  .no-color .aedra stop {
+    stop-color: white;
+  }
+
+  .no-color .daedra.major stop {
+    stop-color: black;
+  }
+
+  .no-color .daedra.minor stop {
+    stop-color: grey;
+  }
+
+  text.name {
 		transform: translateY(-420px);
 		text-orientation: upright;
 		writing-mode: vertical-rl;
 	}
-	.no-names text.name {
-		display: none;
-	}
-	text.note {
-		transform: translateY(-475px);
-		font-size: 1.2em;
-	}
-	.no-notes text.note {
-		display: none;
-	}
 
-	<%= for {key, angle} <- [
-		{"c", 30},
-		{"g", 180},
-		{"d", -30},
-		{"a", 120},
-		{"e", -90},
-		{"b", 60},
-		{"gb", -150},
-		{"db", 0},
-		{"ab", 150},
-		{"eb", -60},
-		{"bb", 90},
-		{"f", -120},
-	] do %>
-		.<%= key %>-major #swirl g {
-			transform: rotate(<%= -angle %>deg);
-		}
-		.<%= key %>-major #inner {
-			transform: rotate(<%= angle %>deg);
-		}
-	<% end %>
+  .daedra text.name {
+    fill: white;
+  }
 
-	#all:not(.no-animation) #swirl {
-		animation: chase 120s linear 0s infinite reverse;
-	}
-	.no-swirl #swirl {
-		display: none;
-	}
-	.no-ring .keyring {
-		display: none;
-	}
-	.no-spokes .keyring:not(.minor),
-	.no-spokes .keystone,
-	.no-spokes .spoke {
-		display: none;
-	}
+  <%= (0..23) |> Enum.map(&(".spoke-#{&1} { transform: rotate(#{&1 * 15}deg);}")) %>
 
-	@keyframes chase {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(359deg);
-		}
-	}
+  .cube-helix #color-wheel {
+    background-image: conic-gradient(from -30deg, <%=
+      (@table ++ [Enum.at(@table, 0)])
+      |> Enum.map(&(elem(&1, 4)[:cube_helix]))
+      |> Enum.join(", ")
+    %>);
+  }
 
-	.fifths {
-		animation: fifths 120s linear 0s infinite;
-	}
+  .hcl #color-wheel {
+    background-image: conic-gradient(from -30deg, <%=
+      (@table ++ [Enum.at(@table, 0)])
+      |> Enum.map(&(elem(&1, 4)[:hcl]))
+      |> Enum.join(", ")
+    %>);
+  }
 
-	@keyframes fifths {
-		<%= for pct <- 0..11 do %>
-			<%= (pct * 100 / 12) |> Float.round(3) %>% {
-				transform: rotate(<%= (pct * 150) |> round() %>deg);
-			}
-			<%= ((pct * 100 / 12) |> Float.round(3)) + 7.5 %>% {
-				transform: rotate(<%= (pct * 150) |> round() %>deg);
-			}
-		<% end %>
-		100% {
-			transform: rotate(5turn);
-		}
-	}
+  .hsl #color-wheel {
+    background-image: conic-gradient(from -30deg, <%=
+      (@table ++ [Enum.at(@table, 0)])
+      |> Stream.map(&(elem(&1, 3)))
+      |> Stream.map(&(Integer.mod(&1, 24)))
+      |> Stream.map(&(&1 * 15))
+      |> Stream.map(&("hsl(#{&1}, 100%, 50%)"))
+      |> Enum.join(", ")
+    %>);
+  }
 
-	text {
-		font-family: "Roboto", sans-serif;
-	}
-
-	.daedric .daedra text.name {
-		font-family: Daedric;
-	}
-
-	.no-color .aedra stop {
-		stop-color: white;
-	}
-	.no-color .daedra.major stop {
-		stop-color: black;
-	}
-	.no-color .daedra.minor stop {
-		stop-color: grey;
-	}
-
-	text {
-		fill: black;
-	}
-	.daedra text.name {
-		fill: white;
-	}
-
-	<%= for {_, _, _, num, opts} <- @table do %>
-		<% angle = (num |> Integer.mod(24)) * 15 %>
-		.spoke-<%= num %> {
-			transform: rotate(<%= angle %>deg);
-		}
-		.hsl .spoke-<%= num %> stop {
-			stop-color: hsl(<%= angle %>, 100%, 50%);
-		}
-		.cube-helix .spoke-<%= num %> stop {
-			stop-color: <%= opts[:cube_helix] %>;
-		}
-		.hcl .spoke-<%= num %> stop {
-			stop-color: <%= opts[:hcl] %>;
-		}
-	<% end %>
+  .no-color #color-wheel {
+    background: transparent;
+  }
 </style>

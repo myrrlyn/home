@@ -30,7 +30,7 @@ defmodule HomeWeb.GalleryHTML do
   def images(assigns) do
     ~H"""
     <h2 :if={@heading != ""}><%= @heading %></h2>
-    <div class="container d-flex flex-wrap">
+    <div class="img-album">
       <.image
         :for={path <- @images}
         title={path}
@@ -48,7 +48,7 @@ defmodule HomeWeb.GalleryHTML do
   def banners(assigns) do
     ~H"""
     <h2 :if={@heading != ""}><%= Home.Banners.album_name(@heading) %></h2>
-    <div class="container d-flex flex-wrap">
+    <div class="img-album">
       <.image
         :for={%Home.Banners.Banner{caption: caption, file: path} <- @images}
         title={caption}

@@ -35,7 +35,7 @@ config :phoenix, :json_library, Jason
 
 # Use the Dart SASS driver for CSS compilation.
 config :dart_sass,
-  version: "1.58.3",
+  version: "1.57.0",
   default: [
     args: ~w(-Inode_modules css:../priv/static/css),
     cd: Path.expand("../assets", __DIR__)

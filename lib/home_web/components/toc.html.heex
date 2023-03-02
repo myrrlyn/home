@@ -1,12 +1,12 @@
 <ol :if={@toc != []}>
-    <li :for={{show, ident, children} <- @toc}>
-        <%= if children != [] do %>
-            <details>
-                <summary><.link href={"#" <> ident}><%= Phoenix.HTML.raw(show) %></.link></summary>
-                <.toc toc={children} />
-            </details>
-        <% else %>
-            <.link href={"#" <> ident}><%= Phoenix.HTML.raw(show) %></.link>
-        <% end %>
-    </li>
+  <li :for={{show, ident, children} <- @toc}>
+    <%= if children != [] do %>
+      <details>
+        <summary><.link href={"#" <> ident}><%= Phoenix.HTML.raw(show) %></.link></summary>
+        <.toc toc={children} />
+      </details>
+    <% else %>
+      <.link href={"#" <> ident}><%= Phoenix.HTML.raw(show) %></.link>
+    <% end %>
+  </li>
 </ol>

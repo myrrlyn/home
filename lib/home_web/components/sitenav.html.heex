@@ -1,20 +1,20 @@
 <% step = assigns[:step] || 0 %>
 <ol style={"list-style-type: none; padding-left: #{4.5 * step}ch;"}>
-    <li :for={%HomeWeb.Nav.Entry{} = entry <- (@navtree).()}>
-        <%= if entry.children do %>
-            <details open>
-                <summary title="Click to toggle sub-page visibility">
-                    <%= render_slot(@item, entry) %>
-                </summary>
-                <.sitenav
-                    :if={entry.children}
-                    navtree={fn -> entry.children end}
-                    step={step + 1}
-                    item={@item}
-                ></.sitenav>
-            </details>
-        <% else %>
-            <%= render_slot(@item, entry) %>
-        <% end %>
-    </li>
+  <li :for={%HomeWeb.Nav.Entry{} = entry <- (@navtree).()}>
+    <%= if entry.children do %>
+      <details open>
+        <summary title="Click to toggle sub-page visibility">
+          <%= render_slot(@item, entry) %>
+        </summary>
+        <.sitenav
+          :if={entry.children}
+          navtree={fn -> entry.children end}
+          step={step + 1}
+          item={@item}
+        ></.sitenav>
+      </details>
+    <% else %>
+      <%= render_slot(@item, entry) %>
+    <% end %>
+  </li>
 </ol>

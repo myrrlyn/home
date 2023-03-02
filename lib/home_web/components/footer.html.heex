@@ -1,14 +1,14 @@
-<footer class="grid-wrapper grid-cols screen-only">
-	<span class="grid-item text-center">
-		Served with
-		<.link href="//elixir-lang.org/">Elixir <%= System.version %></.link>
-		and
-		<.link href="//www.phoenixframework.org/">Phoenix <%= :application.get_key(:phoenix, :vsn) |> elem(1) %></.link>
-	</span>
-	<span class="grid-item text-center">
-		<%= "© 2012—#{DateTime.utc_now.year} Alexander «myrrlyn» Payne" %>
-	</span>
-	<span class="grid-item text-center">
-		Hosted on <.link href="//fly.io/">fly.io</.link>
-	</span>
+<footer class="screen-only">
+  <span class="text-center">
+    Served with
+    <.link href="//elixir-lang.org/">Elixir <%= System.version %></.link>
+    and
+    <.link href="//www.phoenixframework.org/">Phoenix <%= :application.get_key(:phoenix, :vsn) |> elem(1) %></.link>
+  </span>
+  <span class="text-center">
+    <%= "© 2012—#{DateTime.utc_now.year} Alexander «myrrlyn» Payne" %>
+  </span>
+  <span class="text-center">
+    Hosted on <.link href="//fly.io/">fly.io</.link>
+  </span>
 </footer>

@@ -7,32 +7,32 @@
 @import "variables";
 
 article {
-	max-width: 60em;
-	margin: 0 auto;
-	padding: 0.25em 0.5em;
-	border: 1px solid navy;
+  max-width: 60em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  border: 1px solid navy;
 
-	aside {
-		@include left-chevron(var(--charcoal));
-		background-color: var(--charcoal-bg);
+  aside {
+    @include left-chevron(var(--charcoal));
+    background-color: var(--charcoal-bg);
 
-		margin: {
-			left: 1em;
-			right: 2em;
-			bottom: 1em;
-		}
+    margin: {
+      left: 1em;
+      right: 2em;
+      bottom: 1em;
+    }
 
-		padding: {
-			top: 1em;
-			left: 1em;
-			right: 1em;
-			bottom: 1em;
-		}
+    padding: {
+      top: 1em;
+      left: 1em;
+      right: 1em;
+      bottom: 1em;
+    }
 
-		:last-child {
-			margin-bottom: 0;
-		}
-	}
+    :last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 h1,
@@ -41,111 +41,111 @@ h3,
 h4,
 h5,
 h6 {
-	color: inherit;
+  color: inherit;
 }
 
 .title {
-	text-align: center;
+  text-align: center;
 }
 
 .img {
-	padding: 4px 8px;
-	max-width: 100%;
+  padding: 4px 8px;
+  max-width: 100%;
 }
 
 .portrait {
-	@media all and (max-width: 500px) {
-		max-width: 75%;
-		display: grid;
-		align-self: center;
-	}
+  @media all and (max-width: 500px) {
+    max-width: 75%;
+    display: grid;
+    align-self: center;
+  }
 
-	@media all and (min-width: 500px) {
-		max-width: 250px;
-	}
+  @media all and (min-width: 500px) {
+    max-width: 250px;
+  }
 }
 
 .float-left {
-	float: left;
-	margin-right: 1em;
+  float: left;
+  margin-right: 1em;
 }
 
 .float-right {
-	float: right;
-	margin-left: 1em;
+  float: right;
+  margin-left: 1em;
 }
 
 .clearfix {
-	clear: both;
+  clear: both;
 }
 
 @media screen and (min-width: 600px) {
-	.portrait {
-		float: right;
-		margin-left: 1em;
-	}
+  .portrait {
+    float: right;
+    margin-left: 1em;
+  }
 
-	// #formal {
-	// }
+  // #formal {
+  // }
 
-	#casual {
-		position: relative;
-		top: -3em;
-	}
+  #casual {
+    position: relative;
+    top: -3em;
+  }
 }
 
 @media screen and (max-width: 599px) {
-	#signature {
-		max-width: 100%;
-	}
+  #signature {
+    max-width: 100%;
+  }
 }
 
 .img-flex {
-	display: flex;
-	flex-flow: row wrap;
-	column-gap: 0.25em;
-	row-gap: 0.25em;
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 0.25em;
+  row-gap: 0.25em;
 
-	p {
-		display: inline;
-		margin: 0;
+  p {
+    display: inline;
+    margin: 0;
 
-		&:has(.flex-1) {
-			flex: 1 1 0;
-		}
+    &:has(.flex-1) {
+      flex: 1 1 0;
+    }
 
-		&:has(.flex-2) {
-			flex: 2 1 0;
-		}
-	}
+    &:has(.flex-2) {
+      flex: 2 1 0;
+    }
+  }
 
-	img {
-		min-width: 10em;
-		max-width: 100%;
-		border-radius: 1em;
-	}
+  img {
+    min-width: 10em;
+    max-width: 100%;
+    border-radius: 1em;
+  }
 }
 
 .small-caps {
-	font-variant: small-caps;
+  font-variant: small-caps;
 }
 
 @media screen and (max-width: 599px) {
-	.img {
-		float: none;
-		clear: both;
-		margin: 0 auto;
-	}
+  .img {
+    float: none;
+    clear: both;
+    margin: 0 auto;
+  }
 }
 
 @media only screen and (min-height: 800px) {
 
-	body #flex-focus {
-		height: 100%;
-	}
+  body #flex-focus {
+    height: 100%;
+  }
 
-	main {
-		overflow-y: auto;
-		height: inherit;
-	}
+  main {
+    overflow-y: auto;
+    height: inherit;
+  }
 }

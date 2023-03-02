@@ -155,7 +155,7 @@ defmodule Home.Page do
   Gets the Gravatar URL for an email address.
   """
   @spec gravatar(String.t(), number()) :: String.t()
-  def gravatar(email, size \\ 192) do
+  def gravatar(email, size \\ 160) do
     email |> Exgravatar.gravatar_url(size: size)
   end
 

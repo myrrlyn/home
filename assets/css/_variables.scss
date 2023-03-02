@@ -1,4 +1,6 @@
-$avi-size: 192px;
+@use "sass:math";
+
+$avi-size: 160px;
 $avi-rim: 4px;
 $avi-height: $avi-size + (2 * $avi-rim);
 
@@ -11,49 +13,26 @@ $content-max-width: 48em;
 $header-height: 128px;
 $header-border: 4px;
 
-$footer-height: 32px;
-$footer-border: 2px;
-
-$vertical-border: 2px;
-
 $iso7010-image-size: 3em;
 
-@function core-height() {
-	@return $header-height + $footer-height;
-}
-
-@mixin left-chevron($color, $lr-width: 4px, $tb-width: 2px) {
-	border: {
-		top: $tb-width solid transparent;
-		left: $lr-width solid $color;
-		right: $lr-width solid transparent;
-		bottom: $tb-width solid transparent;
-	}
-
-	padding-left: 1em;
+@mixin left-chevron($color, $width: 0.5em, $bg: transparent) {
+  border: math.div($width, 2) solid $bg;
+  border-left: $width solid $color;
+  border-right-width: $width;
+  padding-left: 1em;
 }
 
 @mixin flex-wrapper {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
 }
 
 //  Creates vendor-prefixed tab-size properties
 @mixin tab-size($size) {
-	tab-size: $size;
-	-o-tab-size: $size;
-	-moz-tab-size: $size;
-}
-
-@mixin vertical-border($side) {
-	border: {
-		#{$side}: {
-			color: var(--pane-divider);
-			style: solid;
-			width: $vertical-border;
-		}
-	}
+  tab-size: $size;
+  -o-tab-size: $size;
+  -moz-tab-size: $size;
 }

@@ -1,7 +1,8 @@
-<article :if={assigns[:page]}><%= @page.content |> raw %></article>
-<.images
-	:for={{heading, images} <- @gallery}
-	heading={heading}
-	images={images}
-	root={@directory}
-/>
+<article>
+  <header class="frontmatter" :if={assigns[:page]}>
+    <%= @page.content |> raw %>
+  </header>
+  <section :for={{heading, images} <- @gallery}>
+    <.images heading={heading} images={images} root={@directory} />
+  </section>
+</article>

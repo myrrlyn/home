@@ -3,49 +3,49 @@
 @import url("https://fonts.googleapis.com/css?family=Inconsolata|Roboto|Roboto+Slab");
 
 @function iosevka($name) {
-	$loc: "/static/fonts/iosevka-#{$name}";
-	@return url("#{$loc}/woff2/iosevka-#{$name}-regular.woff2") format("woff2"),
-		url("#{$loc}/woff/iosevka-#{$name}-regular.woff") format("woff"),
-		url("#{$loc}/ttf/iosevka-#{$name}-regular.ttf") format("ttf");
+  $loc: "/static/fonts/iosevka-#{$name}";
+  @return url("#{$loc}/woff2/iosevka-#{$name}-regular.woff2") format("woff2"),
+  url("#{$loc}/woff/iosevka-#{$name}-regular.woff") format("woff"),
+  url("#{$loc}/ttf/iosevka-#{$name}-regular.ttf") format("ttf");
 }
 
 @font-face {
-	font-family: "Iosevka myrrlyn regular";
-	font-variant: common-ligatures;
-	src: iosevka("myrrlyn");
+  font-family: "Iosevka myrrlyn regular";
+  font-variant: common-ligatures;
+  src: iosevka("myrrlyn");
 }
 
 @font-face {
-	font-family: "Iosevka myrrlyn term regular";
-	src: iosevka("myrrlyn-term");
+  font-family: "Iosevka myrrlyn term regular";
+  src: iosevka("myrrlyn-term");
 }
 
 %text-mono {
-	font: {
-		family: "Iosevka myrrlyn regular", "Inconsolata", "Menlo", "Consolas", "Courier New", monospace;
-	}
+  font: {
+    family: "Iosevka myrrlyn regular", "Inconsolata", "Menlo", "Consolas", "Courier New", monospace;
+  }
 }
 
 //  Box-drawing characters are not well-supported in all pretty monospace fonts.
 //  Regions which use box-drawing characters must use this subset.
 %text-term {
-	font: {
-		family: "Iosevka myrrlyn term regular", "Inconsolata", "Menlo", "Consolas", "Courier New", monospace;
-	}
+  font: {
+    family: "Iosevka myrrlyn term regular", "Inconsolata", "Menlo", "Consolas", "Courier New", monospace;
+  }
 }
 
 %text-sans {
-	font: {
-		family: "Roboto", sans;
-	}
+  font: {
+    family: "Roboto", sans;
+  }
 }
 
 %text-serif {
-	font: {
-		family: "Roboto Slab", serif;
-	}
+  font: {
+    family: "Roboto Slab", serif;
+  }
 }
 
 body {
-	@extend %text-serif;
+  @extend %text-serif;
 }

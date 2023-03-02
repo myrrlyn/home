@@ -13,6 +13,6 @@ import "bootstrap";
 import "phoenix_html";
 
 window.onload = function () {
-	mark_headings([2, 3, 4, 5, 6]);
-	set_jukebox();
+  mark_headings([2, 3, 4, 5, 6]);
+  set_jukebox();
 };

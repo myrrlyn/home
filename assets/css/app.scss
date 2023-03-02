@@ -1,6 +1,4 @@
 /* This file is for your main application css. */
-@import "bootstrap/scss/bootstrap";
-
 @import "variables";
 @import "font";
 @import "color";
@@ -12,72 +10,77 @@
 @import "style";
 
 :root {
-	--current-page-left: "👉";
-	--current-page-right: "👈"
+  --current-page-left: "👉";
+  --current-page-right: "👈"
+}
+
+body.crate {
+  --current-page-left: "🦀";
+  --current-page-right: "⚙️";
 }
 
 /* Alerts and form errors */
 .alert {
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
 
-	&-info {
-		// color: #31708f;
-		color: var(--iso-blue);
-		background-color: #d9edf7;
-		border-color: #bce8f1;
-	}
+  &-info {
+    // color: #31708f;
+    color: var(--iso-blue);
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+  }
 
-	&-warning {
-		// color: #8a6d3b;
-		color: var(--iso-yellow);
-		background-color: #fcf8e3;
-		border-color: #faebcc;
-	}
+  &-warning {
+    // color: #8a6d3b;
+    color: var(--iso-yellow);
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+  }
 
-	&-danger {
-		// color: #a94442;
-		color: var(--iso-red);
-		background-color: #f2dede;
-		border-color: #ebccd1;
-	}
+  &-danger {
+    // color: #a94442;
+    color: var(--iso-red);
+    background-color: #f2dede;
+    border-color: #ebccd1;
+  }
 
-	&:empty {
-		display: none;
-	}
+  &:empty {
+    display: none;
+  }
 
-	p {
-		margin-bottom: 0;
-	}
+  p {
+    margin-bottom: 0;
+  }
 }
 
 .invalid-feedback {
-	color: #a94442;
-	display: block;
-	margin: -1rem 0 2rem;
+  color: #a94442;
+  display: block;
+  margin: -1rem 0 2rem;
 }
 
 body,
 h1 {
-	counter-reset: h2counter;
+  counter-reset: h2counter;
 }
 
 h2 {
-	counter-reset: h3counter;
+  counter-reset: h3counter;
 }
 
 h2:not(.no-count) span::before {
-	content: counter(h2counter) ".";
-	counter-increment: h2counter;
+  content: counter(h2counter) ".";
+  counter-increment: h2counter;
 }
 
 h3:not(.no-count) span::before {
-	content: counter(h2counter) "." counter(h3counter) ".";
-	counter-increment: h3counter;
+  content: counter(h2counter) "." counter(h3counter) ".";
+  counter-increment: h3counter;
 }
 
 nav .title {
-	font-style: italic;
+  font-style: italic;
 }

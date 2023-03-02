@@ -1,229 +1,355 @@
 @use "sass:math";
+@use "font";
+
+// @import "normalize_op";
+
+%heading {
+  margin-block-start: 0em;
+  margin-block-end: 0.25em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @extend %heading;
+}
+
+h1 {
+  color: var(--ansi-blue);
+  font-size: 2.5em;
+}
+
+h2 {
+  color: var(--ansi-purple);
+  font-size: 2em;
+
+  &.subtitle {
+    color: var(--ansi-orange);
+  }
+}
+
+h3 {
+  color: var(--ansi-green);
+  font-size: 1.75em;
+}
+
+h4 {
+  color: var(--ansi-yellow);
+  font-size: 1.5em;
+}
+
+h5 {
+  color: var(--ansi-red);
+  font-size: 1.25em;
+}
+
+h6 {
+  color: var(--ansi-orange);
+  font-size: 1.1em;
+}
+
+p {
+  margin: 1em 0;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+  padding: 0.5em;
+}
+
+ol,
+ul {
+  margin-top: 0;
+}
+
+code {
+  font-size: 0.9em;
+  color: var(--text-code);
+  word-wrap: break-word;
+}
+
+pre,
+code,
+kbd,
+samp {
+  @extend %text-mono;
+}
+
+figure {
+  margin-inline: 0;
+  padding-inline: 0;
+
+  figcaption:not(.bq-citation) {
+    font-size: 0.9em;
+    text-align: center;
+  }
+
+  p {
+    margin: 0;
+  }
+}
 
 article img {
-	&:not(.fullwidth):not(.unset):not(.gallery-img) {
-		display: block;
+  &.full-width {
+    max-width: 100%;
+    width: 100%;
+  }
 
-		@include media-breakpoint-up(md) {
-			min-width: 200px;
-			width: 33%;
-			max-width: 800px;
-		}
+  @media (min-width: 36em) {
+    &.half-width {
+      min-width: 100px;
+      width: 50%;
+      max-width: 400px;
+    }
+  }
 
-		@include media-breakpoint-down(md) {
-			width: 100%;
-		}
-	}
-
-	&.fullwidth {
-		max-width: 100%;
-		width: 100%;
-	}
-
-	&.halfwidth {
-		min-width: 100px;
-		width: 20%;
-		max-width: 400px;
-	}
-
-	@include media-breakpoint-up(md) {
-		&.halfwidth {
-			width: 50%;
-		}
-	}
-
-	&.ctr {
-		margin: 0 auto;
-	}
+  &.ctr {
+    margin: 0 auto;
+  }
 }
 
 .float-left {
-	float: left;
-	margin-right: 1em;
+  float: left;
 }
 
 .float-right {
-	float: right;
-	margin-left: 1em;
+  float: right;
+}
+
+@media (max-width: 37.7em) {
+  table.float-right-lg {
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 36em) {
+  .float-right-lg {
+    float: right;
+  }
 }
 
 .clearfix {
-	clear: both;
+  clear: both;
+}
+
+@media (max-width: 38em) {
+  .clearfix-sm {
+    clear: both;
+  }
+}
+
+body:not(.general) .title {
+  font-style: italic;
+}
+
+.title,
+.subtitle {
+  text-align: center;
 }
 
 .footnote {
-	vertical-align: super;
-	font-size: 80%;
+  vertical-align: super;
+  font-size: 80%;
 }
 
 kbd kbd {
-	border-radius: 3px;
-	padding: 1px 4px 0;
-	border: 1px solid var(--text-fg);
+  border-radius: 3px;
+  padding: 1px 4px 0;
+  border: 1px solid var(--text-fg);
 }
 
 body:not(.oeuvre) {
 
-	//  Make the deleted- and inserted- text span tags have visual flair akin to
-	//  a highlighter pen
-	ins,
-	del {
-		text-decoration: none;
-		padding: 0 0.75em;
-		border-top-left-radius: 1000px;
-		border-bottom-right-radius: 1000px;
-	}
+  //  Make the deleted- and inserted- text span tags have visual flair akin to
+  //  a highlighter pen
+  ins,
+  del {
+    text-decoration: none;
+    padding: 0 0.75em;
+    border-top-left-radius: 1000px;
+    border-bottom-right-radius: 1000px;
+  }
 
-	del {
-		background-color: var(--ansi-red);
-	}
+  del {
+    background-color: var(--ansi-red);
+  }
 
-	ins {
-		background-color: var(--ansi-green);
-	}
+  ins {
+    background-color: var(--ansi-green);
+  }
 }
 
 aside,
 blockquote {
-	pre {
-		clear: left;
-	}
+  pre {
+    clear: left;
+  }
+
+  margin: 0;
 }
 
 main aside,
 :not(figure)>blockquote,
 figure.bq-cited {
-	@include left-chevron(var(--charcoal));
+  @include left-chevron(var(--charcoal));
 
-	background: {
-		color: var(--charcoal-bg);
-	}
+  background: {
+    color: var(--charcoal-bg);
+  }
+}
 
-	margin: {
-		left: 1em;
-		right: 2em;
-		bottom: 1em;
-	}
+main aside,
+:not(figure)>blockquote,
+div.code-container {
+  margin-block: 1em;
 
-	padding: {
-		top: 1em;
-		left: 1em;
-		right: 1em;
-		bottom: 1em;
-	}
+  padding: 1em;
 
-	:last-child {
-		margin-bottom: 0;
-	}
+  * {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+  }
+
+  :first-child {
+    margin-block-start: 0;
+  }
+
+  :last-child {
+    margin-block-end: 0;
+  }
 }
 
 .text-center {
-	text-align: center;
+  text-align: center;
+}
+
+body:is(.blog, .oeuvre) .title {
+  font-style: italic;
 }
 
 .frontmatter {
-	.title {
-		text-align: center;
-	}
-
-	.timestamp {
-		float: right;
-		border: 1px solid var(--text-fg);
-		padding: 0 0.5em;
-	}
+  .timestamp {
+    float: right;
+    border: 1px solid var(--text-fg);
+    padding: 0 0.5em;
+  }
 }
 
-hr {
-	border: {
-		top: {
-			color: var(--bell-blue);
-			style: solid;
-			width: math.div($header-border + $footer-border, 2);
-		}
+:not(blockquote)>hr {
+  border: none;
+  overflow: visible;
+  text-align: center;
+  height: 4px;
 
-		bottom: {
-			color: var(--bell-ochre);
-			style: solid;
-			width: math.div($header-border + $footer-border, 2);
-		}
-	}
+  body:not(.oeuvre) & {
+    border-top: 4px double var(--bell-blue);
+    color: var(--bell-ochre);
+  }
+
+  body.oeuvre & {
+    border-top: 4px double var(--text-fg);
+    color: var(--text-fg);
+  }
+
+  &::after {
+    background: var(--bg);
+    content: "§";
+    padding: 0 4px;
+    position: relative;
+    top: -1em;
+  }
 }
 
 @mixin codeblock($lang, $color) {
-	&.codeblock-#{$lang} {
-		background-color: transparentize($color, 0.85);
-		border-left-color: $color;
-		border-right-color: $color;
-	}
+  &.codeblock-#{$lang} {
+    background-color: transparentize($color, 0.85);
+    border-left-color: $color;
+    border-right-color: $color;
+
+    &.lang-marker {
+      background-color: $color;
+    }
+  }
 }
 
 div.code-container {
-	@include left-chevron(var(--charcoal));
-	border-right-color: var(--charcoal);
-	margin-bottom: 1em;
-	padding-right: 1em;
+  @include left-chevron(var(--charcoal));
+  border-right-color: var(--charcoal);
+  margin-bottom: 1em;
+  padding-right: 1em;
 
-	@include codeblock(c, $lang-c);
-	@include codeblock(cpp, $lang-cpp);
-	@include codeblock(elixir, $lang-elixir);
-	@include codeblock(js, $lang-js);
-	@include codeblock(rust, $lang-rust);
-	@include codeblock(ps1, $lang-pwsh);
-	@include codeblock(sh, $lang-shell);
-	@include codeblock(shell, $lang-shell);
-	@include codeblock(toml, $lang-toml);
+  @include codeblock(c, $lang-c);
+  @include codeblock(cpp, $lang-cpp);
+  @include codeblock(elixir, $lang-elixir);
+  @include codeblock(js, $lang-js);
+  @include codeblock(rust, $lang-rust);
+  @include codeblock(ps1, $lang-pwsh);
+  @include codeblock(sh, $lang-shell);
+  @include codeblock(shell, $lang-shell);
+  @include codeblock(toml, $lang-toml);
 
-	&>.lang-marker {
-		color: var(--text-fg);
-		display: block;
-		float: left;
-		margin-bottom: 0.25em;
-	}
+  .lang-marker {
+    color: var(--text-fg);
+    position: relative;
+    top: -0.5em;
+    left: -1em;
+    padding: 0.5em 1em;
+    border-bottom-right-radius: 1.5em;
+  }
 
-	pre.codeblock {
-		clear: both;
-	}
+  pre.codeblock {
+    margin-top: 0;
+  }
 
-	&:not(.codeblock-term) {
+  &:not(.codeblock-term) {
 
-		code,
-		code span {
-			@extend %text-mono;
-		}
-	}
+    code,
+    code span {
+      @extend %text-mono;
+    }
+  }
 
-	&.codeblock-term {
+  &.codeblock-term {
 
-		code,
-		code span {
-			@extend %text-term;
-		}
-	}
+    code,
+    code span {
+      @extend %text-term;
+    }
+  }
 }
 
 nav[aria-label="Sitemap"] {
-	summary {
-		list-style: none;
-	}
+  summary {
+    list-style: none;
+  }
 
-	details:not([open]) summary::after {
-		content: "◂";
-	}
+  details:not([open]) summary::after {
+    content: "◂";
+  }
 
-	details[open] summary::after {
-		content: "▾";
-	}
+  details[open] summary::after {
+    content: "▾";
+  }
 
-	// a[aria-current="page"],
-	span:has(a[aria-current="page"]) {
-		&::before {
-			content: var(--current-page-left);
-			padding-inline-end: 0.25em;
-		}
+  // a[aria-current="page"],
+  span:has(a[aria-current="page"]) {
+    &::before {
+      content: var(--current-page-left);
+      padding-inline-end: 0.25em;
+    }
 
-		&::after {
-			content: var(--current-page-right);
-			padding-inline-start: 0.25em;
-		}
-	}
+    &::after {
+      content: var(--current-page-right);
+      padding-inline-start: 0.25em;
+    }
+  }
 }

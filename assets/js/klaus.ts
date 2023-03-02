@@ -10,10 +10,10 @@
 import "phoenix_html";
 
 window.onload = () => {
-	let from = document.getElementById("date-src");
-	let to = document.getElementById("date");
-	if ((from !== null) && (to !== null)) {
-		to.innerText = from.innerText;
-		from.parentNode?.removeChild(from);
-	}
+  let from = document.getElementById("date-src");
+  let to = document.getElementById("date");
+  if ((from !== null) && (to !== null)) {
+    to.innerText = from.innerText;
+    from.parentNode?.removeChild(from);
+  }
 };
