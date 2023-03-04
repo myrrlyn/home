@@ -65,6 +65,7 @@ defmodule HomeWeb.PageController do
       tab_title:
         conn.assigns[:tab_title] || page.meta.tab_title ||
           ["~myrrlyn" | conn.path_info] |> Path.join(),
+      banner: Home.Banners.select_or_random(page.meta),
       page: page,
       navtree: fn -> __MODULE__.navtree(path) end,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),

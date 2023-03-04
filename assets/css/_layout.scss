@@ -28,8 +28,6 @@ body {
 header#banner {
   border-bottom: $header-border solid var(--bell-blue);
   flex-shrink: 0;
-  height: $header-height;
-  min-height: math.div($avi-height, 2);
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -124,6 +122,11 @@ footer {
       // Prevent the body from going below the viewport.
       max-height: 100dvh;
       overflow-y: clip;
+    }
+
+    header#banner {
+      min-height: math.div($avi-height, 2);
+      max-height: $header-height;
     }
 
     #content {

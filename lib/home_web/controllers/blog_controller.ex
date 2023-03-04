@@ -129,20 +129,15 @@ defmodule HomeWeb.BlogController do
         case src_path |> Home.PageCache.cached() do
           {:ok, page} ->
             conn
-            |> merge_assigns(page: page, src_path: src_path)
-            |> assign(
-              :banner,
-              case page.meta.props["album"] do
-                nil -> nil
-                album -> Home.Banners.random_from_album(album)
-              end
-            )
-            |> assign(
-              :tab_title,
-              case page.meta.title do
-                "Insufficiently Magical" -> "Insufficiently Magical"
-                other -> other <> " – Insufficiently Magical"
-              end
+            |> merge_assigns(
+              page: page,
+              src_path: src_path,
+              banner: Home.Banners.select_or_random(page.meta),
+              tab_title:
+                case page.meta.title do
+                  "Insufficiently Magical" -> "Insufficiently Magical"
+                  other -> other <> " – Insufficiently Magical"
+                end
             )
             |> build(params, template)
 

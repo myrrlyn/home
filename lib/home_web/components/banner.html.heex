@@ -4,6 +4,7 @@
     #banner {
       background-image: url(<%= "/#{banner}" %>);
       background-position: <%= Home.Banners.Banner.position(banner) %>;
+      <%= Home.Banners.Banner.style_rules(banner) %>
     }
   </style>
 </header>
