@@ -82,6 +82,7 @@ defmodule HomeWeb.PageController do
       tab_suffix:
         cond do
           suff = page.meta.props["tab_suffix"] -> suff
+          conn.assigns[:tab_title] == "~myrrlyn" -> nil
           conn.assigns[:tab_title] || page.meta.tab_title -> " · ~myrrlyn"
           true -> nil
         end,
