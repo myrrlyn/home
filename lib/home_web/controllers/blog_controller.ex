@@ -133,10 +133,11 @@ defmodule HomeWeb.BlogController do
               page: page,
               src_path: src_path,
               banner: Home.Banners.select_or_random(page.meta),
-              tab_title:
+              tab_title: page.meta.title,
+              tab_suffix:
                 case page.meta.title do
-                  "Insufficiently Magical" -> "Insufficiently Magical"
-                  other -> other <> " – Insufficiently Magical"
+                  "Insufficiently Magical" -> nil
+                  _ -> " · Insufficiently Magical"
                 end
             )
             |> build(params, template)
@@ -159,6 +160,7 @@ defmodule HomeWeb.BlogController do
       navtree: &navtree/0,
       page: nil,
       tab_title: title,
+      tab_suffix: " · Insufficiently Magical",
       page_title: title,
       scope: @root
     )

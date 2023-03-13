@@ -4,9 +4,9 @@ defmodule HomeWeb.Router do
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(HomeWeb.Boycott, nil)
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {HomeWeb.Layouts, :root}
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {HomeWeb.Layouts, :root})
     # plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(HomeWeb.CacheControl)
@@ -18,16 +18,16 @@ defmodule HomeWeb.Router do
 
   pipeline :xml do
     plug(:accepts, ["xml"])
-    plug :put_format, :html
-    plug :put_root_layout, {HomeWeb.Layouts, :xml}
-    plug :put_layout, {HomeWeb.Layouts, :bare}
+    plug(:put_format, :html)
+    plug(:put_root_layout, {HomeWeb.Layouts, :xml})
+    plug(:put_layout, {HomeWeb.Layouts, :bare})
   end
 
   pipeline :svg do
     # Phoenix doesn't actually support anything other than HTML and JSON here.
-    plug :put_format, :html
-    plug :put_root_layout, {HomeWeb.Layouts, :svg}
-    plug :put_layout, {HomeWeb.Layouts, :bare}
+    plug(:put_format, :html)
+    plug(:put_root_layout, {HomeWeb.Layouts, :svg})
+    plug(:put_layout, {HomeWeb.Layouts, :bare})
   end
 
   # Other scopes may use custom stacks.
@@ -115,6 +115,7 @@ defmodule HomeWeb.Router do
 
     get("/hn", PageController, :refuse)
     get("/klaus", KlausController, :page)
+    get("/html-test", PageController, :html_test)
 
     get("/*path", PageController, :page)
   end

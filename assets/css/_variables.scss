@@ -4,16 +4,8 @@ $avi-size: 160px;
 $avi-rim: 4px;
 $avi-height: $avi-size + (2 * $avi-rim);
 
-// The max width of *all* content on the screen.
-$content-width-max: 110em;
-// The max width of a run of text.
-$content-max-width: 48em;
-// TODO(myrrlyn): Rename these.
-
 $header-height: 128px;
 $header-border: 4px;
-
-$iso7010-image-size: 3em;
 
 @mixin left-chevron($color, $width: 0.5em, $bg: transparent) {
   border: math.div($width, 2) solid $bg;

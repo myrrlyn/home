@@ -1,0 +1,32 @@
+<link
+  :for={sz <- @sizes}
+  rel="icon"
+  type="image/png"
+  sizes={"#{sz}x#{sz}"}
+  href={~p"/static/favicons/favicon-#{to_string(sz) <> ".png"}"}
+  />
+<link
+  :for={sz <- @sizes}
+  rel="apple-touch-icon"
+  type="image/png"
+  sizes={"#{sz}x#{sz}"}
+  href={~p"/static/favicons/favicon-#{to_string(sz) <> ".png"}"}
+  />
+<link
+  rel="icon"
+  type="image/ico"
+  sizes={@sizes |> Enum.map(& "#{&1}x#{&1}") |> Enum.join(" ")}
+  href={~p"/static/favicons/favicon.ico"}
+  />
+<link
+  rel="icon"
+  type="image/svg+xml"
+  sizes="any"
+  href={~p"/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes"}
+  />
+<link
+  rel="apple-touch-startup-image"
+  type="image/svg+xml"
+  sizes="any"
+  href={~p"/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes"}
+  />

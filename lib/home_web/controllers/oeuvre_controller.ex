@@ -112,10 +112,11 @@ defmodule HomeWeb.OeuvreController do
       classes: ["oeuvre"],
       banner: banner,
       page: page,
-      tab_title:
+      tab_title: page.meta.title,
+      tab_suffix:
         case page.meta.title do
-          "oeuvre myrrlyn" -> "oeuvre myrrlyn"
-          other -> other <> " – oeuvre myrrlyn"
+          "oeuvre myrrlyn" -> nil
+          _ -> " · oeuvre myrrlyn"
         end,
       gravatar: "/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes",
       navtree: fn -> __MODULE__.navtree(conn.request_path) end,

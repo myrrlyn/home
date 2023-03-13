@@ -56,6 +56,20 @@ defmodule HomeWeb.PageController do
     conn |> put_resp_content_type("text/xml") |> render(:sitemap)
   end
 
+  def html_test(conn, _),
+    do:
+      render(conn, :test,
+        flavor: "app",
+        classes: [],
+        tab_title: "HTML Test",
+        page: %Home.Page{
+          meta: %Home.Meta{title: "HTML Test", tab_title: "HTML Test"}
+        },
+        scope: "/",
+        navtree: fn -> __MODULE__.navtree("/html-test") end,
+        gravatar: Home.Page.gravatar("self@myrrlyn.dev")
+      )
+
   defp build(conn, _params, path, page, classes \\ []) do
     conn
     |> render(:page,
@@ -65,6 +79,12 @@ defmodule HomeWeb.PageController do
       tab_title:
         conn.assigns[:tab_title] || page.meta.tab_title ||
           ["~myrrlyn" | conn.path_info] |> Path.join(),
+      tab_suffix:
+        cond do
+          suff = page.meta.props["tab_suffix"] -> suff
+          conn.assigns[:tab_title] || page.meta.tab_title -> " · ~myrrlyn"
+          true -> nil
+        end,
       banner: Home.Banners.select_or_random(page.meta),
       page: page,
       navtree: fn -> __MODULE__.navtree(path) end,
@@ -82,6 +102,7 @@ defmodule HomeWeb.PageController do
       flavor: "app",
       classes: ["general"],
       tab_title: "Not Found",
+      tab_suffix: " · ~myrrlyn",
       page: nil,
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.dev"),

@@ -1,7 +1,7 @@
 <article>
   <header class="frontmatter">
     <.page_title page_title={@page.meta.props["page_title"] || @page.meta.title} page_subtitle={@page.meta.subtitle} />
-    <nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
+    <.navtoc :if={@page.toc != []} toc={@page.toc} />
   </header>
   <hr />
   <section><%= @page.content |> raw %></section>

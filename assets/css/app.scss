@@ -81,6 +81,24 @@ h3:not(.no-count) span::before {
   counter-increment: h3counter;
 }
 
+article {
+  counter-reset: figcounter;
+}
+
+figure:not(.no-count) {
+  counter-increment: figcounter;
+
+  figcaption:not(:empty)::before {
+    content: "Fig. #" counter(figcounter) ": ";
+    font-style: italic;
+  }
+
+  figcaption:empty::before {
+    content: "Figure #" counter(figcounter);
+    font-style: italic;
+  }
+}
+
 nav .title {
   font-style: italic;
 }

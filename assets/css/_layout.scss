@@ -25,7 +25,7 @@ body {
   }
 }
 
-header#banner {
+body>header {
   border-bottom: $header-border solid var(--bell-blue);
   flex-shrink: 0;
   background-size: cover;
@@ -51,13 +51,13 @@ main {
 // Put horizontal spacing inside the least-common text container in both blocks.
 // This is done because the scrollbar renders in the padding zone of a node
 // containing text, and ignores padding zones imposed by ancestor
-main article,
+main>article,
 #about-text {
   padding: 0 1em;
 }
 
 // These don’t need to be of uniform width, they just have to flow reasonably.
-footer {
+body>footer {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
@@ -124,7 +124,8 @@ footer {
       overflow-y: clip;
     }
 
-    header#banner {
+    body>header {
+      flex-grow: 0;
       min-height: math.div($avi-height, 2);
       max-height: $header-height;
     }
@@ -138,6 +139,8 @@ footer {
       display: flex;
       // `<aside>` comes after `<main>` in markup, but before it in flow.
       flex-direction: row-reverse;
+      // This block fills `<body>` as much as possible
+      flex-grow: 1;
       // Permit vertical stacking on narrow viewports.
       flex-wrap: wrap;
       // Shove both children to the center of the screen on wide viewports.
@@ -145,6 +148,10 @@ footer {
 
       border-top: $header-border solid var(--bell-ochre);
       border-bottom: 2px solid var(--bell-blue);
+    }
+
+    body>footer {
+      flex-grow: 0;
     }
 
     // The top-level containers need to be constrained to the height of
@@ -225,5 +232,7 @@ footer {
 }
 
 mjx-container {
+  // display: inline-block;
+  // max-width: 100%;
   overflow-x: scroll;
 }

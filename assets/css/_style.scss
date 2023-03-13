@@ -1,7 +1,12 @@
 @use "sass:math";
 @use "font";
+@use "color";
 
 // @import "normalize_op";
+
+* {
+  line-height: 1.25;
+}
 
 %heading {
   margin-block-start: 0em;
@@ -52,11 +57,16 @@ h6 {
 }
 
 p {
+  line-height: 1.5;
   margin: 1em 0;
 }
 
 pre {
   overflow-x: auto;
+}
+
+mark {
+  background-color: $cyber-yellow;
 }
 
 img,
@@ -88,7 +98,7 @@ figure {
   margin-inline: 0;
   padding-inline: 0;
 
-  figcaption:not(.bq-citation) {
+  figcaption {
     font-size: 0.9em;
     text-align: center;
   }
@@ -198,8 +208,7 @@ blockquote {
 }
 
 main aside,
-:not(figure)>blockquote,
-figure.bq-cited {
+blockquote {
   @include left-chevron(var(--charcoal));
 
   background: {
@@ -208,7 +217,7 @@ figure.bq-cited {
 }
 
 main aside,
-:not(figure)>blockquote,
+blockquote,
 div.code-container {
   margin-block: 1em;
 
@@ -352,4 +361,8 @@ nav[aria-label="Sitemap"] {
       padding-inline-start: 0.25em;
     }
   }
+}
+
+.italic {
+  font-variant: italic;
 }

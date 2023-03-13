@@ -48,20 +48,26 @@ h6 {
   text-align: center;
 }
 
-.img {
-  padding: 4px 8px;
+img {
+  padding: 0.5em 1em;
   max-width: 100%;
+  border-radius: 4em;
 }
 
 .portrait {
-  @media all and (max-width: 500px) {
-    max-width: 75%;
+  min-width: 15em;
+
+  @media all and (max-width: 35.9em) {
     display: grid;
-    align-self: center;
+    justify-items: center;
+
+    &>* {
+      max-width: 75%;
+    }
   }
 
-  @media all and (min-width: 500px) {
-    max-width: 250px;
+  @media all and (min-width: 36em) {
+    max-width: 40%;
   }
 }
 
@@ -79,24 +85,21 @@ h6 {
   clear: both;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (max-width: 35.9em) {
+  #signature {
+    max-width: 100%;
+  }
+}
+
+@media screen and (min-width: 36em) {
   .portrait {
     float: right;
     margin-left: 1em;
   }
 
-  // #formal {
-  // }
-
   #casual {
     position: relative;
     top: -3em;
-  }
-}
-
-@media screen and (max-width: 599px) {
-  #signature {
-    max-width: 100%;
   }
 }
 
@@ -105,24 +108,31 @@ h6 {
   flex-flow: row wrap;
   column-gap: 0.25em;
   row-gap: 0.25em;
+  justify-content: center;
 
   p {
     display: inline;
     margin: 0;
 
-    &:has(.flex-1) {
+    &.flex-1 {
       flex: 1 1 0;
+
+      img {
+        min-width: 10em;
+      }
     }
 
-    &:has(.flex-2) {
+    &.flex-2 {
       flex: 2 1 0;
+
+      img {
+        min-width: 20em;
+      }
     }
   }
 
   img {
-    min-width: 10em;
     max-width: 100%;
-    border-radius: 1em;
   }
 }
 
@@ -130,7 +140,7 @@ h6 {
   font-variant: small-caps;
 }
 
-@media screen and (max-width: 599px) {
+@media screen and (max-width: 35.7em) {
   .img {
     float: none;
     clear: both;
@@ -138,7 +148,7 @@ h6 {
   }
 }
 
-@media only screen and (min-height: 800px) {
+@media only screen and (min-height: 40em) {
 
   body #flex-focus {
     height: 100%;

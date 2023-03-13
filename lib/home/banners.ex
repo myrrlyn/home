@@ -18,9 +18,6 @@ defmodule Home.Banners.Banner do
           dim: [height: pos_integer()] | [width: pos_integer(), height: pos_integer()] | nil
         }
 
-  @doc """
-  Gets the CSS position string for the banner.
-  """
   def position(%__MODULE__{pos: {x, y}}) do
     "#{x} #{y}"
   end

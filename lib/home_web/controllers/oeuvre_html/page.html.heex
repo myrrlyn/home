@@ -6,7 +6,7 @@
       <%= if author = @page.meta.props["author"] do %>by <%= author %><% end %>
       on <.timestamp time={@page.meta.date} />
     </p>
-    <nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
+    <.navtoc :if={@page.toc != []} toc={@page.toc} />
   </header>
   <hr />
   <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />

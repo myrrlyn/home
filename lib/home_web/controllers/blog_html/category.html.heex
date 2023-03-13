@@ -4,9 +4,7 @@
     <%= if summary = @page.meta.summary do %>
       <p><%= summary |> Earmark.as_html! |> raw %></p>
     <% end %>
-    <nav :if={@page.toc != []} aria-label="Table of Contents">
-      <.toc toc={@page.toc} />
-    </nav>
+    <.navtoc :if={@page.toc != []} toc={@page.toc} />
     <hr />
     <%= @page.content |> raw %>
   </section>

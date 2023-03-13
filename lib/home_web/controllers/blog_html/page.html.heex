@@ -4,7 +4,7 @@
     <p class="timestamp">Published on <.timestamp time={@page.meta.date}, format="{YYYY}, {Mshort} {D}" /></p>
     <p><%= @page.meta.summary |> Earmark.as_html! |> raw %></p>
     <p>Estimated reading time: <span id="reading-time"></span>.</p>
-    <nav :if={@page.toc != []} aria-label="Table of Contents"><.toc toc={@page.toc} /></nav>
+    <.navtoc :if={@page.toc != []} toc={@page.toc} />
   </header>
   <hr />
   <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />

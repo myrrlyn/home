@@ -91,39 +91,6 @@ defmodule Home.Markdown do
   @spec walker(Earmark.ast_node(), pid() | nil) :: Earmark.ast_node()
   def walker(ast, collector \\ nil)
 
-  # Translate marked blockquotes into other tags.
-  def walker({"blockquote", attrs, inner, meta} = bq, _) do
-    case attrs |> List.keytake("tag", 0) do
-      {{"tag", tagname}, rest} -> {tagname, rest, inner, meta}
-      _ -> bq
-    end
-  end
-
-  # Translate marked inline-code spans into other tags.
-  def walker({"code", attrs, inner, meta} = code, _) do
-    case attrs |> List.keytake("tag", 0) do
-      {{"tag", tagname}, rest} ->
-        inner =
-          case inner do
-            text when is_binary(text) -> text |> String.trim()
-            other -> other
-          end
-
-        {tagname, rest, inner, meta}
-
-      _ ->
-        code
-    end
-  end
-
-  # Paragraphs can also be retagged.
-  def walker({"p", attrs, inner, meta} = para, _) do
-    case attrs |> List.keytake("tag", 0) do
-      {{"tag", tagname}, rest} -> {tagname, rest, inner, meta}
-      _ -> para
-    end
-  end
-
   # Match against any of the subheadings and send them to the headings processor.
   # The <h1> element is injected by the templates; <h1> coming from Markdown
   # gets demoted.
@@ -170,6 +137,17 @@ defmodule Home.Markdown do
       |> Enum.join(" ")
 
     {"pre", [{"class", classes} | rest], inner, meta}
+  end
+
+  # Rewrite tags if requested..
+  def walker({tag, attrs, inner, meta} = node, _) do
+    case attrs |> List.keytake("tag", 0) do
+      {{"tag", tagname}, rest} ->
+        {tagname, rest, inner, meta}
+
+      _ ->
+        node
+    end
   end
 
   # Default clause does nothing

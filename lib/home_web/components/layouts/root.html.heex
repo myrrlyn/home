@@ -11,21 +11,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <.live_title prefix={assigns[:tab_prefix]} suffix={assigns[:tab_suffix]}><%= @tab_title %></.live_title>
-    <link rel="stylesheet" type="text/css" href={~p"/static/css/#{@flavor <> ".css"}"} />
-    <script type="text/javascript" src={~p"/static/js/#{@flavor <> ".js"}"}></script>
-    <%= for size <- [16, 32, 64, 128, 256, 512, 1024] do %>
-    <link rel="icon" type="image/png" sizes={"#{size}x#{size}"} href={"/static/favicons/favicon-#{size}.png"} />
-    <link rel="apple-touch-icon" type="image/png" sizes={"#{size}x#{size}"} href={"/static/favicons/favicon-#{size}.png"} />
-    <% end %>
-    <link rel="icon" type="image/ico" sizes="16x16 32x32 64x64 128x128 256x256 512x512 1024x1024" href="/static/favicons/favicon.ico" />
-    <link rel="icon" type="image/svg+xml" sizes="any" href="/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes" />
-    <link rel="apple-touch-startup-image" type="image/svg+xml" sizes="any" href="/oeuvre/images/tones.svg?color=cube-helix&key=d-major&classes=no-names,no-notes" />
+    <link phx-track-static rel="stylesheet" type="text/css" href={~p"/static/css/#{@flavor <> ".css"}"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/static/js/#{@flavor <> ".js"}"}></script>
+    <.favicons sizes={[16, 32, 64, 128, 256, 512, 1024]} />
+    <.webapp name="myrrlyn" />
+    <.og title={@tab_title}, path={@conn.request_path} />
+    <.twitter
+      title={@tab_title}
+      description={if @page, do: @page.meta.summary, else: nil}
+      />
     <%= if @page do %>
       <% frontmatter = @page.meta %>
       <%= if frontmatter do %>
         <meta name="author" content={frontmatter.props["author"] || "Alexander Payne (myrrlyn)"} />
         <meta :if={frontmatter.summary} name="description" content={frontmatter.summary} />
-        <meta :if={frontmatter.summary} name="twitter:description" content={frontmatter.summary} />
         <meta :for={{name, content} <- frontmatter.meta} name={name} content={content} />
         <%= for embed <- frontmatter.props |> Map.get("embeds", []) do %>
           <%= if embed == "twitter" do %>
@@ -41,16 +40,6 @@
     <% else %>
       <meta name="author" content="Alexander Payne (myrrlyn)" />
     <% end %>
-    <%# "https://ogp.me/" %>
-    <%# TODO(myrrlyn): Bundle this into article metadata? %>
-    <meta name="og:type" content="website" />
-    <meta name="og:url" content={Path.join(HomeWeb.Endpoint.url(), @conn.request_path)} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@myrrlyn" />
-    <meta name="twitter:creator" content="@myrrlyn" />
-    <meta :if={@page} :for={ns <- ["og", "twitter"]} name={ns <> ":title"} content={@page.meta.title} />
-    <meta :for={ns <- ["og", "twitter"]} name={ns <> ":image"} content={~p"/static/favicons/favicon-512.png"} />
-    <!-- <%= view_module(@conn) %> -->
     <%= view_module(@conn).head(assigns) %>
   </head>
   <body class={@classes}>

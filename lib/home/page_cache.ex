@@ -177,10 +177,7 @@ defmodule Home.PageCache do
   @spec renew(Path.t()) :: :ok
   def renew(path) do
     Agent.update(__MODULE__, fn pages ->
-      case pages |> Map.get(path) do
-        nil -> pages
-        page -> %{pages | path => _renew(page)}
-      end
+      Map.update(pages, path, nil, &_renew/1)
     end)
   end
 

@@ -14,7 +14,6 @@
 //
 //     import "some-package"
 //
-import { cite_blockquotes } from "./blockquote";
 import { mark_codeblocks } from "./codeblocks";
 import { load_images } from "./image_loader";
 import { set_jukebox } from "./jukebox";
@@ -50,10 +49,23 @@ function guess_reading_time() {
   }
 }
 
+function number_figures() {
+  var counter = 0;
+  for (let fig of document.querySelectorAll("main article figure")) {
+    counter += 1;
+    if (fig.id == "") {
+      fig.id = `fig-${counter}`;
+    }
+    if (fig.querySelector("figcaption") === null) {
+      fig.appendChild(document.createElement("figcaption"));
+    }
+  }
+}
+
 window.onload = () => {
   mark_headings([2, 3, 4, 5, 6]);
   mark_codeblocks();
-  cite_blockquotes();
+  number_figures();
   guess_reading_time();
   set_jukebox();
   load_images();

@@ -1,0 +1,12 @@
+<meta
+  name="twitter:title"
+  content={@title}
+  />
+<meta
+  name="twitter:image"
+  content={Path.join([HomeWeb.Endpoint.url(), "static", "favicons", "favicon-512.png"])}
+  />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@myrrlyn" />
+<meta name="twitter:creator" content="@myrrlyn" />
+<meta :if={desc = assigns[:description]} name="twitter:description" content={desc} />
