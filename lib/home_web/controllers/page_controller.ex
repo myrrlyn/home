@@ -134,7 +134,7 @@ defmodule HomeWeb.PageController do
          {"<code>tap</code>", "/tap", "-r--"},
          {"<code>calm_io</code>", "/calm_io", "-r--"},
          {"<code>wyz</code>", "/wyz", "-r--"},
-         {"Cosmonaut", "/cosmonaut", "----"},
+         {"Cosmonaught", "/Cosmonaught", "----"},
          {"<code>lilliput</code>", "/lilliput", "-r--"}
        ]},
       {"Hermaeus", "/hermaeus", "-r--"},

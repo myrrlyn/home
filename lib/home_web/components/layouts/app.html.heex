@@ -2,11 +2,7 @@
 <div id="content">
   <main role="main"><%= @inner_content %></main>
   <aside id="about" class="screen-only">
-    <div id="page-logo" class="logo gravatar">
-      <.link href="/">
-        <img id="gravatar" src={@gravatar} alt="Gravatar" />
-      </.link>
-    </div>
+    <.page_logo src={@gravatar} />
     <div id="about-text">
       <%= view_module(@conn).about(assigns) %>
       <nav role="navigation" aria-label="Sitemap">

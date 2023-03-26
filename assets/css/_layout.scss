@@ -125,7 +125,6 @@ body>footer {
     }
 
     body>header {
-      flex-grow: 0;
       min-height: math.div($avi-height, 2);
       max-height: $header-height;
     }
@@ -150,8 +149,11 @@ body>footer {
       border-bottom: 2px solid var(--bell-blue);
     }
 
+    // These blocks have fixed size and are never modified by the page flexing.
+    body>header,
     body>footer {
       flex-grow: 0;
+      flex-shrink: 0;
     }
 
     // The top-level containers need to be constrained to the height of
@@ -209,19 +211,14 @@ body>footer {
 
 //  Centers and clamps YouTube embeds to look reasonable.
 .youtube {
-  //  Centering
+  // Center it in the container and provide a lower margin.
   margin: 0 auto 1em;
+  // Fill the entire container
   width: 100%;
+  aspect-ratio: 16 / 9;
 
-  //  Unsure what this does, but it's necessary.
   position: relative;
 
-  //  The divs are vertically empty(?), so force the inner to have height
-  &>div {
-    padding-bottom: 56.25%;
-  }
-
-  //  Pin the embed window within its wrappers to exactly fill them.
   iframe {
     position: absolute;
     top: 0;
