@@ -256,18 +256,12 @@ defmodule Home.Banners do
   def filter_tags(banners, tag) when is_binary(tag), do: filter_tags(banners, [tag])
 
   def filter_tags(banners, tagset) when is_list(tagset) do
-    filter =
-      if tagset do
-        fn %__MODULE__.Banner{tags: tags} ->
-          tagset = tagset |> Enum.map(&to_string/1) |> Enum.into(MapSet.new())
-          tags = tags |> Enum.map(&to_string/1) |> Enum.into(MapSet.new())
-          MapSet.intersection(tagset, tags) != MapSet.new()
-        end
-      else
-        fn _ -> true end
-      end
-
-    banners |> Stream.filter(filter)
+    banners
+    |> Stream.filter(fn %__MODULE__.Banner{tags: tags} ->
+      tagset = tagset |> Enum.map(&to_string/1) |> Enum.into(MapSet.new())
+      tags = tags |> Enum.map(&to_string/1) |> Enum.into(MapSet.new())
+      MapSet.intersection(tagset, tags) != MapSet.new()
+    end)
   end
 
   @doc """
@@ -382,9 +376,9 @@ defmodule Home.Banners do
   @doc """
   Gets a random image from the set of banners that have the given tag.
   """
-  @spec random_from_tags([String.t()]) :: __MODULE__.Banner.t()
+  @spec random_from_tags([String.t()] | nil) :: __MODULE__.Banner.t()
   def random_from_tags(tags) do
-    main_banners() |> make_stream() |> true_random(tags)
+    main_banners() |> make_stream() |> filter_tags(tags) |> true_random()
   end
 
   @doc """
@@ -401,7 +395,7 @@ defmodule Home.Banners do
       album ->
         if key = props["image"] do
           case {main_banners()[album], key} do
-            {unnamed, idx} when is_list(unnamed) and is_integer(key) ->
+            {unnamed, idx} when is_list(unnamed) and is_integer(idx) ->
               throw(Enum.at(unnamed, key))
 
             {named, key} when is_map(named) and is_binary(key) ->
@@ -412,13 +406,13 @@ defmodule Home.Banners do
         end
     end
 
-    case props["banner_tags"] do
-      nil -> throw(nil)
-      tags when is_list(tags) -> throw(random_from_tags(tags))
-      tag when is_binary(tag) -> throw(random_from_tags([tag]))
-    end
-
-    throw(nil)
+    throw(
+      case(props["banner_tags"]) do
+        nil -> nil
+        tags when is_list(tags) -> random_from_tags(tags)
+        tag when is_binary(tag) -> random_from_tags([tag])
+      end
+    )
   catch
     nil -> weighted_random(album_id, tags)
     thrown -> thrown

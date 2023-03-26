@@ -1,7 +1,9 @@
 defmodule Home.Page do
   require Logger
+  use OK.Pipe
 
   defmodule NotFoundException do
+    @type t :: %__MODULE__{message: String.t(), plug_status: pos_integer()}
     defexception [:message, plug_status: 404]
   end
 
@@ -33,7 +35,7 @@ defmodule Home.Page do
   structured article (YAML frontmatter, Markdown main content), and returns an
   object suitable for rendering.
   """
-  @spec compile(Path.t(), Range.t()) :: {:ok, __MODULE__.t()} | {:error, any}
+  @spec compile(Path.t(), Range.t()) :: Wyz.result(t(), NotFoundException.t() | any())
   def compile(path, toc_filter \\ 2..3) do
     path = ["priv", "pages", path] |> Path.join()
 
@@ -63,13 +65,14 @@ defmodule Home.Page do
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
     case load(path) do
       {:ok, contents, mtime} ->
-        {:ok, build(path, contents, mtime, toc_filter)}
+        build(path, contents, mtime, toc_filter)
 
       {:error, :enoent} ->
         {:error, %NotFoundException{message: "File #{path} does not exist"}}
     end
   end
 
+  @spec compile!(Path.t(), Range.t()) :: t()
   def compile!(path, toc_filter \\ 2..3) do
     case compile(path, toc_filter) do
       {:ok, page} -> page
@@ -104,22 +107,34 @@ defmodule Home.Page do
     end
   end
 
+  @spec build(Path.t(), String.t(), any(), Range.t()) :: Wyz.result(t(), any())
   def build(path, text, mtime, toc_filter) do
     path_date = date_from_path(path)
-    {yaml, md} = split_frontmatter!(path, text)
 
-    {:ok, meta} = Home.Meta.from_string(yaml)
-    {:ok, html, toc, _warns} = Home.Markdown.render(md, toc_filter)
+    OK.for do
+      {yaml, md} <-
+        case YamlFrontMatter.parse(text) do
+          {:ok, yaml, md} -> {:ok, {yaml, md}}
+          other -> other
+        end
 
-    meta = make_meta(meta, path_date, path)
+      meta <- Home.Meta.from_string(yaml)
+      {html, toc, warns} <- Wyz.Markdown.render(md, toc_filter)
+    after
+      meta = make_meta(meta, path_date, path)
 
-    %__MODULE__{
-      id: path,
-      updated_at: mtime,
-      meta: meta,
-      toc: if(meta.show_toc, do: toc, else: []),
-      content: html
-    }
+      for warn <- warns do
+        warn |> inspect() |> Logger.warning()
+      end
+
+      %__MODULE__{
+        id: path,
+        updated_at: mtime,
+        meta: meta,
+        toc: if(meta.show_toc, do: toc, else: []),
+        content: html
+      }
+    end
   end
 
   @doc """

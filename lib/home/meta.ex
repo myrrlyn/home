@@ -5,7 +5,8 @@ defmodule Home.Meta do
   require Logger
 
   defmodule BadContent do
-    defexception [:message, contents: ""]
+    @type t :: %__MODULE__{message: String.t(), contents: %{String.t() => any()}}
+    defexception [:message, contents: %{}]
   end
 
   defstruct title: nil,
@@ -52,22 +53,12 @@ defmodule Home.Meta do
   Parses a string as YAML, then structures it into a metadata collection. Raises
   on parse or structural error.
   """
-  def from_string!(yaml) do
-    yml =
-      case YamlElixir.read_from_string(yaml) do
-        {:ok, yml} ->
-          yml
-
-        {:error, _} ->
-          Logger.error("received invalid YAML", yaml: yaml)
-          raise BadContent, message: "could not parse YAML", contents: yaml
-      end
-
+  def from_string!(yml) do
     {title, yml} = yml |> Map.pop("title")
 
     unless title do
-      Logger.error("YAML frontmatter must have a `title` key", yaml: yaml)
-      raise BadContent, message: "YAML frontmatter must have a `title` key", contents: yaml
+      Logger.error("YAML frontmatter must have a `title` key", yaml: yml)
+      raise BadContent, message: "YAML frontmatter must have a `title` key", contents: yml
     end
 
     {date_str, yml} = yml |> Map.pop("date")
@@ -77,8 +68,9 @@ defmodule Home.Meta do
     {tab_title, yml} = yml |> Map.pop("tab_title")
     {summary, yml} = yml |> Map.pop("summary", "")
 
-    if summary == "",
-      do: Logger.warning("YAML frontmatter should include a `summary` key", yaml: yaml)
+    if summary == "" do
+      Logger.warning("YAML frontmatter should include a `summary` key", yaml: yml)
+    end
 
     {show_toc, yml} = yml |> Map.pop("toc", true)
     {published, yml} = yml |> Map.pop("published", true)

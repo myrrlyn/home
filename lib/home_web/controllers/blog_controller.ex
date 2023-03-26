@@ -259,7 +259,7 @@ defmodule HomeWeb.BlogController do
   loaded into the `Home.PageCache`, and can be accessed by the same paths passed
   into this.
   """
-  @spec get_articles(Stream.t()) :: [{Path.t(), Home.Meta.t()}]
+  @spec get_articles(Enumerable.t(Path.t())) :: [{Path.t(), Home.Meta.t()}]
   def get_articles(paths \\ src_paths()) do
     paths
     # Do not include filesystem-powered redirects.

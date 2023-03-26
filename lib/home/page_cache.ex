@@ -273,14 +273,16 @@ defmodule Home.PageCache do
         Logger.debug("Caching #{path} from fs")
         {:ok, _renew(path, page)}
 
-      {:error, %Home.Page.NotFoundException{} = err} ->
-        Logger.error("File does not exist: #{path}")
-        {:error, err}
-
       {:error, err} ->
-        Logger.error(
-          "Error compiling #{path} as a `Home.Page` for `Home.PageCache`: #{err |> inspect()}"
-        )
+        case err do
+          %Home.Page.NotFoundException{} ->
+            Logger.error("File does not exist: #{path}")
+
+          _ ->
+            Logger.error(
+              "Error(s) compiling #{path} as a `Home.Page` for `Home.PageCache`: #{inspect(err)}"
+            )
+        end
 
         {:error, err}
     end
