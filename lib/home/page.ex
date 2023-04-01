@@ -35,7 +35,7 @@ defmodule Home.Page do
   structured article (YAML frontmatter, Markdown main content), and returns an
   object suitable for rendering.
   """
-  @spec compile(Path.t(), Range.t()) :: Wyz.result(t(), NotFoundException.t() | any())
+  @spec compile(Path.t(), Range.t()) :: Wyz.Maybe.result(t(), NotFoundException.t() | any())
   def compile(path, toc_filter \\ 2..3) do
     path = ["priv", "pages", path] |> Path.join()
 
@@ -64,7 +64,7 @@ defmodule Home.Page do
 
     # TODO(myrrlyn): Ensure PageController catches file-not-found Exceptions
     case load(path) do
-      {:ok, contents, mtime} ->
+      {:ok, {contents, mtime}} ->
         build(path, contents, mtime, toc_filter)
 
       {:error, :enoent} ->
@@ -107,7 +107,7 @@ defmodule Home.Page do
     end
   end
 
-  @spec build(Path.t(), String.t(), any(), Range.t()) :: Wyz.result(t(), any())
+  @spec build(Path.t(), String.t(), any(), Range.t()) :: Wyz.Maybe.result(t(), any())
   def build(path, text, mtime, toc_filter) do
     path_date = date_from_path(path)
 
@@ -140,13 +140,13 @@ defmodule Home.Page do
   @doc """
   Loads a file from `priv/pages` into memory.
   """
-  @spec load(Path.t()) :: {:ok, String.t(), DateTime.t()} | {:error, File.posix()}
+  @spec load(Path.t()) :: Wyz.Maybe.result({String.t(), DateTime.t()}, File.posix())
   def load(path) do
     stat = path |> File.stat(time: :posix)
     text = path |> File.read()
 
     case {text, stat} do
-      {{:ok, text}, {:ok, stat}} -> {:ok, text, stat.mtime |> DateTime.from_unix!()}
+      {{:ok, text}, {:ok, stat}} -> Wyz.Maybe.ok({text, DateTime.from_unix!(stat.mtime)})
       {{:error, err}, _} -> {:error, err}
       {_, {:error, err}} -> {:error, err}
     end
@@ -158,7 +158,7 @@ defmodule Home.Page do
   @spec load!(Path.t()) :: {String.t(), DateTime.t()}
   def load!(path) do
     case load(path) do
-      {:ok, text, date} ->
+      {:ok, {text, date}} ->
         {text, date}
 
       {:error, :enoent} ->

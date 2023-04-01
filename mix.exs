@@ -62,6 +62,7 @@ defmodule Home.MixProject do
       {:timex, "~> 3.7"},
       {:yaml_elixir, "~> 2.9"},
       {:yaml_front_matter, "~> 1.0"},
+      # {:wyz, path: "../../Elixir/wyz"},
       {:wyz, git: "https://github.com/myrrlyn/wyz-ex.git"},
       {:exgravatar, "~> 2.0"},
       {:statistics, "~> 0.6"},

@@ -23,7 +23,7 @@ defmodule HomeWeb.PageController do
   #
   # It is not worth fighting with the various systems which do not tolerate
   # supra-ASCII filenames (my deployment system, Git, etc).
-  def page(conn, %{"path" => ["résumé"]} = params) do
+  def page(conn, %{"path" => ["résumé"]}) do
     page = Home.PageCache.cached!("resume.md")
     # conn |> build(params, "/résumé", page)
     pdf = HomeWeb.Endpoint.url() <> "/papers/resume.pdf"

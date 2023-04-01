@@ -45,6 +45,13 @@ config :dart_sass,
 # Configure Phoenix's template engines
 config :phoenix, :template_engines, heex: Phoenix.LiveView.HTMLEngine
 
+config :wyz, :markdown,
+  compact_output: true,
+  eex: true,
+  unescaped_tags: [
+    "u"
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
