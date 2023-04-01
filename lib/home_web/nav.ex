@@ -97,7 +97,12 @@ defmodule HomeWeb.Nav do
     children =
       children
       |> Stream.map(fn {name, child_url, decorator} ->
-        {name, Path.join(url, child_url), decorator}
+        {name,
+         if String.starts_with?(child_url, "/") do
+           child_url
+         else
+           Path.join(url, child_url)
+         end, decorator}
       end)
       |> Stream.map(&process/1)
       |> Enum.to_list()
