@@ -102,7 +102,7 @@ defmodule HomeWeb.BlogController do
       template,
       flavor: "app",
       classes: ["blog"],
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: get_gravatar(conn),
       navtree: fn -> navtree(conn.request_path) end,
       scope: @root
     )
@@ -143,7 +143,12 @@ defmodule HomeWeb.BlogController do
             |> build(params, template)
 
           {:error, _err} ->
-            conn |> error(500, :"invalid-article", "Broken Article")
+            conn
+            |> merge_assigns(
+              github:
+                "//github.com/myrrlyn/blog/tree/main/#{src_path |> String.trim_leading("blog/")}"
+            )
+            |> error(500, :"invalid-article", "Broken Article")
         end
     end
   end
@@ -155,7 +160,7 @@ defmodule HomeWeb.BlogController do
     |> render(
       template,
       flavor: "app",
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: get_gravatar(conn),
       classes: ["blog"],
       navtree: &navtree/0,
       page: nil,
@@ -323,5 +328,14 @@ defmodule HomeWeb.BlogController do
     |> Stream.filter(&File.regular?/1)
     # Drop the content-directory prefix
     |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
+  end
+
+  defp get_gravatar(conn) do
+    if String.starts_with?(conn.request_path, "/blog/bitvec") or
+         String.starts_with?(conn.request_path, "/blog/ferrilab") do
+      "/static/favicons/ferrilab-2048.png"
+    else
+      Home.Page.gravatar("self@myrrlyn.dev")
+    end
   end
 end

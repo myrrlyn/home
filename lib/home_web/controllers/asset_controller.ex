@@ -19,7 +19,7 @@ defmodule HomeWeb.AssetController do
   end
 
   @doc "Fetch .well-known/ files"
-  def well_known(conn, %{"file" => file} = params) do
+  def well_known(conn, %{"file" => file}) do
     path = Path.join(["priv", "static", "well-known"] ++ file)
 
     if File.exists?(path) do

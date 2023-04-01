@@ -22,7 +22,7 @@ defmodule Home.Banners.Banner do
     "#{x} #{y}"
   end
 
-  def style_rules(%__MODULE__{pos: {x, y}, dim: [{:width, width}, {:height, height}]}) do
+  def style_rules(%__MODULE__{dim: [{:width, width}, {:height, height}]}) do
     "aspect-ratio: #{width} / #{height};"
   end
 
@@ -151,9 +151,7 @@ defmodule Home.Banners do
   @type album :: album_named() | album_unnamed()
   @type banners :: Enumerable.t(__MODULE__.Banner.t())
 
-  @doc """
-  A collection of known banner objects generated at compile-time.
-  """
+  # A collection of known banner objects generated at compile-time.
   @banners ["assets", "banners.toml"]
            |> Path.join()
            |> File.stream!()

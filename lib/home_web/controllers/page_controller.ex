@@ -89,7 +89,7 @@ defmodule HomeWeb.PageController do
       banner: Home.Banners.select_or_random(page.meta),
       page: page,
       navtree: fn -> __MODULE__.navtree(path) end,
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: get_gravatar(path),
       scope: ""
     )
   end
@@ -144,5 +144,13 @@ defmodule HomeWeb.PageController do
       {"WebRing", "/webring", "-r--"},
       {"Workbench", "/uses", "-r--"}
     ]
+  end
+
+  defp get_gravatar(path) do
+    if String.starts_with?(path, "/crates") do
+      "/static/favicons/ferrilab-2048.png"
+    else
+      Home.Page.gravatar("self@myrrlyn.dev")
+    end
   end
 end

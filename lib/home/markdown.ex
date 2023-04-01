@@ -140,7 +140,7 @@ defmodule Home.Markdown do
   end
 
   # Rewrite tags if requested..
-  def walker({tag, attrs, inner, meta} = node, _) do
+  def walker({_, attrs, inner, meta} = node, _) do
     case attrs |> List.keytake("tag", 0) do
       {{"tag", tagname}, rest} ->
         {tagname, rest, inner, meta}
@@ -336,6 +336,7 @@ defmodule Home.Markdown do
 
   This is not aware of context, and replaces *all* escaped tag instances.
   """
+  @spec restore_tags(String.t()) :: String.t()
   def restore_tags(html) do
     tags = [
       "br",

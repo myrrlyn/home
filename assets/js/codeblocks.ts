@@ -12,6 +12,7 @@ let lang_dict = {
   cpp: "C++ code",
   erlang: "Erlang code",
   elixir: "Elixir code",
+  html: "HTML code",
   js: "JavaScript code",
   irc: "IRC log",
   ps1: "PowerShell session",

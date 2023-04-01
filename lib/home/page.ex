@@ -264,12 +264,4 @@ defmodule Home.Page do
         %Home.Meta{meta | props: %{meta.props | "about" => html}}
     end
   end
-
-  defp split_frontmatter!(path, text) do
-    split(text)
-  rescue
-    _ ->
-      raise __MODULE__.BadContentException,
-        message: "Invalid Yaml/Markdown source file in #{path}"
-  end
 end

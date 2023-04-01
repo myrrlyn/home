@@ -20,6 +20,11 @@
   src: iosevka("myrrlyn-term");
 }
 
+@font-face {
+  font-family: "Ferro Rosso";
+  src: url("/static/fonts/FerroRosso.ttf");
+}
+
 %text-mono {
   font: {
     family: "Iosevka myrrlyn regular", "Inconsolata", "Menlo", "Consolas", "Courier New", monospace;
