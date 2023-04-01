@@ -1,0 +1,314 @@
+#let project(title: "", author: (), body) = {
+  set document(author: author.name, title: title)
+  set page(
+    paper: "us-letter",
+    numbering: "1/1",
+    number-align: center,
+    header: align(center, grid(
+      columns: (auto, auto, auto, auto),
+      column-gutter: 3em,
+      align(start + horizon, author.email),
+      align(center + horizon, author.website),
+      align(center + horizon, author.postal),
+      align(end + horizon, author.phone),
+    ))
+  )
+  set text(
+    font: ("Roboto Slab", "Roboto"),
+    lang: "en",
+    region: "US",
+    hyphenate: true,
+    kerning: true,
+    ligatures: true,
+    slashed-zero: true,
+    fractions: true,
+  )
+  set heading(numbering: "1.1.")
+
+  align(center, block(text(
+    font: "Ferro Rosso",
+    weight: 700,
+    size: 4em,
+    author.name
+  )))
+
+  set par(justify: true)
+
+  body
+}
+
+#let ferrilab = link("https://ferrilab.github.io/ferrilab", [_Ferrilab_])
+
+#show link: this => underline(text(
+  //font: ("Roboto Mono", "Inconsolata"),
+  fill: blue,
+  this,
+))
+#show raw: text.with(
+  font: ("Roboto Mono", "Inconsolata"),
+  size: 1.25em,
+)
+
+#let self = (
+  name: "Alexander Payne",
+  email: link("mailto:self@myrrlyn.dev"),
+  website: link("https://myrrlyn.net/", "myrrlyn.net"),
+  postal: [158 Vine St \ Sun Prairie, WI, 53590],
+  phone: link("tel:+1-517-499-8820", "+1 (517) 499-8820")
+)
+
+#show: project.with(title: "My Résumé", author: self)
+
+#set heading(outlined: false, numbering: none)
+#show heading: smallcaps
+
+#align(center)[= Introduction]
+
+I am a software engineer specializing in low-level systems and freestanding
+code. I have over six years' experience developing embedded software for
+research satellites and experimental networking appliances, system software for
+high-traffic web servers, and foundation libraries in C, C++, and Rust. I have
+worked with electrical engineers to create novel hardware and with fleet
+operators to deploy high-performance software worldwide.
+
+I excel at designing and implementing safety-critical code and proving
+conformance to external requirements, including both customer needs and formal
+engineering standards. I am a strong technical writer and produce my own
+documentation, for both technical and non-technical audiences. I am also an
+active contributor of open-source software, primarily in Rust. I maintain
+several widely-used utility libraries and lead the #ferrilab project.
+
+#align(center)[= Summary]
+
+These are explained with more detail on the following pages.
+
+== 1. Fastly
+
+I was a senior software engineer responsible for creating traffic-management
+code in Rust and integrating it into a C codebase.
+
+My work was an ingress filter running worldwide on Fastly's fleet, and enabled
+significant reduction in malicious traffic without imposing a performance cost
+to any other users.
+
+== 2. Amazon Web Services
+
+I led the design and implementation of a Rust real-time unikernel running on a
+small ARM processor. I worked closely with electrical engineers to develop a
+novel networking appliance subject to strict performance, security, and
+tamper-resistance requirements.
+
+== 3. Space Dynamics Laboratory
+
+I wrote kernel modules and application software operating on orbital vehicles,
+and ground-station operations software to control them. I also served as on-call
+staff for vehicle operations.
+
+== 4. Ferrilab
+
+I maintain an open-source Rust project which significantly reshapes the standard
+programming model. The `bitvec` crate is widely used throughout the public Rust
+ecosystem.
+
+== 5. Formal Education
+
+I studied Computer Engineering at Trine University. I learned digital system
+design in Verilog and embedded programming in C. I built and programmed a small
+autonomous vehicle for my thesis project.
+
+#pagebreak()
+#outline(indent: true)
+#pagebreak()
+#set heading(outlined: true, numbering: "1.1.")
+
+= Professional Experience
+
+== Fastly (2021--2023) --- Senior Software Engineer
+
+I was the Rust subject-matter expert on a team maintaining the H2O web server
+powering Fastly's traffic ingress system. We worked on traffic management and
+prioritization, writing Rust modules and linking them into H2O's C codebase
+through an FFI bridge. Our work enabled Fastly to overcome DDOS attempts during
+the holiday season without a performance impact to our customers.
+
+I was let go during the market contraction this winter.
+
+== Amazon Web Services (2020--2021) --- Software Development Engr
+
+I was recruited to be the Rust subject-matter expert and software subteam lead
+for an experimental layer-2 networking appliance. I designed the software system
+architecture for a unikernel program running on an ARM Cortex-R processor, and
+implemented device drivers and the early application framework.
+
+I am required to not disclose anything more about this project. It was cancelled
+after a year, and several of us chose to leave AWS when we weren't able to find
+suitable internal positions.
+
+== Space Dynamics Laboratory (2016--2020) --- Satellite Software Engr
+
+I wrote firmware and control software for space vehicles, wrote ground-station
+control software and performed on-orbit vehicle operations, and designed novel
+laboratory systems. I worked on both public and military projects, and the
+peculiar nature of satellite operations has vastly over-prepared me for
+terrestrial industry.
+
+I resigned from SDL after my grandmother's death and mother's illness early in
+the COVID-19 pandemic so that I could spend time supporting my mother in her
+recovery.
+
+=== GRYPHON (2020) -- AFRL
+
+I worked on the design and initial standup of an experimental laboratory and
+simulation environment. This was a classified project, and I cannot provide
+details about my tasking.
+
+=== #link("https://www.afrl.af.mil/Portals/90/Documents/RV/Very%20Low%20Frequency%20Propagation%20Mapper%20(VPM)%20Satellite_AFMC-2019-0769.pdf?ver=2020-08-26-133350-127", [VPM]) (2019) --- AFRL
+
+I wrote vehicle control software in C++11, using SDL's
+#link("https://www.sdl.usu.edu/media-events/media-library/pdf/radiant/", [RADIANT])
+framework.
+
+=== #link("https://afresearchlab.com/technology/space-vehicles/eagle/", [EAGLE]) (2018) --- AFRL
+
+I wrote ground-station control software in Python2 and supplied continuous
+updates for over a year until the project was relocated away from Kirtland AFB.
+This was a classified mission and I was not permitted to be present in the SCIF
+during vehicle operations. As such, deployment required carrying patches back
+and forth between my office and the SCIF, and manually updating the software
+both in production and on my development machine.
+
+=== #link("https://www.nanosats.eu/sat/dhfr", [DHFR]) (2017) --- DARPA
+
+I wrote ground-station control software in Ruby, using the COSMOS (now OpenC3)
+framework and assisted with post-assembly vehicle testing. I then performed
+vehicle launch-and-early-operations for the mission until the vehicle was
+declared dead on orbit.
+
+The orbital characteristics of the DHFR mission gave it a 9-hour window of
+periodic visibility over our ground-station network, followed by 14 hours where
+it was not visible. The resulting 23-hour "day" meant that my shift began one
+hour earlier every day, rotating backwards around the clock. I was the sole
+continuous staffer for the four months between launch and end of mission.
+
+=== #link("https://www.nasa.gov/ames/biosentinel", [BioSentinel]) (2017) --- NASA
+
+I wrote a kernel module in C99 for VxWorks 6 on a SPARC v8 chip. This module
+multiplexed a number of discrete hardware sensors aboard an FPGA over a single
+SpaceWire connection, allowing userland software running on the CPU to access
+each of the sensors through a named device file.
+
+Due to the design of the SPARC architecture and NASA's restrictions on dynamic
+memory allocation, this required careful memory management and an implementation
+with as few interior function calls as possible.
+
+#pagebreak()
+
+= Public Works
+
+I am an active contributor to the Rust language's open-source collection. I also
+write some Elixir and TypeScript web applications.
+
+== `bitvec`
+
+`bitvec` implements bit-precision addressing as an ordinary library. It provides
+idiomatic collections and behavior, including arrays, dynamic vectors, and
+borrowed slices. It allows client code to specify both the integer type used for
+backing storage and the order of bits within those integers, implements the
+entire standard-library sequence API, and is entirely thread-safe.
+
+This project pushes the boundaries of what the Rust language is able to express,
+and is a case study in ongoing development of the Rust abstract machine's
+pointer model.
+
+== `funty`
+
+`funty` provides traits that abstract over the Rust primitive types, allowing
+client code to become generic over the primitives while still retaining access
+to their full API. This allows, for instance, client code to become generic over
+the width of a numeric type but making use of properties such as signedness.
+
+== `radium`
+
+`radium` unifies Rust's shared-mutability markers. `Cell` is not thread-safe but
+requires no special hardware support; the `atomic` module contains types that
+are thread-safe but are not guaranteed to exist on every `radium` allows code to
+defer which of these families is used to provide shared mutability. It provides
+best-effort type aliases that resolve to atomics when present and cells when
+not, allowing code to become portable across different targets without incurring
+compiler errors.
+
+== `tap`
+
+This library provides convenience methods that allow any value to be inspected
+or mutated without rebinding, or to call non-method functions in method
+position. It is analagous to Elixir's `|>` operator, or D's implementation of
+Universal Method-Call Syntax.
+
+== `calm_io`
+
+This provides alternatives to Rust's standard-stream write macros that do not
+panic on error, and a decorator for `fn main` which detects when `main` returns
+with `io::ErrorKind::BrokenPipe` and converts it into a graceful exit.
+
+Without this crate, any Rust program which uses `println!` can be induced to
+panic by running it as `prog | head -n0`: this argument causes `head` to quit
+immediately, `prog`'s stdout stream closes, and `println!` unwraps the error
+returned when writing to a closed pipe.
+
+The Rust project is currently working on integrating this behavior into the
+standard library.
+
+#pagebreak()
+
+= Skills and Abilities
+
+- I am an expert Rust programmer, fluent in C++11 and C99, and am capable with
+  Ruby.
+- I am specialized in asymmetricall-distributed systems and CLI tools, and
+  familiar with web applications. I have not written desktop graphical software
+  professionally.
+- I produce my own technical writing, including both internal API documentation,
+  user manuals, and engineering reports.
+- I primarily use Git and Linux. I have used Docker for both development
+  environments and application deployments. I am familiar with Mercurial and
+  Windows PowerShell, but have not used them extensively.
+- My public work is on GitHub; I have also used GitLab and the Atlassian suite
+  professionally.
+- I can rapidly learn unfamiliar systems and technologies. I have enough of an
+  electrical engineering background to follow along with work in that area, but
+  I am no longer able to do more hardware creation than write Verilog.
+
+= Formal Education
+
+== B.Sc., Computer Engineering, Trine University (2016)
+
+My thesis project was the construction, programming, and operation of an
+autonomous freight vehicle. My responsibilities on the team were:
+
+- drivetrain component selection and assembly
+- control system component selection and assembly
+- freestanding control software design and implementation
+- device driver implementation for:
+  - GPS receiver (positioning)
+  - magnetometer (orientation)
+  - ultrasonic sensors (environmental awareness)
+  - motor controllers (movement)
+  - axle Hall-effect sensors (closed-loop PID control)
+
+I also studied digital component design, including the construction of a MIPS
+CPU in Verilog which was required to execute real programs when flashed to an
+FPGA.
+
+= Additional Qualifications
+
+== Federal Clearance
+
+I have held a TS/SCI clearance since 2018. I was last read out in 2021 August,
+and so my investigation will expire in 2023 August unless I am read back in to a
+classified billet before then.
+
+== Aquatics
+
+I am a PADI rescue diver and Scouts BSA lifeguard instructor. I believe strongly
+in the importance of imposing safety onto a hazardous environment, and bring
+this focus to all aspects of my work.

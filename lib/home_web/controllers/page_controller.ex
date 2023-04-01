@@ -25,7 +25,22 @@ defmodule HomeWeb.PageController do
   # supra-ASCII filenames (my deployment system, Git, etc).
   def page(conn, %{"path" => ["résumé"]} = params) do
     page = Home.PageCache.cached!("resume.md")
-    conn |> build(params, "/résumé", page)
+    # conn |> build(params, "/résumé", page)
+    pdf = HomeWeb.Endpoint.url() <> "/papers/resume.pdf"
+
+    conn
+    |> render(:pdf,
+      flavor: "app",
+      classes: ["general", "embed"],
+      frontmatter: page.meta,
+      tab_title: page.meta.tab_title || ["~myrrlyn" | conn.path_info] |> Path.join(),
+      banner: Home.Banners.select_or_random(page.meta),
+      page: page,
+      foreign: pdf,
+      navtree: fn -> __MODULE__.navtree("/résumé") end,
+      gravatar: get_gravatar("/résumé"),
+      scope: ""
+    )
   end
 
   def page(conn, %{"path" => path} = params) do

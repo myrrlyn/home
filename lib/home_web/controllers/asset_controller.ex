@@ -29,6 +29,16 @@ defmodule HomeWeb.AssetController do
     end
   end
 
+  def paper(conn, %{"file" => file}) do
+    path = Path.join(["priv", "papers", file])
+
+    if File.exists?(path) do
+      conn |> Plug.Conn.send_file(200, path)
+    else
+      conn |> Plug.Conn.send_resp(404, "No such paper")
+    end
+  end
+
   def banner_by_album(conn, %{"album" => album} = _params) do
     banner = Home.Banners.random_from_album(album)
 

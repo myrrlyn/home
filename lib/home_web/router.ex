@@ -106,6 +106,7 @@ defmodule HomeWeb.Router do
     get("/favicon.ico", AssetController, :favicon_ico)
     get("/keybase.txt", AssetController, :keybase_txt)
     get("/.well-known/*file", AssetController, :well_known)
+    get("/papers/:file", AssetController, :paper)
   end
 
   scope "/", HomeWeb do

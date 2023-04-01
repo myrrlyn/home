@@ -44,7 +44,7 @@ aside#about {
 }
 
 // Put vertical spacing inside `main` but *outside* `article`.
-main {
+body:not(.embed) main {
   padding: 0.5em 0;
 }
 
