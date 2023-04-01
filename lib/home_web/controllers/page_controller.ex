@@ -155,7 +155,10 @@ defmodule HomeWeb.PageController do
       {"Hermaeus", "/hermaeus", "-r--"},
       {"Oeuvre", "/oeuvre", "dr-x"},
       {"Portfolio", "/portfolio", "-r--"},
-      {"Résumé", "/résumé", "-r--"},
+      {"Résumé", "/résumé", "-r--",
+       [
+         {"PDF Version", "/papers/resume.pdf", "-r--"}
+       ]},
       {"WebRing", "/webring", "-r--"},
       {"Workbench", "/uses", "-r--"}
     ]
