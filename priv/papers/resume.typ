@@ -53,7 +53,7 @@
   name: "Alexander Payne",
   email: link("mailto:self@myrrlyn.dev"),
   website: link("https://myrrlyn.net/", "myrrlyn.net"),
-  postal: [158 Vine St \ Sun Prairie, WI, 53590],
+  postal: [Madison, WI],
   phone: link("tel:+1-517-499-8820", "+1 (517) 499-8820")
 )
 
