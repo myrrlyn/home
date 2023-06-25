@@ -5,8 +5,8 @@
     numbering: "1/1",
     number-align: center,
     header: align(center, grid(
-      columns: (auto, auto, auto, auto),
-      column-gutter: 3em,
+      columns: 4,
+      column-gutter: 2em,
       align(start + horizon, author.email),
       align(center + horizon, author.website),
       align(center + horizon, author.postal),
@@ -20,6 +20,8 @@
     hyphenate: true,
     kerning: true,
     ligatures: true,
+    discretionary-ligatures: true,
+    historical-ligatures: true,
     slashed-zero: true,
     fractions: true,
   )
@@ -38,21 +40,29 @@
 }
 
 #let ferrilab = link("https://ferrilab.github.io/ferrilab", [_Ferrilab_])
+#let crate = name => link("https://lib.rs/crates/" + name, raw(name))
 
 #show link: this => underline(text(
-  //font: ("Roboto Mono", "Inconsolata"),
   fill: blue,
   this,
 ))
 #show raw: text.with(
-  font: ("Roboto Mono", "Inconsolata"),
+  font: (
+    // "Monaco", // size: 1.1em // no ligatures
+    // "JetBrains Mono", // size: 1.25em // superscript numbers
+    // "Cascadia Code", // size: 1.25em // superscript numbers
+    // "Roboto Mono", // size: 1.25em // no ligatures
+    // "Inconsolata", // size: 1.45em // superscript numbers, no ligatures
+    "Iosevka Curly", // size: 1.25em
+    "Menlo", // size: 1,25em // no ligatures
+  ),
   size: 1.25em,
 )
 
 #let self = (
   name: "Alexander Payne",
-  email: link("mailto:self@myrrlyn.dev"),
-  website: link("https://myrrlyn.net/", "myrrlyn.net"),
+  email: link("mailto:self@myrrlyn.net", [`self@myrrlyn.net`]),
+  website: link("https://myrrlyn.net/", [`https://myrrlyn.net`]),
   postal: [Madison, WI],
   phone: link("tel:+1-517-499-8820", "+1 (517) 499-8820")
 )
@@ -82,35 +92,37 @@ several widely-used utility libraries and lead the #ferrilab project.
 
 These are explained with more detail on the following pages.
 
-== 1. Fastly
+== 1. Sub-Zero/Wolf/Cove
+
+I am a senior software engineer working on appliance control software.
+
+== 2. Fastly
 
 I was a senior software engineer responsible for creating traffic-management
-code in Rust and integrating it into a C codebase.
+code in Rust and integrating it into a C codebase. My work was an ingress filter
+running worldwide on Fastly's fleet, and enabled significant reduction in
+malicious traffic without imposing a performance cost to any other users.
 
-My work was an ingress filter running worldwide on Fastly's fleet, and enabled
-significant reduction in malicious traffic without imposing a performance cost
-to any other users.
-
-== 2. Amazon Web Services
+== 3. Amazon Web Services
 
 I led the design and implementation of a Rust real-time unikernel running on a
 small ARM processor. I worked closely with electrical engineers to develop a
 novel networking appliance subject to strict performance, security, and
 tamper-resistance requirements.
 
-== 3. Space Dynamics Laboratory
+== 4. Space Dynamics Laboratory
 
-I wrote kernel modules and application software operating on orbital vehicles,
-and ground-station operations software to control them. I also served as on-call
+I wrote kernel modules and flight application software for small satellites, and
+earthside terminal software to control them. I also served as control
 staff for vehicle operations.
 
-== 4. Ferrilab
+== 5. Ferrilab
 
 I maintain an open-source Rust project which significantly reshapes the standard
 programming model. The `bitvec` crate is widely used throughout the public Rust
 ecosystem.
 
-== 5. Formal Education
+== 6. Formal Education
 
 I studied Computer Engineering at Trine University. I learned digital system
 design in Verilog and embedded programming in C. I built and programmed a small
@@ -123,6 +135,11 @@ autonomous vehicle for my thesis project.
 
 = Professional Experience
 
+== Sub-Zero/Wolf/Cove (2023--present) --- Senior Software Engineer
+
+I write realtime appliance control and interface software for kitchen
+appliances, primarily in C++ running on a suite of microprocessors.
+
 == Fastly (2021--2023) --- Senior Software Engineer
 
 I was the Rust subject-matter expert on a team maintaining the H2O web server
@@ -131,7 +148,7 @@ prioritization, writing Rust modules and linking them into H2O's C codebase
 through an FFI bridge. Our work enabled Fastly to overcome DDOS attempts during
 the holiday season without a performance impact to our customers.
 
-I was let go during the market contraction this winter.
+I was let go during the market contraction of the 2022-23 winter.
 
 == Amazon Web Services (2020--2021) --- Software Development Engr
 
@@ -170,7 +187,7 @@ framework.
 
 === #link("https://afresearchlab.com/technology/space-vehicles/eagle/", [EAGLE]) (2018) --- AFRL
 
-I wrote ground-station control software in Python2 and supplied continuous
+I wrote ground-station control software in Python 2 and supplied continuous
 updates for over a year until the project was relocated away from Kirtland AFB.
 This was a classified mission and I was not permitted to be present in the SCIF
 during vehicle operations. As such, deployment required carrying patches back
@@ -203,12 +220,12 @@ with as few interior function calls as possible.
 
 #pagebreak()
 
-= Public Works
+= Public Works (2018--present)
 
 I am an active contributor to the Rust language's open-source collection. I also
 write some Elixir and TypeScript web applications.
 
-== `bitvec`
+== #crate("bitvec")
 
 `bitvec` implements bit-precision addressing as an ordinary library. It provides
 idiomatic collections and behavior, including arrays, dynamic vectors, and
@@ -220,14 +237,14 @@ This project pushes the boundaries of what the Rust language is able to express,
 and is a case study in ongoing development of the Rust abstract machine's
 pointer model.
 
-== `funty`
+== #crate("funty")
 
 `funty` provides traits that abstract over the Rust primitive types, allowing
 client code to become generic over the primitives while still retaining access
 to their full API. This allows, for instance, client code to become generic over
 the width of a numeric type but making use of properties such as signedness.
 
-== `radium`
+== #crate("radium")
 
 `radium` unifies Rust's shared-mutability markers. `Cell` is not thread-safe but
 requires no special hardware support; the `atomic` module contains types that
@@ -237,14 +254,14 @@ best-effort type aliases that resolve to atomics when present and cells when
 not, allowing code to become portable across different targets without incurring
 compiler errors.
 
-== `tap`
+== #crate("tap")
 
-This library provides convenience methods that allow any value to be inspected
-or mutated without rebinding, or to call non-method functions in method
-position. It is analagous to Elixir's `|>` operator, or D's implementation of
-Universal Method-Call Syntax.
+This library provides convenience methods that allow common operations
+(inspection, mutation, or conversion) to be placed in suffix-call position. This
+is analagous to Elixir's pipe operator (`|>`), or D's implementation of Universal
+Method-Call Syntax.
 
-== `calm_io`
+== #crate("calm_io")
 
 This provides alternatives to Rust's standard-stream write macros that do not
 panic on error, and a decorator for `fn main` which detects when `main` returns
@@ -264,7 +281,7 @@ standard library.
 
 - I am an expert Rust programmer, fluent in C++11 and C99, and am capable with
   Ruby.
-- I am specialized in asymmetricall-distributed systems and CLI tools, and
+- I am specialized in asymmetrically-distributed systems and CLI tools, and
   familiar with web applications. I have not written desktop graphical software
   professionally.
 - I produce my own technical writing, including both internal API documentation,
@@ -276,7 +293,7 @@ standard library.
   professionally.
 - I can rapidly learn unfamiliar systems and technologies. I have enough of an
   electrical engineering background to follow along with work in that area, but
-  I am no longer able to do more hardware creation than write Verilog.
+  I am no longer able to work with hardware beyond writing Verilog modules.
 
 = Formal Education
 
@@ -296,7 +313,7 @@ autonomous freight vehicle. My responsibilities on the team were:
   - axle Hall-effect sensors (closed-loop PID control)
 
 I also studied digital component design, including the construction of a MIPS
-CPU in Verilog which was required to execute real programs when flashed to an
+CPU in Verilog which was required to execute real programs when programmed to an
 FPGA.
 
 = Additional Qualifications
@@ -304,8 +321,8 @@ FPGA.
 == Federal Clearance
 
 I have held a TS/SCI clearance since 2018. I was last read out in 2021 August,
-and so my investigation will expire in 2023 August unless I am read back in to a
-classified billet before then.
+and so my investigation is expired as of 2023 August. I maintain a lifestyle
+that is conducive to clearance investigations should the need arise.
 
 == Aquatics
 
