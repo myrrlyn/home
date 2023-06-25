@@ -243,7 +243,7 @@ defmodule Home.Page do
     meta =
       case {meta.date, path_date} do
         {nil, nil} ->
-          Logger.warn("YAML frontmatter should have a `date` key: #{path}")
+          Logger.warning("YAML frontmatter should have a `date` key: #{path}")
           meta
 
         {nil, date} ->
