@@ -263,6 +263,7 @@ body:is(.blog, .oeuvre) .title {
   .timestamp {
     float: right;
     border: 1px solid var(--text-fg);
+    margin: 0;
     padding: 0 0.5em;
   }
 }

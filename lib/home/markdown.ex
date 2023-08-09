@@ -9,8 +9,7 @@ defmodule Home.Markdown do
     gfm: true,
     gfm_tables: true,
     postprocessor: &__MODULE__.walker/1,
-    sub_sup: true,
-    smartypants: false
+    sub_sup: true
   }
 
   require Logger

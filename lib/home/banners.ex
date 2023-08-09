@@ -357,7 +357,7 @@ defmodule Home.Banners do
   @doc """
   Gets a random banner from the given album.
   """
-  @spec random_from_album(String.t()) :: __MODULE__.Banner.t()
+  @spec random_from_album(String.t() | atom()) :: __MODULE__.Banner.t()
   def random_from_album(album_id) do
     album_id = get_album_id(album_id)
 
@@ -400,7 +400,7 @@ defmodule Home.Banners do
               throw(named[key])
           end
         else
-          throw(random_from_album(album_id))
+          throw(random_from_album(album))
         end
     end
 
@@ -433,10 +433,18 @@ defmodule Home.Banners do
     )
   end
 
-  @spec get_album_id(String.t()) :: atom()
+  @spec get_album_id(String.t() | atom()) :: atom()
   defp get_album_id(album_id) when is_binary(album_id) do
-    lookup = albums() |> Enum.map(fn {k, _} -> {to_string(k), k} end) |> Enum.into(%{})
-    Map.get(lookup, album_id, :main_banners)
+    albums()
+    |> Enum.map(fn {k, _} -> {to_string(k), k} end)
+    |> Enum.into(%{})
+    |> Map.get(album_id, :main_banners)
+  end
+
+  defp get_album_id(album_id) when is_atom(album_id) do
+    albums()
+    |> Map.keys()
+    |> Enum.find(:main_banners, &(&1 == album_id))
   end
 
   defp get_album_id(:main_banners), do: :main_banners
@@ -452,6 +460,6 @@ end
 
 defimpl String.Chars, for: Home.Banners.Banner do
   def to_string(%Home.Banners.Banner{file: file}) do
-    ["static", "images", "banners", file] |> Path.join()
+    ["images", "banners", file] |> Path.join()
   end
 end

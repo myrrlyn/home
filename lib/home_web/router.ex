@@ -97,8 +97,8 @@ defmodule HomeWeb.Router do
   end
 
   scope "/static", HomeWeb do
-    get("/banners/album/:album", AssetController, :banner_by_album)
-    get("/banners/tag/:tag", AssetController, :banner_by_tag)
+    get("/banners/by_album/:album", AssetController, :banner_by_album)
+    get("/banners/by_tags/:tags", AssetController, :banner_by_tags)
     get("/*path", AssetController, :asset)
   end
 
