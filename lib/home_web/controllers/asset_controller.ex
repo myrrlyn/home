@@ -34,7 +34,7 @@ defmodule HomeWeb.AssetController do
   def paper(conn, %{"file" => file}) do
     path = Path.join(["priv", "papers", file])
 
-    sendfile(conn, path)
+    sendfile(conn, %{"path" => path})
   end
 
   @doc """
@@ -65,7 +65,7 @@ defmodule HomeWeb.AssetController do
   def asset(conn, %{"path" => path} = _params) do
     path = Path.join(["priv" | ["static" | path]])
 
-    sendfile(conn, path)
+    sendfile(conn, %{"path" => path})
   end
 
   def sendfile(conn, %{"path" => path} = _params) do

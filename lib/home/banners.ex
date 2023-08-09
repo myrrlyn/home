@@ -460,6 +460,6 @@ end
 
 defimpl String.Chars, for: Home.Banners.Banner do
   def to_string(%Home.Banners.Banner{file: file}) do
-    ["images", "banners", file] |> Path.join()
+    ["static", "images", "banners", file] |> Path.join()
   end
 end
