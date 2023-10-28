@@ -15,6 +15,7 @@
       </details>
     <% else %>
       <%= render_slot(@item, entry) %>
+      <.navtoc toc={entry.contents} collapse={true} />
     <% end %>
   </li>
 </ol>

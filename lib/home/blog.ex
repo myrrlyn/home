@@ -25,4 +25,14 @@ defmodule Home.Blog do
     |> Map.delete("title")
     |> (fn %{"y" => y, "m" => m, "d" => d} -> [y, m, d] |> Enum.join("-") end).()
   end
+
+  @spec walkdir(Path.t()) :: Enumerable.t(Path.t())
+  def walkdir(root) do
+    [root, "**", "*.md"]
+    |> Path.join()
+    |> Path.wildcard()
+    |> Stream.filter(&File.regular?/1)
+    |> Stream.reject(&(Path.basename(&1) in ["index.md", "README.md"]))
+    |> Stream.map(&Path.relative_to(&1, "priv/pages"))
+  end
 end

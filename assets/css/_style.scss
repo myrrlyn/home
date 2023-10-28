@@ -9,8 +9,11 @@
 }
 
 %heading {
-  font-family: "Ferro Rosso", "Roboto Slab", serif;
+  font-family:
+    /* "Ferro Rosso", */
+    "Roboto Slab", serif;
   font-style: normal !important;
+  font-variant: small-caps;
   line-height: 1;
   margin-block-start: 0em;
   margin-block-end: 0.25em;
@@ -358,7 +361,7 @@ nav[aria-label="Sitemap"] {
   }
 
   details:not([open]) summary::after {
-    content: "◂";
+    content: "▸";
   }
 
   details[open] summary::after {

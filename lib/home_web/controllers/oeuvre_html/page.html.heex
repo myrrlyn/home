@@ -1,12 +1,15 @@
 <article>
   <header class="frontmatter">
     <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
-    <p>
+    <p :if={@page.meta.props["reddit"]}>
       <.link href={"//old.reddit.com/r/teslore/comments/#{@page.meta.props["reddit"]}"}>Originally published to /r/teslore</.link>
       <%= if author = @page.meta.props["author"] do %>by <%= author %><% end %>
       on <.timestamp time={@page.meta.date} />
     </p>
-    <.navtoc :if={@page.toc != []} toc={@page.toc} />
+    <%= if @page.toc != [] do %>
+      <strong>Chapters</strong>
+      <.navtoc toc={@page.toc} collapse={false} />
+    <% end %>
   </header>
   <hr />
   <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />

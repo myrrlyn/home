@@ -156,10 +156,11 @@ defmodule HomeWeb.OeuvreController do
   end
 
   def get_fanfic() do
-    src_paths()
+    @dir
+    |> Home.Blog.walkdir()
     |> Home.PageCache.cached_many()
     |> Stream.filter(fn {res, _} -> res == :ok end)
-    |> Stream.map(fn {:ok, {path, page}} -> {"/#{path |> Path.rootname()}", page.meta} end)
+    |> Stream.map(fn {:ok, {path, page}} -> {"/#{Path.rootname(path)}", page.meta} end)
     |> (fn stream ->
           if Application.get_env(:home, :show_drafts),
             do: stream,

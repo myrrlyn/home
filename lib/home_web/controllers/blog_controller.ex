@@ -227,11 +227,15 @@ defmodule HomeWeb.BlogController do
   end
 
   def navtree(current \\ nil) do
-    [
-      HomeWeb.Nav.Entry.new("📚 <small>(Blog index)</small>", @root, "dr-xr-xr-x"),
-      HomeWeb.Nav.Entry.new("🏡 <small>(Site index)</small>", "/", "dr-xr-xr-x")
-    ]
-    |> Stream.concat(HomeWeb.Nav.make_listing(get_articles(), current))
+    get_articles()
+    |> HomeWeb.Nav.make_listing(current)
+    |> (&Stream.concat(
+          [
+            HomeWeb.Nav.Entry.new("📚 <small>(Blog index)</small>", @root, "dr-xr-xr-x"),
+            HomeWeb.Nav.Entry.new("🏡 <small>(Site index)</small>", "/", "dr-xr-xr-x")
+          ],
+          &1
+        )).()
   end
 
   def page_listing() do
@@ -260,11 +264,13 @@ defmodule HomeWeb.BlogController do
 
   ## Returns
 
-  A list of `{url, metadata}` for each article fetched. The articles are all
-  loaded into the `Home.PageCache`, and can be accessed by the same paths passed
-  into this.
+  A list of `{url, metadata, toc}` for each article fetched. The articles are
+  all loaded into the `Home.PageCache`, and can be accessed by the same paths
+  passed into this.
   """
-  @spec get_articles(Enumerable.t(Path.t())) :: [{Path.t(), Home.Meta.t()}]
+  @spec get_articles(Enumerable.t(Path.t())) :: [
+          {Path.t(), Home.Meta.t(), Wyz.Markdown.Headings.tree()}
+        ]
   def get_articles(paths \\ src_paths()) do
     paths
     # Do not include filesystem-powered redirects.
@@ -273,16 +279,16 @@ defmodule HomeWeb.BlogController do
     |> Home.PageCache.cached_many()
     # Discard any invalid entries. That’s my problem, not the viewer’s problem.
     |> Stream.filter(fn {res, _} -> res == :ok end)
-    # Translate filepath to URL and drop the full page for just metadata
-    |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta} end)
+    # Translate filepath to URL and drop the full page for just metadata/toc
+    |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta, page.toc} end)
     # If we are not in :dev, discard unpublished entries
     |> (fn seq ->
           if Application.get_env(:home, :show_drafts),
             do: seq,
-            else: seq |> Stream.filter(fn {_, meta} -> meta.published end)
+            else: seq |> Stream.filter(fn {_, meta, _} -> meta.published end)
         end).()
     # And sort by date
-    |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
+    |> Enum.sort_by(fn {_, meta, _} -> meta.date end, {:desc, DateTime})
   end
 
   @doc """
@@ -323,7 +329,7 @@ defmodule HomeWeb.BlogController do
     |> Path.join()
     |> Path.wildcard()
     # Discard index files
-    |> Stream.reject(fn p -> p |> Path.basename() == "index.md" end)
+    |> Stream.reject(fn p -> Path.basename(p) in ["README.md", "index.md"] end)
     # Discard subdirectories (should not exist with a .md suffix anyway)
     |> Stream.filter(&File.regular?/1)
     # Drop the content-directory prefix

@@ -34,7 +34,7 @@ defmodule Home.Markdown do
   a recursive list of `[name, ident, TOC]`.
   """
   @spec render(String.t(), Range.t()) ::
-          {:ok, String.t(), any} | {:error, %Home.Page.NotFoundException{}}
+          {:ok, {String.t(), toc_tree(), any()}} | {:error, %Home.Page.NotFoundException{}}
   def render(markdown, tocs \\ 1..6) do
     idents =
       case __MODULE__.Idents.start_link([]) do
@@ -66,7 +66,7 @@ defmodule Home.Markdown do
       __MODULE__.Idents.stop(idents)
     end
 
-    {:ok, html, toc_tree, msgs}
+    {:ok, {html, toc_tree, msgs}}
   catch
     out -> out
   end

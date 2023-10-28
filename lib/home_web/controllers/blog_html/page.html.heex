@@ -2,9 +2,12 @@
   <header class="frontmatter">
     <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
     <p class="timestamp">Published on <.timestamp time={@page.meta.date}, format="{YYYY}, {Mshort} {D}" /></p>
-    <p><%= @page.meta.summary |> Earmark.as_html! |> raw %></p>
     <p>Estimated reading time: <span id="reading-time"></span>.</p>
-    <.navtoc :if={@page.toc != []} toc={@page.toc} />
+    <p><%= @page.meta.summary |> Earmark.as_html! |> raw %></p>
+    <%= if @page.toc != [] do %>
+      <strong>Contents</strong>
+      <.navtoc toc={@page.toc} collapse={false} />
+    <% end %>
   </header>
   <hr />
   <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />

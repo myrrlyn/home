@@ -1,12 +1,17 @@
 <ol :if={@toc != []}>
-  <li :for={{show, ident, children} <- @toc}>
+  <li :for={{%Wyz.Markdown.Heading{text: text, id: id}, children} <- @toc}>
     <%= if children != [] do %>
-      <details>
-        <summary><.link href={"#" <> ident}><%= Phoenix.HTML.raw(show) %></.link></summary>
-        <.toc toc={children} />
-      </details>
+      <%= if @collapse do %>
+        <details>
+          <summary><.link href={"#" <> id}><%= Phoenix.HTML.raw(text) %></.link></summary>
+          <.toc toc={children} />
+        </details>
+      <% else %>
+        <.link href={"#" <> id}><%= Phoenix.HTML.raw(text) %></.link>
+        <.toc toc={children} collapse={@collapse} />
+      <% end %>
     <% else %>
-      <.link href={"#" <> ident}><%= Phoenix.HTML.raw(show) %></.link>
+      <.link href={"#" <> id}><%= Phoenix.HTML.raw(text) %></.link>
     <% end %>
   </li>
 </ol>

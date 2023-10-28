@@ -1,7 +1,10 @@
 <article>
   <header class="frontmatter">
     <.page_title page_title={@page.meta.props["page_title"] || @page.meta.title} page_subtitle={@page.meta.subtitle} />
-    <.navtoc :if={@page.toc != []} toc={@page.toc} />
+    <%= if @page.toc != [] do %>
+      <strong>Sections</strong>
+      <.navtoc toc={@page.toc} collapse={false} />
+    <% end %>
   </header>
   <hr />
   <section><%= @page.content |> raw %></section>
