@@ -1,17 +1,17 @@
 #let project(title: "", author: (), body) = {
   set document(author: author.name, title: title)
   set page(
-    paper: "us-letter",
+    paper: "a4",
+    margin: (x: 2cm, y: 2.5cm),
+    // paper: "us-letter",
     numbering: "1/1",
-    number-align: center,
-    header: align(center, grid(
-      columns: 4,
-      column-gutter: 2em,
-      align(start + horizon, author.email),
-      align(center + horizon, author.website),
-      align(center + horizon, author.postal),
-      align(end + horizon, author.phone),
-    ))
+    number-align: top + right,
+    footer: grid(
+      columns: (1fr, 1fr, 1fr),
+      align(left, author.website),
+      align(center, author.postal),
+      align(right, author.email),
+    ),
   )
   set text(
     font: ("Roboto Slab", "Roboto"),
@@ -64,7 +64,6 @@
   email: link("mailto:self@myrrlyn.net", [`self@myrrlyn.net`]),
   website: link("https://myrrlyn.net/", [`https://myrrlyn.net`]),
   postal: [Madison, WI],
-  phone: link("tel:+1-517-499-8820", "+1 (517) 499-8820")
 )
 
 #show: project.with(title: "My Résumé", author: self)
@@ -72,29 +71,42 @@
 #set heading(outlined: false, numbering: none)
 #show heading: smallcaps
 
+#show "Sub-Zero Group": link("https://subzero-wolf.com/", "Sub-Zero Group")
+#show "Fastly": link("https://fastly.com/", "Fastly")
+#show "Amazon Web Services": link("https://aws.amazon.com/", "Amazon Web Services")
+#show "Space Dynamics Laboratory": link("https://sdl.usu.edu/", "Space Dynamics Laboratory")
+
 #align(center)[= Introduction]
 
 I am a software engineer specializing in low-level systems and freestanding
-code. I have over six years' experience developing embedded software for
-research satellites and experimental networking appliances, system software for
-high-traffic web servers, and foundation libraries in C, C++, and Rust. I have
-worked with electrical engineers to create novel hardware and with fleet
-operators to deploy high-performance software worldwide.
+code. I have over seven years' industry experience writing appliance control
+software for research satellites and domestic appliances, high-performance web
+server logic, and foundation libraries in C, C++, and Rust. I have worked
+closely with hardware engineers to create new machines and with fleet operators
+to deploy software worldwide.
 
 I excel at designing and implementing safety-critical code and proving
 conformance to external requirements, including both customer needs and formal
 engineering standards. I am a strong technical writer and produce my own
-documentation, for both technical and non-technical audiences. I am also an
-active contributor of open-source software, primarily in Rust. I maintain
-several widely-used utility libraries and lead the #ferrilab project.
+documentation. I am also an active contributor to open-source software,
+primarily in Rust. I maintain several widely-used utility libraries and lead the
+#ferrilab project.
 
 #align(center)[= Summary]
 
 These are explained with more detail on the following pages.
 
-== 1. Sub-Zero/Wolf/Cove
+== 0. Ferrilab
 
-I am a senior software engineer working on appliance control software.
+I maintain an open-source Rust project which significantly reshapes the standard
+programming model. The `bitvec` crate is widely used throughout the public Rust
+ecosystem.
+
+== 1. Sub-Zero Group
+
+I am a senior software engineer working on safety-critical and user-interface
+software for Wolf kitchen appliances. I also drive education and modern practice
+for our team.
 
 == 2. Fastly
 
@@ -106,8 +118,8 @@ malicious traffic without imposing a performance cost to any other users.
 == 3. Amazon Web Services
 
 I led the design and implementation of a Rust real-time unikernel running on a
-small ARM processor. I worked closely with electrical engineers to develop a
-novel networking appliance subject to strict performance, security, and
+small ARM processor. I worked with electrical engineers to develop a novel
+networking appliance subject to strict performance, security, and
 tamper-resistance requirements.
 
 == 4. Space Dynamics Laboratory
@@ -116,13 +128,7 @@ I wrote kernel modules and flight application software for small satellites, and
 earthside terminal software to control them. I also served as control
 staff for vehicle operations.
 
-== 5. Ferrilab
-
-I maintain an open-source Rust project which significantly reshapes the standard
-programming model. The `bitvec` crate is widely used throughout the public Rust
-ecosystem.
-
-== 6. Formal Education
+== 5. Formal Education
 
 I studied Computer Engineering at Trine University. I learned digital system
 design in Verilog and embedded programming in C. I built and programmed a small
@@ -135,10 +141,11 @@ autonomous vehicle for my thesis project.
 
 = Professional Experience
 
-== Sub-Zero/Wolf/Cove (2023--present) --- Senior Software Engineer
+== Sub-Zero Group (2023--present) --- Senior Software Engineer
 
-I write realtime appliance control and interface software for kitchen
-appliances, primarily in C++ running on a suite of microprocessors.
+I design and develop the safety and human-interface systems of Wolf ovens,
+which are written primarily in C++ across a small network of microprocessors. I
+also lead our team's CMake build system and CI automation.
 
 == Fastly (2021--2023) --- Senior Software Engineer
 
@@ -158,8 +165,8 @@ architecture for a unikernel program running on an ARM Cortex-R processor, and
 implemented device drivers and the early application framework.
 
 I am required to not disclose anything more about this project. It was cancelled
-after a year, and several of us chose to leave AWS when we weren't able to find
-suitable internal positions.
+after a year, and several of us left AWS when we weren't able to find suitable
+internal positions.
 
 == Space Dynamics Laboratory (2016--2020) --- Satellite Software Engr
 
@@ -279,21 +286,22 @@ standard library.
 
 = Skills and Abilities
 
-- I am an expert Rust programmer, fluent in C++11 and C99, and am capable with
-  Ruby.
+- I am an expert Rust programmer, and have written it as my primary language
+  since 2016, roughly v1.10.
+- I am fluent in C++20, C++11, and C99. I have written C89, but I would
+  prefer not to do so again.
+- I both write and speak English excellently, and am a skilled public presenter.
+- I use Elixir, TypeScript, and Ruby recreationally.
+- I have maintained an Arch Linux machine continuously since 2013 as my personal
+  computer and public server.
 - I am specialized in asymmetrically-distributed systems and CLI tools, and
-  familiar with web applications. I have not written desktop graphical software
+  familiar with web applications. I have not written desktop, windowed, software
   professionally.
-- I produce my own technical writing, including both internal API documentation,
-  user manuals, and engineering reports.
 - I primarily use Git and Linux. I have used Docker for both development
   environments and application deployments. I am familiar with Mercurial and
   Windows PowerShell, but have not used them extensively.
 - My public work is on GitHub; I have also used GitLab and the Atlassian suite
   professionally.
-- I can rapidly learn unfamiliar systems and technologies. I have enough of an
-  electrical engineering background to follow along with work in that area, but
-  I am no longer able to work with hardware beyond writing Verilog modules.
 
 = Formal Education
 
@@ -320,12 +328,17 @@ FPGA.
 
 == Federal Clearance
 
-I have held a TS/SCI clearance since 2018. I was last read out in 2021 August,
-and so my investigation is expired as of 2023 August. I maintain a lifestyle
-that is conducive to clearance investigations should the need arise.
+I was granted a TS/SCI clearance in 2018 February. I was last read out in 2021 August,
+and so my investigation expired in 2023 August. I maintain a lifestyle that is
+conducive to clearance investigations should the need arise.
 
 == Aquatics
 
-I am a PADI rescue diver and Scouts BSA lifeguard instructor. I believe strongly
-in the importance of imposing safety onto a hazardous environment, and bring
-this focus to all aspects of my work.
+I am a PADI rescue diver and Scouting America lifeguard instructor. I believe
+strongly in the importance of imposing safety onto a hazardous environment, and
+bring this focus to all aspects of my work.
+
+== Medicine
+
+I am a Wilderness First Aid and CPR instructor with the ECSI and Scouting
+America schools.

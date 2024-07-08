@@ -1,0 +1,92 @@
+@use "block";
+@use "../color/langs";
+
+@mixin codeblock($lang, $color) {
+  &.codeblock-#{$lang} {
+    background-color: transparentize($color, 0.85);
+    border-width: 0;
+    @include block.striped(var(--text-fg), $color, $side: "-inline-start");
+
+    span.lang-marker {
+      background-color: $color;
+    }
+  }
+}
+
+div.code-container {
+  @extend %block;
+
+  border-inline-start: 10px solid var(--charcoal);
+
+  // Allow .copy-icon to anchor to its enclosing .code-container
+  position: relative;
+
+  .lang-marker {
+    background-color: var(--charcoal-bg);
+    color: var(--text-fg);
+    position: relative;
+    top: -0.5em;
+    margin-inline-start: -1em;
+    padding: 0.5em 1em;
+
+    --curve-radius: 1.2em;
+    border-start-end-radius: var(--curve-radius);
+    border-end-end-radius: var(--curve-radius);
+  }
+
+  @include codeblock(c, $lang-c);
+  @include codeblock(cpp, $lang-cpp);
+  @include codeblock(elixir, $lang-elixir);
+  @include codeblock(html, $lang-html);
+  @include codeblock(js, $lang-js);
+  @include codeblock(rust, $lang-rust);
+  @include codeblock(ps1, $lang-pwsh);
+  @include codeblock(sh, $lang-shell);
+  @include codeblock(shell, $lang-shell);
+  @include codeblock(toml, $lang-toml);
+
+  @include codeblock(plaintext, $lang-plaintext);
+
+  .copy-icon {
+    height: 2em;
+    aspect-ratio: 1;
+    display: inline-block;
+    padding: 0.5em;
+    position: absolute;
+    right: 1em;
+    top: 0;
+  }
+
+  pre.codeblock {
+    margin-block-start: 0;
+  }
+
+  &:not(.codeblock-term) {
+    code,
+    code span {
+      @extend %text-mono;
+    }
+  }
+
+  &.codeblock-term {
+    code,
+    code span {
+      @extend %text-term;
+    }
+  }
+}
+
+div.code-container {
+  @extend %block;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+pre.samp-container {
+  @extend %block;
+
+  background-color: var(--black);
+  color: var(--white);
+}

@@ -5,9 +5,11 @@ defmodule Home.Markdown do
   @opts %Earmark.Options{
     breaks: false,
     code_class_prefix: "lang- language-",
+    compact_output: true,
     footnotes: true,
     gfm: true,
     gfm_tables: true,
+    # math: true,
     postprocessor: &__MODULE__.walker/1,
     sub_sup: true
   }

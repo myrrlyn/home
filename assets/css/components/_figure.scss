@@ -1,0 +1,32 @@
+@use "block";
+
+figure {
+  @extend %block;
+
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--text-fg);
+
+  margin-inline: 1em;
+
+  figcaption {
+    font-size: 0.9em;
+    text-align: center;
+  }
+
+  &:not(.no-count) {
+    counter-increment: figcounter;
+
+    figcaption {
+      &:not(:empty)::before {
+        content: "Fig. #" counter(figcounter) ": ";
+        font-style: italic;
+      }
+
+      &:empty::before {
+        content: "Figure #" counter(figcounter);
+        font-style: italic;
+      }
+    }
+  }
+}

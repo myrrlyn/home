@@ -127,30 +127,3 @@ pre {
     color: var(--text-fg);
   }
 }
-
-main aside,
-blockquote {
-  &.bq-harm {
-    background-color: var(--iso-red-bg);
-    border-left-color: var(--iso-red);
-    border-right-color: var(--iso-red);
-  }
-
-  &.bq-warn {
-    background-color: var(--iso-yellow-bg);
-    border-left-color: var(--iso-yellow);
-    border-right-color: var(--iso-yellow);
-  }
-
-  &.bq-safe {
-    background-color: var(--iso-green-bg);
-    border-left-color: var(--iso-green);
-    border-right-color: var(--iso-green);
-  }
-
-  &.bq-info {
-    background-color: var(--iso-blue-bg);
-    border-left-color: var(--iso-blue);
-    border-right-color: var(--iso-blue);
-  }
-}

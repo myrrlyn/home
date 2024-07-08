@@ -8,82 +8,9 @@
   line-height: 1.25;
 }
 
-%heading {
-  font-family:
-    /* "Ferro Rosso", */
-    "Roboto Slab", serif;
-  font-style: normal !important;
-  font-variant: small-caps;
-  line-height: 1;
-  margin-block-start: 0em;
-  margin-block-end: 0.25em;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @extend %heading;
-
-  a {
-    font-size: 75%;
-    position: relative;
-    top: -0.2em;
-  }
-
-  span::before {
-    @extend %text-serif;
-    font-size: 85%;
-  }
-}
-
-h1 {
-  color: var(--ansi-blue);
-  font-size: 4em;
-}
-
-h2 {
-  color: var(--ansi-purple);
-  font-size: 3.5em;
-
-  &.subtitle {
-    color: var(--ansi-orange);
-  }
-}
-
-h3 {
-  color: var(--ansi-green);
-  font-size: 3.3em;
-}
-
-h4 {
-  color: var(--ansi-yellow);
-  font-size: 3em;
-}
-
-h5 {
-  color: var(--ansi-red);
-  font-size: 2.5em;
-}
-
-h6 {
-  color: var(--ansi-orange);
-  font-size: 2em;
-}
-
 p {
   line-height: 1.5;
   margin: 1em 0;
-}
-
-pre {
-  overflow-x: auto;
-}
-
-mark {
-  background-color: $cyber-yellow;
 }
 
 img,
@@ -111,18 +38,11 @@ samp {
   @extend %text-mono;
 }
 
-figure {
-  margin-inline: 0;
-  padding-inline: 0;
-
-  figcaption {
-    font-size: 0.9em;
-    text-align: center;
-  }
-
-  p {
-    margin: 0;
-  }
+kbd {
+  padding: 0.125em 0.5em;
+  margin: 0 0.25em;
+  border: 1px solid var(--text-fg);
+  border-radius: 0.25em;
 }
 
 article img {
@@ -194,27 +114,6 @@ kbd kbd {
   border: 1px solid var(--text-fg);
 }
 
-body:not(.oeuvre) {
-
-  //  Make the deleted- and inserted- text span tags have visual flair akin to
-  //  a highlighter pen
-  ins,
-  del {
-    text-decoration: none;
-    padding: 0 0.75em;
-    border-top-left-radius: 1000px;
-    border-bottom-right-radius: 1000px;
-  }
-
-  del {
-    background-color: var(--ansi-red);
-  }
-
-  ins {
-    background-color: var(--ansi-green);
-  }
-}
-
 aside,
 blockquote {
   pre {
@@ -222,36 +121,6 @@ blockquote {
   }
 
   margin: 0;
-}
-
-main aside,
-blockquote {
-  @include left-chevron(var(--charcoal));
-
-  background: {
-    color: var(--charcoal-bg);
-  }
-}
-
-main aside,
-blockquote,
-div.code-container {
-  margin-block: 1em;
-
-  padding: 1em;
-
-  * {
-    margin-inline-start: 0;
-    margin-inline-end: 0;
-  }
-
-  :first-child {
-    margin-block-start: 0;
-  }
-
-  :last-child {
-    margin-block-end: 0;
-  }
 }
 
 .text-center {
@@ -271,7 +140,7 @@ body:is(.blog, .oeuvre) .title {
   }
 }
 
-:not(blockquote)>hr {
+:not(blockquote) > hr {
   border: none;
   overflow: visible;
   text-align: center;
@@ -293,65 +162,6 @@ body:is(.blog, .oeuvre) .title {
     padding: 0 4px;
     position: relative;
     top: -1em;
-  }
-}
-
-@mixin codeblock($lang, $color) {
-  &.codeblock-#{$lang} {
-    background-color: transparentize($color, 0.85);
-    border-left-color: $color;
-    border-right-color: $color;
-
-    &.lang-marker {
-      background-color: $color;
-    }
-  }
-}
-
-div.code-container {
-  @include left-chevron(var(--charcoal));
-  border-right-color: var(--charcoal);
-  margin-bottom: 1em;
-  padding-right: 1em;
-
-  @include codeblock(c, $lang-c);
-  @include codeblock(cpp, $lang-cpp);
-  @include codeblock(elixir, $lang-elixir);
-  @include codeblock(html, $lang-html);
-  @include codeblock(js, $lang-js);
-  @include codeblock(rust, $lang-rust);
-  @include codeblock(ps1, $lang-pwsh);
-  @include codeblock(sh, $lang-shell);
-  @include codeblock(shell, $lang-shell);
-  @include codeblock(toml, $lang-toml);
-
-  .lang-marker {
-    color: var(--text-fg);
-    position: relative;
-    top: -0.5em;
-    left: -1em;
-    padding: 0.5em 1em;
-    border-bottom-right-radius: 1.5em;
-  }
-
-  pre.codeblock {
-    margin-top: 0;
-  }
-
-  &:not(.codeblock-term) {
-
-    code,
-    code span {
-      @extend %text-mono;
-    }
-  }
-
-  &.codeblock-term {
-
-    code,
-    code span {
-      @extend %text-term;
-    }
   }
 }
 
@@ -384,4 +194,9 @@ nav[aria-label="Sitemap"] {
 
 .italic {
   font-variant: italic;
+}
+
+a.reversefootnote + p {
+  display: inline-block;
+  padding-inline-start: 0.5em;
 }

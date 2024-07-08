@@ -1,0 +1,25 @@
+@use "../color";
+
+mark,
+ins,
+del {
+  border-start-start-radius: 100em;
+  border-end-end-radius: 100em;
+  padding: 0.125em 0.75em;
+  text-decoration: none;
+}
+
+mark {
+  background-color: $cyber-yellow;
+  color: var(--iso-black);
+}
+
+ins {
+  background-color: var(--ansi-green);
+  color: var(--text-fg);
+}
+
+del {
+  background-color: var(--ansi-red);
+  color: var(--text-fg);
+}

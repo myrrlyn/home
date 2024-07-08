@@ -1,0 +1,49 @@
+@use "block";
+@use "../variables";
+
+%sign-harm {
+  @include block.striped(var(--iso-white), var(--iso-red));
+  background-color: var(--iso-red-bg);
+}
+
+%sign-warn {
+  @include block.striped(var(--iso-black), var(--iso-yellow));
+  background-color: var(--iso-yellow-bg);
+}
+
+%sign-safe {
+  @include block.striped(var(--iso-white), var(--iso-green));
+  background-color: var(--iso-green-bg);
+}
+
+%sign-info {
+  @include block.striped(var(--iso-white), var(--iso-blue));
+  background-color: var(--iso-blue-bg);
+}
+
+aside {
+  @extend %block;
+
+  &.bq-harm {
+    @extend %sign-harm;
+  }
+
+  &.bq-warn {
+    @extend %sign-warn;
+  }
+
+  &.bq-safe {
+    @extend %sign-safe;
+  }
+
+  &.bq-info {
+    @extend %sign-info;
+  }
+}
+
+blockquote {
+  @extend %block;
+  @include left-chevron(var(--charcoal));
+
+  background-color: var(--charcoal-bg);
+}

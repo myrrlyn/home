@@ -7,16 +7,27 @@
 @import "layout";
 @import "gravatar";
 @import "gallery";
-@import "style";
+// @import "style";
 
 :root {
   --current-page-left: "👉";
-  --current-page-right: "👈"
+  --current-page-right: "👈";
 }
 
 body.crate {
   --current-page-left: "🦀";
   --current-page-right: "⚙️";
+}
+
+@import "style";
+
+main article {
+  @import "components/aside";
+  @import "components/codeblock";
+  @import "components/dictionary";
+  @import "components/highlight";
+  @import "components/figure";
+  @import "components/heading";
 }
 
 /* Alerts and form errors */
@@ -28,31 +39,36 @@ body.crate {
 
   &-info {
     // color: #31708f;
-    color: var(--iso-blue);
-    background-color: #d9edf7;
-    border-color: #bce8f1;
+
+    // color: var(--iso-blue);
+    // background-color: #d9edf7;
+    // border-color: #bce8f1;
+
+    @extend %sign-info;
   }
 
   &-warning {
     // color: #8a6d3b;
-    color: var(--iso-yellow);
-    background-color: #fcf8e3;
-    border-color: #faebcc;
+
+    // color: var(--iso-yellow);
+    // background-color: #fcf8e3;
+    // border-color: #faebcc;
+
+    @extend %sign-warn;
   }
 
   &-danger {
     // color: #a94442;
-    color: var(--iso-red);
-    background-color: #f2dede;
-    border-color: #ebccd1;
+
+    // color: var(--iso-red);
+    // background-color: #f2dede;
+    // border-color: #ebccd1;
+
+    @extend %sign-harm;
   }
 
   &:empty {
     display: none;
-  }
-
-  p {
-    margin-bottom: 0;
   }
 }
 
@@ -83,19 +99,15 @@ h3:not(.no-count) span::before {
 
 article {
   counter-reset: figcounter;
-}
 
-figure:not(.no-count) {
-  counter-increment: figcounter;
+  section {
+    & > :first-child {
+      margin-block-start: 0;
+    }
 
-  figcaption:not(:empty)::before {
-    content: "Fig. #" counter(figcounter) ": ";
-    font-style: italic;
-  }
-
-  figcaption:empty::before {
-    content: "Figure #" counter(figcounter);
-    font-style: italic;
+    & > :last-child {
+      margin-block-end: 0;
+    }
   }
 }
 

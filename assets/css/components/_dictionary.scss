@@ -1,0 +1,9 @@
+dl {
+  dt {
+    font-style: italic;
+  }
+
+  dd + dt {
+    margin-block-start: 0.5em;
+  }
+}
