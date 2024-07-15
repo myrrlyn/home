@@ -36,6 +36,11 @@ defmodule HomeWeb.BlogController do
     |> render(:rss, articles: get_articles())
   end
 
+  # Redirect bitvec to Ferrilab
+  def category(conn, %{"category" => "bitvec"} = params) do
+    HomeWeb.Nav.redirect(conn, "/blog/ferrilab", "bitvec has migrated to the Ferrilab project")
+  end
+
   # Render a group index page
   def category(conn, %{"category" => group} = params) do
     src_path = ["blog", group, "index.md"] |> Path.join()
@@ -65,6 +70,15 @@ defmodule HomeWeb.BlogController do
           |> error(404, :"invalid-category", "Invalid Category")
         end
     end
+  end
+
+  # Redirect bitvec articles to Ferrilab
+  def article(conn, %{"category" => "bitvec", "article" => page} = params) do
+    HomeWeb.Nav.redirect(
+      conn,
+      "/blog/ferrilab/#{page}",
+      "bitvec has migrated to the Ferrilab project"
+    )
   end
 
   # Map categorized pages correctly.

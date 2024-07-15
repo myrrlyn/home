@@ -39,7 +39,7 @@ window.liveSocket = live_socket;
 
 function guess_reading_time() {
   var words = 0;
-  for (var para of document.querySelectorAll("article > section p")) {
+  for (var para of document.querySelectorAll("main article p")) {
     words += (para as HTMLElement).innerText.trim().split(/\s+/).length;
   }
   let time = Math.ceil(words / 200);
