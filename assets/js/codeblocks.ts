@@ -7,6 +7,7 @@ import hljs from "highlight.js";
  * snippet.
  */
 let lang_dict = {
+  "ascii-art": "Text diagram",
   c: "C code",
   cosmos: "COSMOS interface definition",
   cpp: "C++ code",
@@ -21,7 +22,6 @@ let lang_dict = {
   sh: "UNIX shell session",
   plain: "Plain text",
   plaintext: "Plain text",
-  term: "Text diagram",
   toml: "TOML configuration",
   xml: "XML",
 };

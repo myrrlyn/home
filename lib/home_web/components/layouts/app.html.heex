@@ -1,6 +1,6 @@
 <.banner banner={assigns[:banner]} />
 <div id="content">
-  <main role="main"><%= @inner_content %></main>
+  <main><%= @inner_content %></main>
   <aside id="about" class="screen-only">
     <.page_logo src={@gravatar} />
     <div id="about-text">
@@ -17,8 +17,7 @@
         </.sitenav>
       </nav>
       <small>
-        If something is wrong with this website, I would
-        appreciate it if you
+        If something is wrong with this website, I would appreciate it if you
         <.github_issue title="Content Erratum" body={"I was browsing #{@conn.request_path} and saw %E2%80%A6"} />
       </small>
       <.logos />

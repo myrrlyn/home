@@ -2,10 +2,24 @@
   <header class="frontmatter">
     <.page_title page_title={@page.meta.props["page_title"] || @page.meta.title} page_subtitle={@page.meta.subtitle} />
     <%= if @page.toc != [] do %>
-      <strong>Sections</strong>
+      <strong>Contents</strong>
       <.navtoc toc={@page.toc} collapse={false} />
     <% end %>
   </header>
   <hr />
-  <section><%= @page.content |> raw %></section>
+  <div class="badges" :if={badges = @page.meta.props["badges"]}>
+    <%= for badge <- badges do %>
+      <% base = badge["base"] || "https://img.shields.io" %>
+      <% style = badge["style"] || "for-the-badge" %>
+      <% logo = badge["logo"] %>
+      <% logo = if logo, do: "&logo=#{logo}", else: nil %>
+      <% full = "#{base}/#{badge["badge"]}?style=#{style}#{logo}" %>
+      <%= if url = badge["url"] do %>
+        <a href={url}><img class="badge" src={full} /></a>
+      <% else %>
+        <img class="badge" src={full} />
+      <% end %>
+    <% end %>
+  </div>
+  <%= @page.content |> raw %>
 </article>

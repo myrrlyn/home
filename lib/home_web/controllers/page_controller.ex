@@ -26,7 +26,7 @@ defmodule HomeWeb.PageController do
   def page(conn, %{"path" => ["résumé"]}) do
     page = Home.PageCache.cached!("resume.md")
     # conn |> build(params, "/résumé", page)
-    pdf = HomeWeb.Endpoint.url() <> "/papers/resume.pdf"
+    pdf = "/papers/resume.pdf"
 
     conn
     |> render(:pdf,
@@ -67,8 +67,31 @@ defmodule HomeWeb.PageController do
     HomeWeb.Boycott.refuse(conn, nil)
   end
 
-  def sitemap(conn, _) do
+  def sitemap_xml(conn, %{}) do
     conn |> put_resp_content_type("text/xml") |> render(:sitemap)
+  end
+
+  def sitemap_txt(conn, %{}) do
+    out = all_pages() |> Enum.join("\n")
+    conn |> put_resp_content_type("text/plain") |> send_resp(200, out)
+  end
+
+  def all_pages() do
+    [
+      page_listing(),
+      HomeWeb.BlogController.page_listing(),
+      HomeWeb.OeuvreController.page_listing()
+    ]
+    |> Stream.concat()
+    |> HomeWeb.Nav.make_listing()
+    |> Stream.flat_map(fn
+      %HomeWeb.Nav.Entry{children: nil, url: url} ->
+        [url]
+
+      %HomeWeb.Nav.Entry{children: children, url: url} ->
+        Stream.concat([[url], children |> Stream.map(fn %HomeWeb.Nav.Entry{url: url} -> url end)])
+    end)
+    |> Stream.map(fn url -> Path.join(HomeWeb.Endpoint.url(), url) end)
   end
 
   def html_test(conn, _),
@@ -149,7 +172,7 @@ defmodule HomeWeb.PageController do
          {"<code>tap</code>", "tap", "-r--"},
          {"<code>calm_io</code>", "calm_io", "-r--"},
          {"<code>wyz</code>", "wyz", "-r--"},
-         {"Cosmonaught", "Cosmonaught", "----"},
+         {"Cosmonaught", "cosmonaught", "----"},
          {"<code>lilliput</code>", "lilliput", "-r--"}
        ]},
       {"Hermaeus", "/hermaeus", "-r--"},

@@ -55,7 +55,7 @@ I am working on it.
 
 The page layout is supposed to be responsive to mobile devices, and I test it on
 both my laptop and my phone. If you have complaints about the CSS, please let me
-know and I’ll try to address them. I am *decent*, though unimaginative, at CSS,
+know and I’ll try to address them. I am _decent_, though unimaginative, at CSS,
 and am always open to feedback and improvement.
 
 ## Learn more

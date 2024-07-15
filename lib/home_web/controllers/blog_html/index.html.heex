@@ -1,14 +1,12 @@
 <article>
-  <section>
-    <%= @page.content |> raw %>
-  </section>
+  <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
+  <%= @page.content |> raw %>
   <section>
     <ol>
       <li :for={{name, slug, count, desc} <- @groups} value={count}>
         <.link href={"/blog/#{slug}"}><%= name %></.link>
         <%= if desc do %>
-          <br />
-          <%= desc |> Earmark.as_html! |> raw %>
+          <%= desc |> Earmark.as_html!() |> raw() %>
         <% end %>
       </li>
     </ol>

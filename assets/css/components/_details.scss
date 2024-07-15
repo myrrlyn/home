@@ -1,0 +1,14 @@
+@use "block";
+@use "../variables";
+
+details {
+  border: 0.25em solid var(--text-fg);
+  padding: 0.75em 0;
+  summary {
+    font-style: italic;
+  }
+
+  &.block-harm {
+    @include left-chevron(var(--iso-red));
+  }
+}

@@ -39,7 +39,8 @@ defmodule HomeWeb.Router do
   scope "/", HomeWeb do
     pipe_through(:xml)
 
-    get("/sitemap.xml", PageController, :sitemap)
+    get("/sitemap.xml", PageController, :sitemap_xml)
+    get("/sitemap.txt", PageController, :sitemap_txt)
 
     get("/atom.xml", BlogController, :atom)
     get("/blog.atom", BlogController, :atom)
@@ -80,6 +81,12 @@ defmodule HomeWeb.Router do
     # get("/:gallery", GalleryController, :gallery)
   end
 
+  scope "/static", HomeWeb do
+    get("/banners/by_album/:album", AssetController, :banner_by_album)
+    get("/banners/by_tags/:tags", AssetController, :banner_by_tags)
+    get("/*path", AssetController, :asset)
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -94,12 +101,6 @@ defmodule HomeWeb.Router do
       pipe_through(:browser)
       live_dashboard("/dashboard", metrics: HomeWeb.Telemetry)
     end
-  end
-
-  scope "/static", HomeWeb do
-    get("/banners/by_album/:album", AssetController, :banner_by_album)
-    get("/banners/by_tags/:tags", AssetController, :banner_by_tags)
-    get("/*path", AssetController, :asset)
   end
 
   scope "/", HomeWeb do

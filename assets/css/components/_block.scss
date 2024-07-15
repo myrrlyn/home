@@ -12,9 +12,14 @@
     var(--stripe-scale);
 }
 
+@mixin shadow($size: 0.25em) {
+  box-shadow: $size $size var(--shadow);
+}
+
 %block {
-  --stripe-scale: 10;
-  --stripe-width: 10px;
+  $scale: 12;
+  --stripe-scale: #{$scale};
+  --stripe-width: #{$scale}px;
 
   margin-block: 1em;
   margin-inline: 0;

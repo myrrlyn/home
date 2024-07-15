@@ -240,13 +240,14 @@ defmodule HomeWeb.BlogController do
 
   def page_listing() do
     get_articles()
-    |> Stream.map(fn {url, meta} ->
-      {meta.title, url,
-       if meta.published do
-         Timex.format!(meta.date, "{ISOdate}")
-       else
-         "DRAFT PAGE"
-       end}
+    |> Stream.map(fn
+      {url, meta, _toc} ->
+        {meta.title, url,
+         if meta.published do
+           Timex.format!(meta.date, "{ISOdate}")
+         else
+           "DRAFT PAGE"
+         end}
     end)
   end
 

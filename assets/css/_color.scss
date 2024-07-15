@@ -106,6 +106,8 @@ $parchment-dark: darken($parchment, 20%);
 
   :root {
     --parchment: #{$parchment};
+    --shadow: #{darken($charcoal, 10%)};
+    --keycap: #eeeeee;
   }
 }
 
@@ -114,6 +116,8 @@ $parchment-dark: darken($parchment, 20%);
 
   :root {
     --parchment: #{$parchment-dark};
+    --shadow: #{darken($iso-white, 10%)};
+    --keycap: #333333;
   }
 }
 

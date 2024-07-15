@@ -10,7 +10,7 @@
   </section>
   <section>
     <ol reversed>
-      <%= for {url, meta} <- @pages do %>
+      <%= for {url, meta, _toc} <- @pages do %>
         <li>
           <.link class="title" href={url}>
             <%= meta.title %>

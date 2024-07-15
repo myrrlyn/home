@@ -13,8 +13,6 @@
   </header>
   <hr />
   <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />
-  <section>
-    <%= @page.content |> raw %>
-  </section>
+  <%= @page.content |> raw %>
   <.audio :if={@page.meta.props["outro-music"]} ident="outro" audio={@page.meta.props["outro-music"]} />
 </article>

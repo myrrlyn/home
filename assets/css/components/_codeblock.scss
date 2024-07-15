@@ -1,19 +1,39 @@
 @use "block";
 @use "../color/langs";
 
-@mixin codeblock($lang, $color) {
+@mixin codeblock(
+  $lang,
+  $color-bg,
+  $color-fg: var(--text-fg),
+  $font: text-mono
+) {
   &.codeblock-#{$lang} {
-    background-color: transparentize($color, 0.85);
+    background-color: transparentize($color-bg, 0.85);
     border-width: 0;
-    @include block.striped(var(--text-fg), $color, $side: "-inline-start");
+    @include block.striped(
+      var(--text-fg),
+      $color-bg,
+      $side: "-inline-start",
+      $angle: -45deg
+    );
 
     span.lang-marker {
-      background-color: $color;
+      background-color: $color-bg;
+      color: $color-fg;
     }
+  }
+
+  code,
+  code span {
+    @extend %#{$font};
   }
 }
 
-div.code-container {
+& > .code-container {
+  @include block.shadow(0.5em);
+}
+
+.code-container {
   @extend %block;
 
   border-inline-start: 10px solid var(--charcoal);
@@ -35,17 +55,26 @@ div.code-container {
   }
 
   @include codeblock(c, $lang-c);
+  @include codeblock(cosmos, $lang-cosmos, $font: text-term);
   @include codeblock(cpp, $lang-cpp);
   @include codeblock(elixir, $lang-elixir);
+  @include codeblock(erlang, $lang-erlang);
   @include codeblock(html, $lang-html);
   @include codeblock(js, $lang-js);
   @include codeblock(rust, $lang-rust);
-  @include codeblock(ps1, $lang-pwsh);
-  @include codeblock(sh, $lang-shell);
+  @include codeblock(ps1, $lang-pwsh, $color-fg: var(--iso-white));
+  @include codeblock(
+    rust_errors,
+    $iso-red,
+    $color-fg: var(--iso-white),
+    $font: text-term
+  );
+  @include codeblock(sh, $lang-shell, $font: text-term);
   @include codeblock(shell, $lang-shell);
   @include codeblock(toml, $lang-toml);
+  @include codeblock(xml, $lang-xml, $color-fg: var(--iso-white));
 
-  @include codeblock(plaintext, $lang-plaintext);
+  @include codeblock(plaintext, $lang-plaintext, $font: text-term);
 
   .copy-icon {
     height: 2em;
@@ -59,20 +88,6 @@ div.code-container {
 
   pre.codeblock {
     margin-block-start: 0;
-  }
-
-  &:not(.codeblock-term) {
-    code,
-    code span {
-      @extend %text-mono;
-    }
-  }
-
-  &.codeblock-term {
-    code,
-    code span {
-      @extend %text-term;
-    }
   }
 }
 

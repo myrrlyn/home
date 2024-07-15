@@ -7,7 +7,7 @@ $avi-height: $avi-size + (2 * $avi-rim);
 $header-height: 128px;
 $header-border: 4px;
 
-@mixin left-chevron($color, $width: 0.5em, $bg: var(--bg)) {
+@mixin left-chevron($color, $width: 0.5em, $bg: transparent) {
   border: math.div($width, 2) solid $bg;
   border-left: $width solid $color;
   border-right-width: $width;
