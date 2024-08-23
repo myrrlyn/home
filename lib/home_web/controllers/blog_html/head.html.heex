@@ -4,3 +4,6 @@
   <% src = ["/", @src_path |> Path.dirname(), script] |> Path.join() |> Path.expand() %>
   <script type="text/javascript" src={src}> </script>
 <% end %>
+<style :if={css = @page.meta.props["extra_css"]} type="text/css">
+  <%= css |> raw() %>
+</style>

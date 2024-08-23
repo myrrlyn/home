@@ -10,11 +10,9 @@ defmodule HomeWeb.BlogController do
       grouped_by_category()
       |> Stream.reject(fn {_, _, pages} -> pages == [] end)
       |> Stream.map(fn {name, slug, pages} ->
-        count = pages |> Enum.count()
-
         case "blog/#{slug}/index.md" |> Home.PageCache.cached() do
-          {:ok, %Home.Page{meta: meta}} -> {meta.title, slug, count, meta.summary}
-          {:error, _} -> {name, slug, count, nil}
+          {:ok, %Home.Page{meta: meta}} -> {meta.title, slug, meta.summary, pages}
+          {:error, _} -> {name, slug, nil, pages}
         end
       end)
 
@@ -37,7 +35,7 @@ defmodule HomeWeb.BlogController do
   end
 
   # Redirect bitvec to Ferrilab
-  def category(conn, %{"category" => "bitvec"} = params) do
+  def category(conn, %{"category" => "bitvec"}) do
     HomeWeb.Nav.redirect(conn, "/blog/ferrilab", "bitvec has migrated to the Ferrilab project")
   end
 
@@ -73,7 +71,7 @@ defmodule HomeWeb.BlogController do
   end
 
   # Redirect bitvec articles to Ferrilab
-  def article(conn, %{"category" => "bitvec", "article" => page} = params) do
+  def article(conn, %{"category" => "bitvec", "article" => page}) do
     HomeWeb.Nav.redirect(
       conn,
       "/blog/ferrilab/#{page}",
@@ -116,6 +114,7 @@ defmodule HomeWeb.BlogController do
       template,
       flavor: "app",
       classes: ["blog"],
+      time_fmt: "{YYYY}, {Mshort} {D}",
       gravatar: get_gravatar(conn),
       navtree: fn -> navtree(conn.request_path) end,
       scope: @root
@@ -176,6 +175,7 @@ defmodule HomeWeb.BlogController do
       flavor: "app",
       gravatar: get_gravatar(conn),
       classes: ["blog"],
+      time_fmt: "{YYYY}, {Mshort} {D}",
       navtree: &navtree/0,
       page: nil,
       tab_title: title,

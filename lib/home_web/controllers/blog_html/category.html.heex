@@ -1,25 +1,22 @@
 <article>
   <section>
     <h1 id="title"><%= @page.meta.title %></h1>
-    <%= if summary = @page.meta.summary do %>
-      <p><%= summary |> Earmark.as_html! |> raw %></p>
-    <% end %>
+    <p :if={summary = @page.meta.summary}>
+      <%= summary |> Earmark.as_html!() |> raw() %>
+    </p>
     <.navtoc :if={@page.toc != []} toc={@page.toc} />
     <hr />
-    <%= @page.content |> raw %>
+    <%= @page.content |> raw() %>
   </section>
   <section>
+    <h2>Articles</h2>
     <ol reversed>
-      <%= for {url, meta, _toc} <- @pages do %>
-        <li>
-          <.link class="title" href={url}>
-            <%= meta.title %>
-          </.link>
-          (<.timestamp time={meta.date} />)
-          <br />
-          <%= meta.summary |> Earmark.as_html! |> raw %>
-        </li>
-      <% end %>
+      <li :for={{url, meta, _toc} <- @pages}>
+        <.link class="title" href={url}><%= meta.title %></.link>
+        (<.timestamp time={meta.date} time_fmt={assigns[:time_fmt]}/>)
+        <br />
+        <%= meta.summary |> Earmark.as_html!() |> raw() %>
+      </li>
     </ol>
   </section>
 </article>

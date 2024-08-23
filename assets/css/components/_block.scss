@@ -1,15 +1,17 @@
-@mixin striped($color-one, $color-two, $angle: -45deg, $side: "") {
+@mixin striped($color-bg, $color-fg, $angle: -45deg, $width: 12, $side: "") {
   border-color: var(--bg);
   border-style: solid;
-  border#{$side}-width: var(--stripe-width);
+  border#{$side}-width: #{$width}px;
+  // TODO(myrrlyn): Figure out the math to use here. cos(angle) * width of two
+  // stripes? Unsure.
   border-image: repeating-linear-gradient(
       $angle,
-      $color-one,
-      $color-one var(--stripe-width),
-      $color-two var(--stripe-width),
-      $color-two calc(var(--stripe-width) * 2)
+      $color-bg,
+      $color-bg #{$width}px,
+      $color-fg #{$width}px,
+      $color-fg calc(#{$width}px * 2)
     )
-    var(--stripe-scale);
+    $width;
 }
 
 @mixin shadow($size: 0.25em) {

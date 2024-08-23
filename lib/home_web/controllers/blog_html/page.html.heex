@@ -2,7 +2,7 @@
   <header class="frontmatter">
     <hgroup>
       <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
-      <p class="timestamp">Published on <.timestamp time={@page.meta.date}, format="{YYYY}, {Mshort} {D}" /></p>
+      <p class="timestamp">Published on <.timestamp time={@page.meta.date}, time_fmt="{YYYY}, {Mshort} {D}" /></p>
       <p>Estimated reading time: <span id="reading-time"></span>.</p>
     </hgroup>
     <p><%= @page.meta.summary |> Earmark.as_html! |> raw %></p>

@@ -1,13 +1,18 @@
 <article>
   <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
   <%= @page.content |> raw %>
-  <section>
-    <ol>
-      <li :for={{name, slug, count, desc} <- @groups} value={count}>
-        <.link href={"/blog/#{slug}"}><%= name %></.link>
-        <%= if desc do %>
-          <%= desc |> Earmark.as_html!() |> raw() %>
-        <% end %>
+  <h2>All Articles</h2>
+  <section :for={{name, slug, desc, pages} <- @groups}>
+    <h3><.link href={"/blog/#{slug}"}><%= name %></.link></h3>
+    <%= if desc do %>
+      <%= desc |> Earmark.as_html!() |> raw() %>
+    <% end %>
+    <ol reversed>
+      <li :for={{url, meta, _toc} <- pages}>
+        <.link class="title" href={url}><%= meta.title %></.link>
+        (<.timestamp time={meta.date} time_fmt={assigns[:time_fmt]}/>)
+        <br />
+        <%= meta.summary |> Earmark.as_html!() |> raw() %>
       </li>
     </ol>
   </section>
