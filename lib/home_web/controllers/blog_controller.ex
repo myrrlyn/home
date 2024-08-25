@@ -30,8 +30,7 @@ defmodule HomeWeb.BlogController do
   @doc "Render an RSS feed"
   def rss(conn, _params) do
     conn
-    |> put_resp_content_type("application/rss+xml")
-    |> render(:rss, articles: get_articles())
+    |> HomeWeb.Nav.redirect("/blog/atom.xml", "Phoenix cannot currently generate RSS files")
   end
 
   # Redirect bitvec to Ferrilab
@@ -356,7 +355,7 @@ defmodule HomeWeb.BlogController do
          String.starts_with?(conn.request_path, "/blog/ferrilab") do
       "/static/favicons/ferrilab-2048.png"
     else
-      Home.Page.gravatar("self@myrrlyn.dev")
+      Home.Page.gravatar("self@myrrlyn.net")
     end
   end
 end
