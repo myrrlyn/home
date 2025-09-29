@@ -62,16 +62,16 @@ article figure {
     width: 100%;
   }
 
-  @media (min-width: 36em) {
-    &.half-width {
-      min-width: 100px;
-      width: 50%;
-      max-width: 400px;
-    }
-  }
-
   &.ctr {
     margin: 0 auto;
+  }
+}
+
+@media (min-width: 36em) {
+  .half-width {
+    min-width: 100px;
+    width: 50%;
+    max-width: 400px;
   }
 }
 
@@ -81,6 +81,10 @@ article figure {
 
 .float-right {
   float: right;
+}
+
+.clear {
+  clear: both;
 }
 
 @media (max-width: 37.7em) {
@@ -112,6 +116,7 @@ body:not(.general) .title {
 .title,
 .subtitle {
   text-align: center;
+  line-height: revert;
 }
 
 .footnote {
@@ -136,6 +141,10 @@ blockquote {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 body:is(.blog, .oeuvre) .title {
