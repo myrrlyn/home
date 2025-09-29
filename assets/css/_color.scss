@@ -1,18 +1,5 @@
-// ANSI Z535
-$ansi-red: #bd2024 !default;
-$ansi-orange: #ff7900 !default;
-$ansi-yellow: #ffe100 !default;
-$ansi-green: #159660 !default;
-$ansi-blue: #004488 !default;
-$ansi-purple: #6f2580 !default;
-
-// ISO 3864
-$iso-red: #9b2423 !default;
-$iso-yellow: #f9a800 !default;
-$iso-green: #237f52 !default;
-$iso-blue: #005387 !default;
-$iso-white: lighten(#ececec, 4%) !default;
-$iso-black: darken(#2b2b2c, 8%) !default;
+@use "color/ansi";
+@use "color/iso";
 
 $intl-aero-orange: #ff4f00 !default;
 $other-aero-orange: #fd5200 !default;
@@ -68,7 +55,6 @@ $forest-green: darken(#228b22, 20%);
 $parchment: hsl(042.4, 048.2%, 83.3%) !default;
 $parchment-dark: darken($parchment, 20%);
 
-@import "color/12-bit-rainbow";
 @import "color/langs";
 
 :root {
@@ -116,7 +102,7 @@ $parchment-dark: darken($parchment, 20%);
 
   :root {
     --parchment: #{$parchment-dark};
-    --shadow: #{darken($iso-white, 10%)};
+    --shadow: #{darken(ansi.$white, 10%)};
     --keycap: #333333;
   }
 }
@@ -126,8 +112,6 @@ body {
   color: var(--text-fg);
 }
 
-pre {
-  code {
-    color: var(--text-fg);
-  }
+pre > code {
+  color: var(--text-fg);
 }

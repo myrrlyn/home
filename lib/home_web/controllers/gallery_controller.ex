@@ -52,7 +52,7 @@ defmodule HomeWeb.GalleryController do
       directory: "/static/images/iso-7010",
       gallery: %{
         "E (Safe Condition)" =>
-          (Enum.to_list(1..65) ++ Enum.to_list(67..70) ++ Enum.to_list(72..76))
+          (Enum.to_list(1..4) ++ Enum.to_list(7..70) ++ Enum.to_list(72..76))
           |> Enum.map(fn num ->
             "e#{num |> Integer.to_string() |> String.pad_leading(3, "0")}.svg"
           end),

@@ -1,18 +1,16 @@
 @use "sass:list";
+@use "components";
 @use "components/block";
 
-@import "variables";
-@import "font";
-@import "color";
+@use "variables";
+@use "font";
+@use "color";
+@use "color/iso";
+@use "color/krm";
 
-.oeuvre {
-  --current-page-left: "📖";
-  --current-page-right: "🪶";
-}
-
-@import "layout";
-@import "gravatar";
-@import "style";
+@use "layout";
+@use "gravatar";
+@use "style";
 
 @mixin font($name, $file: $name) {
   @font-face {
@@ -25,6 +23,11 @@
 @include font("Dovah");
 @include font("Dwemer");
 @include font("Mage Script", "Mage");
+
+.oeuvre {
+  --current-page-left: "📖";
+  --current-page-right: "🪶";
+}
 
 h1 {
   color: var(--ansi-green);
@@ -113,7 +116,7 @@ h6 {
 @include lang("ehlnofex", "Mage Script");
 
 .handwriting {
-  color: $iso-black;
+  color: iso.$black;
   font-family: "Skyrim Handwriting";
   font-size: 1.2em;
   letter-spacing: 0.05ch;
@@ -126,14 +129,14 @@ h6 {
 
 blockquote {
   &.handwriting {
-    border-left-color: darken($parchment, 60%);
+    border-left-color: darken(color.$parchment, 60%);
 
     @media (prefers-color-scheme: light) {
-      background-color: transparentize($parchment, 0.15);
+      background-color: transparentize(color.$parchment, 0.15);
     }
 
     @media (prefers-color-scheme: dark) {
-      background-color: transparentize($parchment-dark, 0.15);
+      background-color: transparentize(color.$parchment-dark, 0.15);
     }
   }
 
@@ -152,7 +155,7 @@ blockquote {
 
   article & {
     @extend %block;
-    @include left-chevron(var(--charcoal));
+    @include variables.left-chevron(var(--charcoal));
   }
 
   &.flyer {
@@ -163,29 +166,29 @@ blockquote {
   &.ehlnofex {
     background-image: repeating-linear-gradient(
       120deg,
-      #{$krm-wine} 0,
-      #{$krm-burgundy} 4%,
-      #{$krm-coral} 8%,
-      #{$krm-orange} 12%,
-      #{$krm-yellow} 16%,
-      #{$krm-lime} 20%,
-      #{$krm-green} 25%,
+      #{krm.$wine} 0,
+      #{krm.$burgundy} 4%,
+      #{krm.$coral} 8%,
+      #{krm.$orange} 12%,
+      #{krm.$yellow} 16%,
+      #{krm.$lime} 20%,
+      #{krm.$green} 25%,
 
-      #{$krm-teal} 30%,
-      #{$krm-sea} 34%,
-      #{$krm-sky} 38%,
-      #{$krm-blue} 42%,
-      #{$krm-navy} 46%,
-      #{$krm-wine} 50%
+      #{krm.$teal} 30%,
+      #{krm.$sea} 34%,
+      #{krm.$sky} 38%,
+      #{krm.$blue} 42%,
+      #{krm.$navy} 46%,
+      #{krm.$wine} 50%
     );
     border-color: var(--bg);
-    border-left-color: $blue-carolina;
+    border-left-color: color.$blue-carolina;
     color: var(--text-fg);
     text-shadow: 0 0 1em var(--bg), 0 0 0.5em var(--bg), 0 0 0.5em var(--bg);
   }
 
   &.dovah {
-    border-left-color: $red-violet;
+    border-left-color: color.$red-violet;
   }
 
   &.special-font {
@@ -276,21 +279,21 @@ blockquote.special-font p {
 
 blockquote {
   &.scourge {
-    background-color: transparentize($tyrian-purple, 0.75);
-    border-left-color: $tyrian-purple;
+    background-color: transparentize(color.$tyrian-purple, 0.75);
+    border-left-color: color.$tyrian-purple;
     font-style: italic;
   }
 
   &.spellbreaker {
-    background-color: transparentize($yellow-selective, 0.75);
-    border-left-color: $yellow-selective;
+    background-color: transparentize(color.$yellow-selective, 0.75);
+    border-left-color: color.$yellow-selective;
     font-variant: small-caps;
   }
 
   &.malacath,
   &.volendrung {
-    background-color: transparentize($forest-green, 0.75);
-    border-left-color: $forest-green;
+    background-color: transparentize(color.$forest-green, 0.75);
+    border-left-color: color.$forest-green;
     font-weight: bold;
     text-align: center;
     font-size: 1.1em;
@@ -305,7 +308,7 @@ figure {
   }
 
   &.piano-keys {
-    background-color: transparentize($iso-black, 0.9);
+    background-color: transparentize(iso.$black, 0.9);
     padding: 0.5em;
   }
 }

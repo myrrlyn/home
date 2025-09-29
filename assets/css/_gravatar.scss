@@ -1,5 +1,9 @@
 @use "sass:math";
 
+$avi-size: 160px;
+$avi-rim: 4px;
+$avi-height: $avi-size + (2 * $avi-rim);
+
 #gravatar {
   background: {
     image: linear-gradient(
@@ -37,4 +41,8 @@
   .clock-hand {
     stroke-width: 3px;
   }
+}
+
+main > header {
+  min-height: math.div($avi-size, 2);
 }

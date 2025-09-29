@@ -1,10 +1,13 @@
 @use "sass:math";
+@use "gravatar";
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
+$header-border: 4px;
 
 //  Ensure that the body will always be rendered to the full height of the
 //  viewport, even if the content is short enough that the body would not
@@ -25,7 +28,11 @@ body {
   }
 }
 
-body>header {
+body.print .screen-only {
+  display: none !important;
+}
+
+body > header {
   border-bottom: $header-border solid var(--bell-blue);
   flex-shrink: 0;
   background-size: cover;
@@ -51,13 +58,13 @@ body:not(.embed) main {
 // Put horizontal spacing inside the least-common text container in both blocks.
 // This is done because the scrollbar renders in the padding zone of a node
 // containing text, and ignores padding zones imposed by ancestor
-main>article,
+main > article,
 #about-text {
   padding: 0 1em;
 }
 
 // These don’t need to be of uniform width, they just have to flow reasonably.
-body>footer {
+body > footer {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
@@ -85,7 +92,7 @@ body>footer {
     flex-flow: column wrap;
     align-items: center;
 
-    &>* {
+    & > * {
       max-width: 100%;
     }
   }
@@ -103,7 +110,6 @@ body>footer {
 // to have the `<aside>` and `<main>` blocks in two columns. On smaller
 // viewports, leave it as a plain vertical stack.
 @media screen and (min-width: 38em) {
-
   // Put vertical boundaries around the content blocks.
   main {
     border-inline-start: 2px solid var(--bell-blue);
@@ -124,9 +130,8 @@ body>footer {
       overflow-y: clip;
     }
 
-    body>header {
-      min-height: math.div($avi-height, 2);
-      max-height: $header-height;
+    body > header {
+      max-height: 128px;
     }
 
     #content {
@@ -150,8 +155,8 @@ body>footer {
     }
 
     // These blocks have fixed size and are never modified by the page flexing.
-    body>header,
-    body>footer {
+    body > header,
+    body > footer {
       flex-grow: 0;
       flex-shrink: 0;
     }
@@ -176,7 +181,7 @@ body>footer {
     // `<header>` and `<#content>`.
     #page-logo {
       position: relative;
-      top: -#{math.div($avi-height, 2)};
+      top: -#{math.div(gravatar.$avi-height, 2)};
 
       a {
         margin: 0;
@@ -192,16 +197,16 @@ body>footer {
 
     // And the infobar needs to exclude the logo’s half-height.
     #about-text {
-      max-height: calc(100% - math.div($avi-height, 2));
+      max-height: calc(100% - math.div(gravatar.$avi-height, 2));
       // Margins are *outside* borders, this needs to account for the
       // border width.
       // max-height: 100%;
-      // margin-top: calc(4px - math.div($avi-height, 2));
-      // padding-top: calc(math.div($avi-height, 2) - 4px);
+      // margin-top: calc(4px - math.div(gravatar.$avi-height, 2));
+      // padding-top: calc(math.div(gravatar.$avi-height, 2) - 4px);
       position: relative;
-      top: calc(4px - math.div($avi-height, 2));
+      top: calc(4px - math.div(gravatar.$avi-height, 2));
 
-      &>aside {
+      & > aside {
         border-bottom: 2px solid var(--bell-blue);
         margin-bottom: 0.5em;
       }

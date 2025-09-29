@@ -14,11 +14,12 @@
 //
 //     import "some-package"
 //
-import { mark_codeblocks } from "./codeblocks";
-import { load_images } from "./image_loader";
-import { set_jukebox } from "./jukebox";
+import * as blocks from "./codeblocks";
+import * as gallery from "./image_loader";
+import * as music from "./jukebox";
 import { LiveSocketWindow, get_live_socket } from "./lswin";
-import { mark_headings } from "./toc";
+import * as toc from "./toc";
+import * as sundial from "./sundial";
 
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
@@ -37,36 +38,15 @@ live_socket.connect();
 declare let window: LiveSocketWindow;
 window.liveSocket = live_socket;
 
-function guess_reading_time() {
-  var words = 0;
-  for (var para of document.querySelectorAll("main article p")) {
-    words += (para as HTMLElement).innerText.trim().split(/\s+/).length;
-  }
-  let time = Math.ceil(words / 200);
-  let span = document.getElementById("reading-time");
-  if (span !== null) {
-    span.innerText = `${time} minutes`;
-  }
-}
-
-function number_figures() {
-  var counter = 0;
-  for (let fig of document.querySelectorAll("main article figure")) {
-    counter += 1;
-    if (fig.id == "") {
-      fig.id = `fig-${counter}`;
-    }
-    if (fig.querySelector("figcaption") === null) {
-      fig.appendChild(document.createElement("figcaption"));
-    }
-  }
-}
-
 window.onload = () => {
-  mark_headings([2, 3, 4, 5, 6]);
-  mark_codeblocks();
-  number_figures();
-  guess_reading_time();
-  set_jukebox();
-  load_images();
+  let svg = document.querySelector("svg#gravatar");
+  if (svg instanceof SVGElement) {
+    sundial.daemon(svg);
+  }
+  toc.guess_reading_time(200);
+  toc.mark_headings([2, 3, 4, 5, 6]);
+  blocks.mark_codeblocks();
+  blocks.number_figures();
+  music.set_jukebox();
+  gallery.load_images();
 };

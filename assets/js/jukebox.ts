@@ -1,4 +1,5 @@
 export function set_jukebox() {
+  console.groupCollapsed("music");
   for (let ident of ["intro", "outro"]) {
     let slot = document.getElementById(ident);
     if (slot === null) {
@@ -15,6 +16,7 @@ export function set_jukebox() {
   for (let audio of document.getElementsByTagName("audio")) {
     audio.onplay = pause_others;
   }
+  console.groupEnd();
 }
 
 function pause_others(event: Event) {

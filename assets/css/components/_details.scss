@@ -1,4 +1,3 @@
-@use "block";
 @use "../variables";
 
 details {
@@ -9,6 +8,6 @@ details {
   }
 
   &.block-harm {
-    @include left-chevron(var(--iso-red));
+    @include variables.left-chevron(var(--iso-red));
   }
 }

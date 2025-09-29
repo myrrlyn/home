@@ -1,0 +1,19 @@
+// ANSI Z535 according to Wikipedia
+$red: #bd2024 !default;
+$orange: #ff7900 !default;
+$yellow: #ffe100 !default;
+$green: #159660 !default;
+$blue: #004488 !default;
+$purple: #6f2580 !default;
+
+// ANSI Z535.1-2022 according to the actual document I found online.
+// https://www.nema.org/docs/default-source/standards-document-library/ansi-z535_1-2022-contents-and-scope.pdf?sfvrsn=5dcd1c32_1
+// https://www.scribd.com/document/705719130/ANSI-Z535-1-2017-SAFETY-COLOR
+$red: #c8102e; // Pantone 186 C, Munsell 7.5 R, 4.0/14
+$orange: #ff8200; // Pantone 151 C, Munsell 5.0YR, 6.0/15
+$yellow: #ffd100; // Pantone 109 C, Munsell 5.0Y, 8.0/12
+$green: #007b5f; // Pantone 335 C, Munsell 7.5G, 4.0/9
+$blue: #0072ce; // Pantone 285 C, Munsell 2.5PB, 3.5/10
+$purple: #6d2077; // Pantone 259 C, Munsell 10.0P, 4.5/10
+$white: #e7e6e2 !default; // Munsell N 9.0/
+$black: #2c2a29 !default; // Pantone Process Black C, Munsell N 1.5/

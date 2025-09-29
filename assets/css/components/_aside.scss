@@ -1,97 +1,22 @@
-@use "block";
+@use "../color";
+@use "../components";
 @use "../variables";
-
-$stripe-angle: -45deg;
-
-%sign-harm {
-  @include block.striped(
-    var(--iso-white),
-    var(--iso-red),
-    $angle: $stripe-angle
-  );
-  background-color: var(--iso-red-bg);
-}
-
-%sign-warn {
-  @include block.striped(
-    var(--iso-black),
-    var(--iso-yellow),
-    $angle: $stripe-angle
-  );
-  background-color: var(--iso-yellow-bg);
-}
-
-%sign-safe {
-  @include block.striped(
-    var(--iso-white),
-    var(--iso-green),
-    $angle: $stripe-angle
-  );
-  background-color: var(--iso-green-bg);
-}
-
-%sign-info {
-  @include block.striped(
-    var(--iso-white),
-    var(--iso-blue),
-    $angle: $stripe-angle
-  );
-  background-color: var(--iso-blue-bg);
-}
 
 aside {
   @extend %block;
-  @include block.shadow();
+  @extend .block-stripe;
+  @include components.shadow();
 
-  @include block.striped(
-    var(--iso-white),
-    var(--iso-black),
-    $angle: $stripe-angle
-  );
   background-color: var(--charcoal-bg);
-
-  &.block-harm {
-    @extend %sign-harm;
-  }
-
-  &.block-warn {
-    @extend %sign-warn;
-  }
-
-  &.block-safe {
-    @extend %sign-safe;
-  }
-
-  &.block-info {
-    @extend %sign-info;
-  }
 }
 
 blockquote {
   @extend %block;
-  @include left-chevron(var(--charcoal));
+  @extend .block-chevron;
+  --block-color-fg: var(--charcoal);
+  --block-color-bg: var(--bg) !important;
 
   background-color: var(--charcoal-bg);
-
-  &.block-harm {
-    @include left-chevron(var(--iso-red));
-    background-color: var(--iso-red-bg);
-  }
-
-  &.block-warn {
-    @include left-chevron(var(--iso-yellow));
-    background-color: var(--iso-yellow-bg);
-  }
-
-  &.block-safe {
-    @include left-chevron(var(--iso-green));
-    background-color: var(--iso-green-bg);
-  }
-
-  &.block-info {
-    @include left-chevron(var(--iso-blue));
-    background-color: var(--iso-blue-bg);
-  }
 
   cite {
     &::before {
