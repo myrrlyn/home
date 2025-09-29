@@ -90,6 +90,8 @@ ENV MIX_ENV="prod"
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/home ./
 # Also copy over all the assets!
 COPY --from=builder --chown=nobody:root /app/priv/ /app/bin/priv/
+COPY --from=builder --chown=nobody:root /app/rel/overlays/bin/server /app/bin/server
+RUN chmod a+x /app/bin/server
 
 USER nobody
 
