@@ -87,7 +87,7 @@ defmodule Home.MixProject do
       test: ["test"],
       "assets.deploy": [
         "cmd npm install --prefix assets",
-        "cmd cp -R assets/static/ priv/static/",
+        "cmd cp -r assets/static/ priv/static/",
         "esbuild default --minify",
         "sass default --no-source-map --style=compressed",
         "phx.digest"

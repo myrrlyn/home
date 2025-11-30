@@ -31,14 +31,12 @@ defmodule Home.Page do
   @doc """
   Compiles a Markdown file into a `Page` object.
 
-  This loads a Markdown file from a path within `priv/pages`, parses it as a
-  structured article (YAML frontmatter, Markdown main content), and returns an
-  object suitable for rendering.
+  This loads a Markdown file from a path, parses it as a structured article
+  (YAML frontmatter, Markdown main content), and returns an object suitable for
+  rendering.
   """
   @spec compile(Path.t(), Range.t()) :: Wyz.Maybe.result(t(), NotFoundException.t() | any())
   def compile(path, toc_filter \\ 2..3) do
-    path = ["priv", "pages", path] |> Path.join()
-
     # The fly.io system shows decomposed filenames for some reason.
     decomposed = path |> String.normalize(:nfkd)
     composed = path |> String.normalize(:nfkc)
@@ -138,7 +136,7 @@ defmodule Home.Page do
   end
 
   @doc """
-  Loads a file from `priv/pages` into memory.
+  Loads a file into memory.
   """
   @spec load(Path.t()) :: Wyz.Maybe.result({String.t(), DateTime.t()}, File.posix())
   def load(path) do
@@ -153,7 +151,7 @@ defmodule Home.Page do
   end
 
   @doc """
-  Loads a file from `priv/pages`, raising if an error is encountered.
+  Loads a file, raising if an error is encountered.
   """
   @spec load!(Path.t()) :: {String.t(), DateTime.t()}
   def load!(path) do
@@ -238,7 +236,8 @@ defmodule Home.Page do
   Finishes some metadata attributes such as the date (which can be supplied by
   the filename) and descriptive text.
   """
-  def make_meta(meta, path_date, path) do
+  @spec make_meta(Home.Meta.t(), DateTime.t(), Path.t()) :: Home.Meta.t()
+  def make_meta(%Home.Meta{} = meta, path_date, path) do
     # Try to set the date
     meta =
       case {meta.date, path_date} do

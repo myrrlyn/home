@@ -10,7 +10,7 @@ defmodule HomeWeb.BlogController do
       grouped_by_category()
       |> Stream.reject(fn {_, _, pages} -> pages == [] end)
       |> Stream.map(fn {name, slug, pages} ->
-        case "blog/#{slug}/index.md" |> Home.PageCache.cached() do
+        case [@dir, slug, "index.md"] |> Path.join() |> Home.PageCache.cached() do
           {:ok, %Home.Page{meta: meta}} -> {meta.title, slug, meta.summary, pages}
           {:error, _} -> {name, slug, nil, pages}
         end
@@ -40,7 +40,7 @@ defmodule HomeWeb.BlogController do
 
   # Render a group index page
   def category(conn, %{"category" => group} = params) do
-    src_path = ["blog", group, "index.md"] |> Path.join()
+    src_path = [@dir, group, "index.md"] |> Path.join()
 
     index = src_path |> Home.PageCache.cached()
     category = grouped_by_category(group) |> List.first()
@@ -60,7 +60,7 @@ defmodule HomeWeb.BlogController do
         if meta.published || Application.get_env(:home, :show_drafts) do
           conn
           |> assign(:pages, pages)
-          |> build(params, :category, src_path)
+          |> build(params, :category, src_path |> Path.relative_to("priv/pages"))
         else
           conn
           |> assign(:category, group)
@@ -121,7 +121,9 @@ defmodule HomeWeb.BlogController do
   end
 
   def build(conn, params, template, src_path) do
-    case ["priv", "pages", src_path] |> Path.join() |> File.read_link() do
+    fullpath = Path.join(["priv", "pages", src_path])
+
+    case File.read_link(fullpath) do
       {:ok, redirect} ->
         Logger.notice("Accessed a deprecated path")
         dir = src_path |> Path.dirname()
@@ -138,11 +140,12 @@ defmodule HomeWeb.BlogController do
         |> send_resp(301, "Moved to #{HomeWeb.Endpoint.url()}#{redirect}")
 
       {:error, :einval} ->
-        case src_path |> Home.PageCache.cached() do
+        case Home.PageCache.cached(fullpath) do
           {:ok, page} ->
             conn
             |> merge_assigns(
               page: page,
+              frontmatter: page.meta,
               src_path: src_path,
               banner: Home.Banners.select_or_random(page.meta),
               tab_title: page.meta.title,
@@ -177,6 +180,7 @@ defmodule HomeWeb.BlogController do
       time_fmt: "{YYYY}, {Mshort} {D}",
       navtree: &navtree/0,
       page: nil,
+      frontmatter: nil,
       tab_title: title,
       tab_suffix: " · Insufficiently Magical",
       page_title: title,
@@ -287,8 +291,9 @@ defmodule HomeWeb.BlogController do
         ]
   def get_articles(paths \\ src_paths()) do
     paths
+    |> Stream.map(fn p -> Path.join(["priv", "pages", p]) end)
     # Do not include filesystem-powered redirects.
-    |> Stream.reject(fn p -> ["priv", "pages", p] |> Path.join() |> Home.symlink?() end)
+    |> Stream.reject(&Home.symlink?/1)
     # Kick off a cache load
     |> Home.PageCache.cached_many()
     # Discard any invalid entries. That’s my problem, not the viewer’s problem.
@@ -311,7 +316,7 @@ defmodule HomeWeb.BlogController do
   def url_to_path(group, name) do
     src_paths(group)
     |> Enum.find(fn path ->
-      path |> path_to_url() == [@root, group, name] |> Path.join()
+      Path.join("priv/pages", path) |> path_to_url() == [@root, group, name] |> Path.join()
     end)
   end
 
@@ -320,7 +325,7 @@ defmodule HomeWeb.BlogController do
   """
   @spec path_to_url(Path.t()) :: Path.t()
   def path_to_url(path) do
-    case path |> Path.rootname() |> Path.split() do
+    case path |> Path.relative_to("priv/pages") |> Path.rootname() |> Path.split() do
       ["blog", group, filename] ->
         [_y, _m, _d, name] = filename |> String.split("-", parts: 4)
         [@root, group, name] |> Path.join()

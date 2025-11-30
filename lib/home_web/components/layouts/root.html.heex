@@ -18,23 +18,20 @@
     <.og title={@tab_title}, path={@conn.request_path} />
     <.twitter
       title={@tab_title}
-      description={if @page, do: @page.meta.summary, else: nil}
+      description={if @page, do: @frontmatter.summary, else: nil}
       />
-    <%= if @page do %>
-      <% frontmatter = @page.meta %>
-      <%= if frontmatter do %>
-        <meta name="author" content={frontmatter.props["author"] || "Alexander Payne (myrrlyn)"} />
-        <meta :if={frontmatter.summary} name="description" content={frontmatter.summary} />
-        <meta :for={{name, content} <- frontmatter.meta} name={name} content={content} />
-        <%= for embed <- frontmatter.props |> Map.get("embeds", []) do %>
-          <%= if embed == "twitter" do %>
-            <script type="text/javascript" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-          <% end %>
-          <%= if embed == "mathjax" do %>
-            <script type="text/javascript" src={~p"/static/js/mathjax.js"}></script>
-            <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-          <% end %>
+    <%= if @frontmatter do %>
+      <meta name="author" content={@frontmatter.props["author"] || "Alexander Payne (myrrlyn)"} />
+      <meta :if={@frontmatter.summary} name="description" content={@frontmatter.summary} />
+      <meta :for={{name, content} <- @frontmatter.meta} name={name} content={content} />
+      <%= for embed <- @frontmatter.props |> Map.get("embeds", []) do %>
+        <%= if embed == "twitter" do %>
+          <script type="text/javascript" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <% end %>
+        <%= if embed == "mathjax" do %>
+          <script type="text/javascript" src={~p"/static/js/mathjax.js"}></script>
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+          <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <% end %>
       <% end %>
     <% else %>

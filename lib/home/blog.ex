@@ -33,6 +33,7 @@ defmodule Home.Blog do
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
     |> Stream.reject(&(Path.basename(&1) in ["index.md", "README.md"]))
-    |> Stream.map(&Path.relative_to(&1, "priv/pages"))
+
+    # |> Stream.map(&Path.relative_to(&1, "priv/pages"))
   end
 end

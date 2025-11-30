@@ -1,4 +1,4 @@
-<aside :if={about = @page.meta.props["about"]}>
+<aside :if={about = @frontmatter.props["about"]}>
   <h2 class="text-center">About This Page</h2>
   <%= about |> raw %>
 </aside>
