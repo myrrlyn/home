@@ -7,13 +7,13 @@ defmodule HomeWeb.PageController do
   # This might be able to be folded into `page`
   def home(conn, params) do
     conn
-    |> Plug.Conn.assign(:tab_title, "~myrrlyn")
+    |> assign(:tab_title, "~myrrlyn")
     |> discover(Map.put(params, "path", []))
   end
 
   def resume(conn, params) do
     if conn.path_info != ["about", "r%C3%A9sum%C3%A9"] do
-      redirect(conn, to: "/about/résumé")
+      conn |> put_status(301) |> redirect(to: "/about/résumé")
     else
       discover(conn, Map.put(params, "path", ["about", "resume"]))
     end
@@ -30,7 +30,7 @@ defmodule HomeWeb.PageController do
 
       {filepath, %File.Stat{type: :symlink}} ->
         redir = filepath |> File.read_link!() |> HomeWeb.filepath_to_url()
-        redirect(conn, to: "/#{redir}")
+        conn |> put_status(301) |> redirect(to: "/#{redir}")
 
       {filepath, %File.Stat{type: :regular}} ->
         load_fs(conn, params, filepath)

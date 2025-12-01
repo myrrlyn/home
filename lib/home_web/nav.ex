@@ -3,16 +3,6 @@ defmodule HomeWeb.Nav do
   Assists with the creation of navigation lists.
   """
 
-  @doc """
-  Produces a 301 Moved Permanently response
-  """
-  def redirect(conn, location, message) do
-    conn
-    |> Plug.Conn.put_resp_content_type("text/plain")
-    |> Plug.Conn.put_resp_header("location", location)
-    |> Plug.Conn.resp(301, message)
-  end
-
   defmodule Entry do
     @moduledoc """
     A single entry in a navigation list. Contains a display name, a URL, a date

@@ -29,13 +29,12 @@ defmodule HomeWeb.BlogController do
 
   @doc "Render an RSS feed"
   def rss(conn, _params) do
-    conn
-    |> HomeWeb.Nav.redirect("/blog/atom.xml", "Phoenix cannot currently generate RSS files")
+    conn |> redirect(to: "/blog/atom.xml")
   end
 
   # Redirect bitvec to Ferrilab
   def category(conn, %{"category" => "bitvec"}) do
-    HomeWeb.Nav.redirect(conn, "/blog/ferrilab", "bitvec has migrated to the Ferrilab project")
+    conn |> put_status(301) |> redirect(to: "/blog/ferrilab")
   end
 
   # Render a group index page
@@ -71,11 +70,7 @@ defmodule HomeWeb.BlogController do
 
   # Redirect bitvec articles to Ferrilab
   def article(conn, %{"category" => "bitvec", "article" => page}) do
-    HomeWeb.Nav.redirect(
-      conn,
-      "/blog/ferrilab/#{page}",
-      "bitvec has migrated to the Ferrilab project"
-    )
+    conn |> put_status(301) |> redirect(to: Path.join(["/", "blog", "ferrilab", page]))
   end
 
   # Map categorized pages correctly.

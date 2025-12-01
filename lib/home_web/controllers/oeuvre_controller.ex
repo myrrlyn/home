@@ -100,8 +100,7 @@ defmodule HomeWeb.OeuvreController do
 
   @doc "Render an RSS feed"
   def rss(conn, _params) do
-    conn
-    |> HomeWeb.Nav.redirect("/blog/atom.xml", "Phoenix cannot currently generate RSS files")
+    conn |> redirect(to: "/oeuvre/atom.xml")
   end
 
   def build(conn, template, page) do
