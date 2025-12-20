@@ -10,7 +10,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :home, HomeWeb.Endpoint,
-  http: [compress: true, port: System.get_env("PORT", "1312") |> String.to_integer()],
+  http: [port: System.get_env("PORT", "1312") |> String.to_integer()],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :home, fill_cache: true, show_drafts: false
