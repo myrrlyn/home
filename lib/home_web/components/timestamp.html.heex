@@ -1,3 +1,3 @@
-<time datetime={Timex.format!(@time, "{RFC3339z}")}>
-  <%= Timex.format!(@time, assigns[:format] || "{YYYY}, {Mshort} {D} at {h24}:{m}") %>
-</time>
+<time datetime={Timex.format!(@time, "{RFC3339z}")}><!--
+  --><%= Timex.format!(@time, assigns[:time_fmt] || "{YYYY}, {Mshort} {D} at {h24}:{m}") %><!--
+--></time>

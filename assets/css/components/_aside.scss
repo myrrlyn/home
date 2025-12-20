@@ -1,7 +1,7 @@
 @use "block";
 @use "../variables";
 
-$stripe-angle: 45deg;
+$stripe-angle: -45deg;
 
 %sign-harm {
   @include block.striped(
