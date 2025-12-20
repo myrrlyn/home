@@ -133,5 +133,10 @@ defmodule HomeWeb.Router do
     get("/about/résumé", PageController, :resume)
 
     get("/*path", PageController, :page)
+
+    put("/*", PageController, :deny)
+    post("/*", PageController, :deny)
+    patch("/*", PageController, :deny)
+    delete("/*", PageController, :deny)
   end
 end

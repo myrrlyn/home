@@ -1,6 +1,8 @@
 defmodule HomeWeb.PageController do
   use HomeWeb, :controller
 
+  def deny(conn, _params), do: resp(conn, 403, "no")
+
   @doc """
   Renders the main landing page.
   """
