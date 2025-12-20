@@ -82,14 +82,13 @@ ENV LC_ALL=en_US.UTF-8
 
 WORKDIR "/app"
 RUN chown nobody /app
-
 # set runner ENV
 ENV MIX_ENV="prod"
 
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/home ./
 # Also copy over all the assets!
-COPY --from=builder --chown=nobody:root /app/priv/ /app/bin/priv/
+COPY --from=builder --chown=nobody:root /app/priv/ /app/priv/
 COPY --from=builder --chown=nobody:root /app/rel/overlays/bin/server /app/bin/server
 RUN chmod a+x /app/bin/server
 
@@ -100,7 +99,9 @@ USER nobody
 # above and adding an entrypoint. See https://github.com/krallin/tini for details
 # ENTRYPOINT ["/tini", "--"]
 
-CMD ["/app/bin/server"]
+ENV PHX_SERVER=true
+
+CMD ["/app/home"]
 # Appended by flyctl
 ENV ECTO_IPV6 true
 ENV ERL_AFLAGS "-proto_dist inet6_tcp"
