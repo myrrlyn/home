@@ -47,19 +47,19 @@ main article {
 
 body,
 h1 {
-  counter-reset: h2counter;
+  counter-reset: h2counter h3counter;
 }
 
 h2 {
   counter-reset: h3counter;
 }
 
-h2:not(.no-count) span::before {
+h2:not(.no-count) > span::before {
   content: counter(h2counter) ".";
   counter-increment: h2counter;
 }
 
-h3:not(.no-count) span::before {
+h3:not(.no-count) > span::before {
   content: counter(h2counter) "." counter(h3counter) ".";
   counter-increment: h3counter;
 }

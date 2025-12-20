@@ -1,9 +1,9 @@
 <article>
   <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
   <%= @page.content |> raw %>
-  <h2>All Articles</h2>
+  <h2 id="all-articles">All Articles</h2>
   <section :for={{name, slug, desc, pages} <- @groups}>
-    <h3><.link href={"/blog/#{slug}"}><%= name %></.link></h3>
+    <h3 id={Home.Markdown.to_ident(name)}><.link href={"/blog/#{slug}"}><%= name %></.link></h3>
     <%= if desc do %>
       <%= desc |> Earmark.as_html!() |> raw() %>
     <% end %>

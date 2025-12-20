@@ -107,6 +107,52 @@ defmodule HomeWeb do
   end
 
   @doc """
+  Translates a filename into a URL path segment which would fetch it.
+
+  Removes a leading `priv/pages/`, and collapses `<path>/index.md`,
+  `<path>/README.md`, and `<path>.md` to all be just `<path>`.
+  """
+  @spec filepath_to_url(Path.t()) :: Path.t()
+  def filepath_to_url(filepath) do
+    cond do
+      Path.basename(filepath) == "index.md" -> Path.dirname(filepath)
+      Path.basename(filepath) == "README.md" -> Path.dirname(filepath)
+      true -> Path.rootname(filepath)
+    end
+    |> String.replace(~r'^priv/pages/', "")
+    |> (&"/#{&1}").()
+  end
+
+  @doc """
+  Translates a URL path segment into a candidate file. Candidate files all exist
+  in `priv/pages`, and are one of:
+
+  1. `priv/pages/<path>.md`
+  2. `priv/pages/<path>/index.md`
+  3. `priv/pages/<path>/README.md`
+
+  The first file in that sequence which exists produces a `{path, %File.Stat{}}`
+  pair. If no such files exist, this produces `nil`.
+  """
+  @spec url_to_filepath(Path.t() | String.t()) :: {Path.t(), File.Stat.t()} | nil
+  def url_to_filepath(url) do
+    full = Path.join(["priv", "pages", url])
+
+    [full, String.normalize(full, :nfkd), String.normalize(full, :nfkc)]
+    |> Stream.flat_map(fn p ->
+      ["#{p}.md", Path.join(p, "index.md"), Path.join(p, "README.md")]
+    end)
+    |> Stream.map(fn p -> {p, File.lstat(p, time: :posix)} end)
+    |> Stream.map(fn
+      {p, {:ok, stat}} -> {p, stat}
+      {_, {:error, _}} -> nil
+    end)
+    |> Stream.filter(& &1)
+    |> Enum.take(1)
+    |> List.first()
+  end
+
+  @doc """
   Fills the page cache with the website content in `priv/pages`.
   """
   def fill_cache do
@@ -115,9 +161,6 @@ defmodule HomeWeb do
     |> Path.join()
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
-    # But not the READMEs
-    |> Stream.reject(&(&1 |> Path.basename() == "README.md"))
-    |> Stream.map(&(&1 |> Path.relative_to(["priv", "pages"] |> Path.join())))
     # And load them into the cache.
     |> Home.PageCache.cached_many()
     |> Stream.run()

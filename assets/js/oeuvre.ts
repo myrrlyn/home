@@ -9,10 +9,15 @@
 //
 import { set_jukebox } from "./jukebox";
 import { mark_headings } from "./toc";
+import * as sundial from "./sundial";
 import "bootstrap";
 import "phoenix_html";
 
 window.onload = function () {
   mark_headings([2, 3, 4, 5, 6]);
   set_jukebox();
+  let svg = document.querySelector("svg#gravatar");
+  if (svg instanceof SVGElement) {
+    sundial.daemon(svg);
+  }
 };

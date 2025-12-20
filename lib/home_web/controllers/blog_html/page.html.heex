@@ -1,19 +1,19 @@
 <article>
   <header class="frontmatter">
     <hgroup>
-      <.page_title page_title={@page.meta.title} page_subtitle={@page.meta.subtitle} />
-      <p class="timestamp">Published on <.timestamp time={@page.meta.date}, time_fmt="{YYYY}, {Mshort} {D}" /></p>
+      <.page_title page_title={@frontmatter.title} page_subtitle={@frontmatter.subtitle} />
+      <p class="timestamp">Published on <.timestamp time={@frontmatter.date}, time_fmt="{YYYY}, {Mshort} {D}" /></p>
       <p>Estimated reading time: <span id="reading-time"></span>.</p>
     </hgroup>
-    <p><%= @page.meta.summary |> Earmark.as_html! |> raw %></p>
+    <p><%= @frontmatter.summary |> Earmark.as_html! |> raw %></p>
     <%= if @page.toc != [] do %>
       <strong>Contents</strong>
       <.navtoc toc={@page.toc} collapse={false} />
     <% end %>
   </header>
   <hr />
-  <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />
+  <.audio :if={@frontmatter.props["intro-music"]} ident="intro" audio={@frontmatter.props["intro-music"]} />
   <%= @page.content |> raw %>
-  <.audio :if={@page.meta.props["outro-music"]} ident="outro" audio={@page.meta.props["outro-music"]} />
+  <.audio :if={@frontmatter.props["outro-music"]} ident="outro" audio={@frontmatter.props["outro-music"]} />
   <%= view_module(@conn).footer(assigns) %>
 </article>

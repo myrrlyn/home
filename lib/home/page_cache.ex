@@ -69,7 +69,10 @@ defmodule Home.PageCache do
   `path` is invalid in the filesystem and no previous entry exists.
   """
   @spec cached(Path.t(), Keyword.t()) :: {:ok, Home.Page.t()} | {:error, any}
-  def cached(path, opts \\ []) do
+  def cached(path, opts \\ [])
+  def cached(nil, _), do: {:error, nil}
+
+  def cached(path, opts) do
     opts = Keyword.merge([lifetime: 86400, toc_filter: 2..3], opts)
 
     page = get(path)

@@ -1,7 +1,7 @@
 <article>
   <section>
-    <h1 id="title"><%= @page.meta.title %></h1>
-    <p :if={summary = @page.meta.summary}>
+    <h1 id="title"><%= @frontmatter.title %></h1>
+    <p :if={summary = @frontmatter.summary}>
       <%= summary |> Earmark.as_html!() |> raw() %>
     </p>
     <.navtoc :if={@page.toc != []} toc={@page.toc} />

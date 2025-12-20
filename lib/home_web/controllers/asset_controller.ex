@@ -31,8 +31,8 @@ defmodule HomeWeb.AssetController do
   @doc """
   Loads a document from the "papers" collection rather than the "static" assets.
   """
-  def paper(conn, %{"file" => file}) do
-    path = Path.join(["priv", "papers", file])
+  def paper(conn, %{"file" => file} = params) do
+    path = Path.join(["priv", "pages", "papers", file])
 
     sendfile(conn, %{"path" => path})
   end

@@ -1,8 +1,8 @@
 <link rel="alternate" type="application/atom+xml" href={HomeWeb.Endpoint.url() <> "/blog/atom.xml"} />
-<%= for script <- @page.meta.props |> Map.get("scripts", []) do %>
+<%= for script <- @frontmatter.props |> Map.get("scripts", []) do %>
   <% src = ["/", @src_path |> Path.dirname(), script] |> Path.join() |> Path.expand() %>
   <script type="text/javascript" src={src}> </script>
 <% end %>
-<style :if={css = @page.meta.props["extra_css"]} type="text/css">
+<style :if={css = @frontmatter.props["extra_css"]} type="text/css">
   <%= css |> raw() %>
 </style>

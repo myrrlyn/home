@@ -1,4 +1,6 @@
-<h1 class="title"><%= @page_title %></h1>
-<h2 :if={assigns[:page_subtitle]} class="title subtitle">
-  <%= assigns[:page_subtitle] %>
-</h2>
+<div>
+  <h1 class="title no-toc no-count"><%= @page_title %></h1>
+  <h2 :if={assigns[:page_subtitle]} class="title subtitle no-toc no-count">
+    <%= assigns[:page_subtitle] %>
+  </h2>
+</div>

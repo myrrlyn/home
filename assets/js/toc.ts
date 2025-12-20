@@ -6,7 +6,7 @@ export function mark_headings(ranks: Array<number>) {
   // TODO(myrrlyn): Figure out how to make this server-side.
   console.group("headings")
   for (let num of ranks) {
-    let sel = `main article h${num}:not(.subtitle)`;
+    let sel = `main article h${num}:not(.no-toc)`;
     for (let hed of document.querySelectorAll(sel)) {
       let inner = hed.innerHTML;
       let id = hed.id;
@@ -14,7 +14,7 @@ export function mark_headings(ranks: Array<number>) {
         continue;
       }
       console.log(`marking h${num} "${inner}"`)
-      hed.innerHTML = `<a href="#${hed.id}" class="text-mono">§</a> <span>${inner}</span>`;
+      hed.innerHTML = `<a href="#${hed.id}" class="mark-ss">§</a><span>${inner}</span>`;
     }
   }
   console.groupEnd();

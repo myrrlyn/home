@@ -1,4 +1,15 @@
 {
+  "svg.preview.background": "transparent",
+  "[elixir]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.wordBasedSuggestions": "off",
     "editor.formatOnSave": true,
-    "svg.preview.background": "transparent"
+    "editor.formatOnType": true,
+    "editor.trimAutoWhitespace": false,
+    "editor.snippetSuggestions": "inline",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+  }
 }

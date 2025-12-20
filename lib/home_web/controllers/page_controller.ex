@@ -8,58 +8,49 @@ defmodule HomeWeb.PageController do
   def home(conn, params) do
     conn
     |> Plug.Conn.assign(:tab_title, "~myrrlyn")
-    |> build(params, "/", Home.PageCache.cached!("index.md"))
+    |> discover(Map.put(params, "path", []))
   end
 
-  # Trap `/resume` and forward it to the real URL
-  def page(conn, %{"path" => ["resume"]}) do
-    conn
-    |> put_resp_header("location", "/résumé")
-    |> put_resp_content_type("text/plain")
-    |> resp(301, "I am pretentious and spell it with the accents")
+  def resume(conn, params) do
+    if conn.path_info != ["about", "r%C3%A9sum%C3%A9"] do
+      redirect(conn, to: "/about/résumé")
+    else
+      discover(conn, Map.put(params, "path", ["about", "resume"]))
+    end
   end
 
-  # Trap `/résumé` and load it from the ASCII filesystem entry.
-  #
-  # It is not worth fighting with the various systems which do not tolerate
-  # supra-ASCII filenames (my deployment system, Git, etc).
-  def page(conn, %{"path" => ["résumé"]}) do
-    page = Home.PageCache.cached!("resume.md")
-    # conn |> build(params, "/résumé", page)
-    pdf = "/papers/resume.pdf"
-
-    conn
-    |> render(:pdf,
-      flavor: "app",
-      classes: ["general", "embed"],
-      frontmatter: page.meta,
-      tab_title: page.meta.tab_title || ["~myrrlyn" | conn.path_info] |> Path.join(),
-      banner: Home.Banners.select_or_random(page.meta),
-      page: page,
-      foreign: pdf,
-      navtree: fn -> __MODULE__.navtree("/résumé") end,
-      gravatar: get_gravatar("/résumé"),
-      scope: ""
-    )
+  def page(conn, params) do
+    discover(conn, params)
   end
 
-  def page(conn, %{"path" => path} = params) do
-    path = path |> Path.join()
+  def discover(conn, %{"path" => path} = params) do
+    case Path.join(["/" | path]) |> HomeWeb.url_to_filepath() do
+      nil ->
+        error(conn, 404, params)
 
+      {filepath, %File.Stat{type: :symlink}} ->
+        redir = filepath |> File.read_link!() |> HomeWeb.filepath_to_url()
+        redirect(conn, to: "/#{redir}")
+
+      {filepath, %File.Stat{type: :regular}} ->
+        load_fs(conn, params, filepath)
+    end
+  end
+
+  def load_fs(conn, params, filepath) do
     classes =
-      if path |> IO.inspect() |> String.starts_with?("crates") do
+      if String.contains?(filepath, "/crates/") || String.contains?(filepath, "/ferrilab/") do
         ["crate"]
       else
         []
       end
 
-    case Home.PageCache.cached("#{path}.md") do
+    case Home.PageCache.cached(filepath) do
       {:ok, page} ->
-        conn |> build(params, "/#{path}", page, classes)
+        build(conn, page, classes)
 
       {:error, _} ->
-        conn
-        |> error(404, params)
+        error(conn, 404, params)
     end
   end
 
@@ -108,12 +99,11 @@ defmodule HomeWeb.PageController do
         gravatar: Home.Page.gravatar("self@myrrlyn.net")
       )
 
-  defp build(conn, _params, path, page, classes \\ []) do
+  defp build(conn, page, classes \\ []) do
     conn
     |> render(:page,
       flavor: "app",
       classes: ["general" | classes],
-      frontmatter: page.meta,
       tab_title:
         conn.assigns[:tab_title] || page.meta.tab_title ||
           ["~myrrlyn" | conn.path_info] |> Path.join(),
@@ -126,8 +116,9 @@ defmodule HomeWeb.PageController do
         end,
       banner: Home.Banners.select_or_random(page.meta),
       page: page,
-      navtree: fn -> __MODULE__.navtree(path) end,
-      gravatar: get_gravatar(path),
+      frontmatter: page.meta,
+      navtree: fn -> conn.request_path |> URI.decode() |> __MODULE__.navtree() end,
+      gravatar: get_gravatar(conn.request_path),
       scope: ""
     )
   end
@@ -143,6 +134,7 @@ defmodule HomeWeb.PageController do
       tab_title: "Not Found",
       tab_suffix: " · ~myrrlyn",
       page: nil,
+      frontmatter: nil,
       navtree: &navtree/0,
       gravatar: Home.Page.gravatar("self@myrrlyn.net"),
       scope: ""
@@ -161,34 +153,36 @@ defmodule HomeWeb.PageController do
   def page_listing() do
     [
       {"Home", "/", "-r--"},
-      {"About Me", "/about", "-r--"},
+      {"About Me", "/about", "-r--",
+       [
+         {"Portfolio", "portfolio", "-r--"},
+         {"Résumé", "résumé", "-r--"},
+         {"Résumé (PDF)", "/papers/resume.pdf", "-r--"}
+       ]},
       {"Blog", "/blog", "dr-x"},
       {"Crates", "/crates", "dr-x",
        [
-         {"<code>bitvec</code>", "bitvec", "-r--"},
-         {"<code>radium</code>", "radium", "-r--"},
-         {"<code>funty</code>", "funty", "-r--"},
          {"<code>tap</code>", "tap", "-r--"},
          {"<code>calm_io</code>", "calm_io", "-r--"},
          {"<code>wyz</code>", "wyz", "-r--"},
          {"Cosmonaught", "cosmonaught", "-r--"},
          {"<code>lilliput</code>", "lilliput", "-r--"}
        ]},
-      {"Ferrilab", "/ferrilab", "-r-x"},
+      {"Ferrilab", "/ferrilab", "-r-x",
+       [
+         {"<code>bitvec</code>", "bitvec", "-r--"},
+         {"<code>radium</code>", "radium", "-r--"},
+         {"<code>funty</code>", "funty", "-r--"}
+       ]},
       {"Hermaeus", "/hermaeus", "-r--"},
       {"Oeuvre", "/oeuvre", "dr-x"},
-      {"Portfolio", "/portfolio", "-r--"},
-      {"Résumé", "/résumé", "-r--",
-       [
-         {"PDF Version", "/papers/resume.pdf", "-r--"}
-       ]},
       {"WebRing", "/webring", "-r--"},
       {"Workbench", "/uses", "-r--"}
     ]
   end
 
   defp get_gravatar(path) do
-    if String.starts_with?(path, "/crates") do
+    if String.starts_with?(path, "/crates") || String.starts_with?(path, "/ferrilab") do
       "/static/favicons/ferrilab-2048.png"
     else
       Home.Page.gravatar("self@myrrlyn.net")

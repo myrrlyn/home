@@ -125,6 +125,13 @@ defmodule HomeWeb.Router do
     get("/klaus", KlausController, :page)
     get("/html-test", PageController, :html_test)
 
+    # These redirect to the canonical URL, "/about/r%C3%A9sum%C3%A9"
+    get("/resume", PageController, :resume)
+    get("/résumé", PageController, :resume)
+    get("/about/resume", PageController, :resume)
+    # This translates the canonical URL (résumé) to the canonical file (resume)
+    get("/about/résumé", PageController, :resume)
+
     get("/*path", PageController, :page)
   end
 end

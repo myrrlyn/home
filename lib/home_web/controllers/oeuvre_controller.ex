@@ -7,7 +7,7 @@ defmodule HomeWeb.OeuvreController do
   @dir ["priv", "pages", @root] |> Path.join()
 
   def index(conn, _params) do
-    page = Home.PageCache.cached!("oeuvre/index.md")
+    page = @dir |> Path.join("index.md") |> Home.PageCache.cached!()
 
     conn |> assign(:tagset, by_tags()) |> build(:index, page)
   end
@@ -68,7 +68,7 @@ defmodule HomeWeb.OeuvreController do
 
   # Renders a single article
   def page(conn, %{"path" => [page]} = params) do
-    case Home.PageCache.cached("oeuvre/#{page}.md") do
+    case @dir |> Path.join("#{page}.md") |> Home.PageCache.cached() do
       {:ok, page} ->
         conn |> build(:page, page)
 
@@ -113,6 +113,7 @@ defmodule HomeWeb.OeuvreController do
       classes: ["oeuvre"],
       banner: banner,
       page: page,
+      frontmatter: page.meta,
       tab_title: page.meta.title,
       tab_suffix:
         case page.meta.title do
@@ -134,6 +135,7 @@ defmodule HomeWeb.OeuvreController do
       {title, "#{url |> Path.rootname()}"}
     end)
     |> Enum.sort_by(fn {_, ps} -> ps |> length() end, :desc)
+    |> Enum.reject(fn {_, ps} -> length(ps) < 3 end)
   end
 
   def navtree(current \\ nil) do
@@ -161,7 +163,9 @@ defmodule HomeWeb.OeuvreController do
     |> Home.Blog.walkdir()
     |> Home.PageCache.cached_many()
     |> Stream.filter(fn {res, _} -> res == :ok end)
-    |> Stream.map(fn {:ok, {path, page}} -> {"/#{Path.rootname(path)}", page.meta} end)
+    |> Stream.map(fn {:ok, {path, page}} ->
+      {"/#{path |> Path.relative_to("priv/pages") |> Path.rootname()}", page.meta}
+    end)
     # If we are not in :dev, discard unpublished entries
     |> Stream.filter(fn {_, meta} ->
       Application.get_env(:home, :show_drafts) || meta.published
@@ -176,6 +180,7 @@ defmodule HomeWeb.OeuvreController do
     |> Path.wildcard()
     |> Stream.filter(&File.regular?/1)
     |> Stream.reject(&(Path.basename(&1) in ["index.md", "README.md"]))
-    |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
+
+    # |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
   end
 end
