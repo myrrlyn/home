@@ -1,6 +1,8 @@
 defmodule HomeWeb.OeuvreController do
   use HomeWeb, :controller
 
+  require Logger
+
   @root "/oeuvre"
   @dir ["priv", "pages", @root] |> Path.join()
 
@@ -99,8 +101,7 @@ defmodule HomeWeb.OeuvreController do
   @doc "Render an RSS feed"
   def rss(conn, _params) do
     conn
-    |> put_resp_content_type("application/rss+xml")
-    |> render(:rss, articles: get_fanfic())
+    |> HomeWeb.Nav.redirect("/blog/atom.xml", "Phoenix cannot currently generate RSS files")
   end
 
   def build(conn, template, page) do

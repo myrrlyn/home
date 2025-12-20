@@ -17,17 +17,17 @@ defmodule HomeWeb.Router do
   end
 
   pipeline :xml do
-    plug(:accepts, ["xml"])
+    # plug(:accepts, ["xml"])
     plug(:put_format, :html)
-    plug(:put_root_layout, {HomeWeb.Layouts, :xml})
-    plug(:put_layout, {HomeWeb.Layouts, :bare})
+    plug(:put_root_layout, html: {HomeWeb.Layouts, :xml})
+    plug(:put_layout, html: {HomeWeb.Layouts, :bare})
   end
 
   pipeline :svg do
     # Phoenix doesn't actually support anything other than HTML and JSON here.
     plug(:put_format, :html)
-    plug(:put_root_layout, {HomeWeb.Layouts, :svg})
-    plug(:put_layout, {HomeWeb.Layouts, :bare})
+    plug(:put_root_layout, html: {HomeWeb.Layouts, :svg})
+    plug(:put_layout, html: {HomeWeb.Layouts, :bare})
   end
 
   # Other scopes may use custom stacks.
@@ -43,10 +43,16 @@ defmodule HomeWeb.Router do
     get("/sitemap.txt", PageController, :sitemap_txt)
 
     get("/atom.xml", BlogController, :atom)
+    get("/feed.rss", BlogController, :rss)
+    get("/blog.rss", BlogController, :rss)
+
     get("/blog.atom", BlogController, :atom)
     get("/blog/atom.xml", BlogController, :atom)
+    get("/blog/feed.rss", BlogController, :rss)
+
     get("/oeuvre.atom", OeuvreController, :atom)
     get("/oeuvre/atom.xml", OeuvreController, :atom)
+    get("/oeuvre/feed.rss", OeuvreController, :rss)
   end
 
   scope "/oeuvre", HomeWeb do

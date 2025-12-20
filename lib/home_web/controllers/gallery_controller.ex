@@ -15,7 +15,7 @@ defmodule HomeWeb.GalleryController do
       tab_title: "Icon Gallery",
       page: nil,
       navtree: fn -> __MODULE__.navtree() end,
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: Home.Page.gravatar("self@myrrlyn.net"),
       scope: @root,
       gallery: gallery
     )
@@ -30,7 +30,7 @@ defmodule HomeWeb.GalleryController do
       tab_title: "Banner Images",
       page_title: "Banner Images",
       navtree: &navtree/0,
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: Home.Page.gravatar("self@myrrlyn.net"),
       scope: @root,
       directory: "/static/images/banners",
       gallery: Home.Banners.main_banners()
@@ -47,7 +47,7 @@ defmodule HomeWeb.GalleryController do
       tab_title: "ISO 7010 Icons",
       page_title: "ISO 7010 Icons",
       navtree: &navtree/0,
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: Home.Page.gravatar("self@myrrlyn.net"),
       scope: @root,
       directory: "/static/images/iso-7010",
       gallery: %{

@@ -4,17 +4,17 @@
   <atom:id><%= HomeWeb.Endpoint.url() <> @section %></atom:id>
   <atom:link rel="self" href={HomeWeb.Endpoint.url() <> @section <> "/atom.xml"} />
   <atom:link rel="alternate" href={HomeWeb.Endpoint.url() <> @section} />
-  <% {_, newest} = @articles |> Enum.at(0) %>
+  <% {_, newest, _toc} = @articles |> Enum.at(0) %>
   <atom:updated><%= Timex.format!(newest.date, "{RFC3339}") %></atom:updated>
   <atom:author>
     <atom:name>Alexander Payne (myrrlyn)</atom:name>
-    <atom:email>self@myrrlyn.dev</atom:email>
+    <atom:email>self@myrrlyn.net</atom:email>
   </atom:author>
   <atom:generator>Phoenix (Elixir + Erlang/OTP)</atom:generator>
   <atom:icon>/static/favicons/favicon-128.png</atom:icon>
   <atom:rights>© 2012–<%= Date.utc_today().year %> Alexander Payne (myrrlyn)</atom:rights>
 
-  <%= for {url, meta} <- @articles do %>
+  <%= for {url, meta, _toc} <- @articles do %>
     <atom:entry>
       <atom:title><%= meta.title %></atom:title>
       <atom:id><%= HomeWeb.Endpoint.url() <> url %></atom:id>
@@ -32,9 +32,7 @@
         |> Home.Meta.summary("This article currently lacks a description")
         |> String.trim()
       %></atom:summary>
-      <%= for tag <- Home.Meta.tags(meta, []) do %>
-        <atom:category term={tag} />
-      <% end %>
+      <atom:category :for={tag <- Home.Meta.tags(meta, [])} term={tag} />
     </atom:entry>
   <% end %>
 </atom:feed>

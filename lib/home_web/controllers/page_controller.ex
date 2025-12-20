@@ -105,7 +105,7 @@ defmodule HomeWeb.PageController do
         },
         scope: "/",
         navtree: fn -> __MODULE__.navtree("/html-test") end,
-        gravatar: Home.Page.gravatar("self@myrrlyn.dev")
+        gravatar: Home.Page.gravatar("self@myrrlyn.net")
       )
 
   defp build(conn, _params, path, page, classes \\ []) do
@@ -144,7 +144,7 @@ defmodule HomeWeb.PageController do
       tab_suffix: " · ~myrrlyn",
       page: nil,
       navtree: &navtree/0,
-      gravatar: Home.Page.gravatar("self@myrrlyn.dev"),
+      gravatar: Home.Page.gravatar("self@myrrlyn.net"),
       scope: ""
     )
   end
@@ -191,7 +191,7 @@ defmodule HomeWeb.PageController do
     if String.starts_with?(path, "/crates") do
       "/static/favicons/ferrilab-2048.png"
     else
-      Home.Page.gravatar("self@myrrlyn.dev")
+      Home.Page.gravatar("self@myrrlyn.net")
     end
   end
 end
