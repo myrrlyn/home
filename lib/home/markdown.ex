@@ -60,7 +60,7 @@ defmodule Home.Markdown do
 
     {toc_tree, html} =
       {Task.async(fn -> build_toc(ast, tocs, opts) end),
-       Task.async(fn -> ast |> ast_to_html(opts) |> restore_tags() end)}
+       Task.async(fn -> ast |> ast_to_html(opts) end)}
 
     {toc_tree, html} = {toc_tree |> Task.await(), html |> Task.await()}
 
@@ -330,44 +330,6 @@ defmodule Home.Markdown do
   def ast_to_html(ast, opts) do
     ast
     |> Earmark.Transform.transform(opts)
-  end
-
-  @doc """
-  Un-escapes certain tags. Does not support attributes in those tags.
-
-  This is not aware of context, and replaces *all* escaped tag instances.
-  """
-  @spec restore_tags(String.t()) :: String.t()
-  def restore_tags(html) do
-    tags = [
-      "br",
-      "br /",
-      "cite",
-      "code",
-      "del",
-      "dfn",
-      "ins",
-      "kbd",
-      "key",
-      # "math",
-      # "mfrac",
-      # "mi",
-      # "mo",
-      # "mn",
-      # "msub",
-      # "msup",
-      "small",
-      "sub",
-      "sup"
-    ]
-
-    re = ~r/&lt;(?<c>\/)?(?<t>#{tags |> Enum.join("|")})&gt;/
-
-    Regex.replace(
-      re,
-      html,
-      "<\\1\\2>"
-    )
   end
 
   @doc """
