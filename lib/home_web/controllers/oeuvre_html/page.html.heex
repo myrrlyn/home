@@ -15,4 +15,5 @@
   <.audio :if={@page.meta.props["intro-music"]} ident="intro" audio={@page.meta.props["intro-music"]} />
   <%= @page.content |> raw %>
   <.audio :if={@page.meta.props["outro-music"]} ident="outro" audio={@page.meta.props["outro-music"]} />
+  <%= view_module(@conn).footer(assigns) %>
 </article>

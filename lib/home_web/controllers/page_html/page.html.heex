@@ -22,4 +22,5 @@
     <% end %>
   </div>
   <%= @page.content |> raw %>
+  <%= view_module(@conn).footer(assigns) %>
 </article>

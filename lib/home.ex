@@ -38,4 +38,8 @@ defmodule Home do
 
   @doc "Produces a rotation by the second of the day"
   def clock, do: Time.utc_now() |> Time.to_seconds_after_midnight() |> elem(0) |> div(240)
+
+  def url_to_bsky(path) do
+    "/intent/compose?text=I just read myrrlyn's article https://myrrlyn.net#{path}, and I have some _thoughts_."
+  end
 end

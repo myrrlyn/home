@@ -71,13 +71,8 @@
   }
 
   @include codeblock(c, langs.$c);
-  @include codeblock(
-    console,
-    langs.$console,
-    $color-fg: var(--ansi-black),
-    $font: text-term
-  );
-  @include codeblock(cosmos, langs.$cosmos, $font: text-term);
+  @include codeblock(console, langs.$console, $color-fg: var(--ansi-black));
+  @include codeblock(cosmos, langs.$cosmos);
   @include codeblock(cpp, langs.$cpp);
   @include codeblock(css, langs.$css);
   @include codeblock(elixir, langs.$elixir);
@@ -87,24 +82,14 @@
   @include codeblock(md, langs.$md, $color-fg: var(--ansi-white));
   @include codeblock(rust, langs.$rust, $color-fg: var(--ansi-black));
   @include codeblock(ps1, langs.$pwsh, $color-fg: var(--ansi-white));
-  @include codeblock(
-    rust_errors,
-    ansi.$red,
-    $color-fg: var(--ansi-white),
-    $font: text-term
-  );
+  @include codeblock(rust_errors, ansi.$red, $color-fg: var(--ansi-white));
   @include codeblock(scss, langs.$scss);
-  @include codeblock(
-    sh,
-    langs.$shell,
-    $color-fg: var(--ansi-black),
-    $font: text-term
-  );
+  @include codeblock(sh, langs.$shell, $color-fg: var(--ansi-black));
   @include codeblock(shell, langs.$shell);
   @include codeblock(toml, langs.$toml);
   @include codeblock(xml, langs.$xml, $color-fg: var(--ansi-white));
 
-  @include codeblock(text, langs.$text, $font: text-term);
+  @include codeblock(text, langs.$text);
 }
 
 pre {

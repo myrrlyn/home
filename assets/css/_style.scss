@@ -39,11 +39,13 @@ code {
   word-wrap: break-word;
 }
 
-pre,
-code,
-kbd,
-samp {
+:not(pre) > code,
+kbd {
   @extend %text-mono;
+}
+
+pre {
+  @extend %text-term;
 }
 
 p:has(kbd) {
