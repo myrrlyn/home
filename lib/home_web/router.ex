@@ -134,9 +134,9 @@ defmodule HomeWeb.Router do
 
     get("/*path", PageController, :page)
 
-    put("/*", PageController, :deny)
-    post("/*", PageController, :deny)
-    patch("/*", PageController, :deny)
-    delete("/*", PageController, :deny)
+    put("/*path", PageController, :deny)
+    post("/*path", PageController, :deny)
+    patch("/*path", PageController, :deny)
+    delete("/*path", PageController, :deny)
   end
 end
