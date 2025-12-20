@@ -10,7 +10,6 @@ defmodule Home.Application do
     children = [
       # Start the page cache to reduce filesystem hits
       {Home.PageCache, %{}},
-      {Home.ImageCache, %{}},
       # Start the Telemetry supervisor
       HomeWeb.Telemetry,
       # Start the PubSub system

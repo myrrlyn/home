@@ -13,11 +13,11 @@ kill_timeout = "5s"
 
 [env]
   PHX_HOST = "myrrlyn.net"
-  PORT = "8080"
+  PORT = "1312"
 
 [[services]]
   protocol = "tcp"
-  internal_port = 8080
+  internal_port = 1312
   processes = ["app"]
 
   [[services.ports]]
