@@ -296,11 +296,9 @@ defmodule HomeWeb.BlogController do
     # Translate filepath to URL and drop the full page for just metadata/toc
     |> Stream.map(fn {:ok, {path, page}} -> {path |> path_to_url(), page.meta, page.toc} end)
     # If we are not in :dev, discard unpublished entries
-    |> (fn seq ->
-          if Application.get_env(:home, :show_drafts),
-            do: seq,
-            else: seq |> Stream.filter(fn {_, meta, _} -> meta.published end)
-        end).()
+    |> Stream.filter(fn {_, meta, _} ->
+      Application.get_env(:home, :show_drafts) || meta.published
+    end)
     # And sort by date
     |> Enum.sort_by(fn {_, meta, _} -> meta.date end, {:desc, DateTime})
   end

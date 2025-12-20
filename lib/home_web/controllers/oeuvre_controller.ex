@@ -162,11 +162,10 @@ defmodule HomeWeb.OeuvreController do
     |> Home.PageCache.cached_many()
     |> Stream.filter(fn {res, _} -> res == :ok end)
     |> Stream.map(fn {:ok, {path, page}} -> {"/#{Path.rootname(path)}", page.meta} end)
-    |> (fn stream ->
-          if Application.get_env(:home, :show_drafts),
-            do: stream,
-            else: stream |> Stream.filter(fn {_, meta} -> meta.published end)
-        end).()
+    # If we are not in :dev, discard unpublished entries
+    |> Stream.filter(fn {_, meta} ->
+      Application.get_env(:home, :show_drafts) || meta.published
+    end)
     |> Enum.to_list()
     |> Enum.sort_by(fn {_, meta} -> meta.date end, {:desc, DateTime})
   end
