@@ -1,0 +1,11 @@
+@use "./ansi";
+
+// ISO 3864
+$red: #9b2423 !default;
+$orange: #d05d29 !default;
+$yellow: #f9a900 !default;
+$green: #237f52 !default;
+$blue: #005387 !default;
+$purple: ansi.$purple !default; // 3864 doesn't spec a purple
+$white: lighten(#ecece7, 4%) !default;
+$black: darken(#2b2b2c, 8%) !default;

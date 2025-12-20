@@ -6,4 +6,8 @@ dl {
   dd + dt {
     margin-block-start: 0.5em;
   }
+
+  @extend .block-chevron;
+  --block-color-fg: var(--ansi-orange);
+  --block-color-bg: var(--bg);
 }

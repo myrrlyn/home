@@ -1,40 +1,104 @@
-@mixin striped($color-bg, $color-fg, $angle: -45deg, $width: 12, $side: "") {
-  border-color: var(--bg);
+.block-stripe {
+  --block-color-fg: var(--text-fg);
+  --block-color-bg: var(--bg);
+  --stripe-scale: 12;
+  --stripe-angle: 135deg;
+
+  border-color: var(--block-color-bg);
   border-style: solid;
-  border#{$side}-width: #{$width}px;
-  // TODO(myrrlyn): Figure out the math to use here. cos(angle) * width of two
-  // stripes? Unsure.
-  border-image: repeating-linear-gradient(
-      $angle,
-      $color-bg,
-      $color-bg #{$width}px,
-      $color-fg #{$width}px,
-      $color-fg calc(#{$width}px * 2)
-    )
-    $width;
+  border-width: calc(var(--stripe-scale) * 1px);
+  border-image-source: repeating-linear-gradient(
+    var(--stripe-angle),
+    var(--block-color-fg) calc(var(--stripe-scale) * 1px * calc(0)),
+    var(--block-color-fg) calc(var(--stripe-scale) * 1px * calc(1)),
+    var(--block-color-bg) calc(var(--stripe-scale) * 1px * calc(1)),
+    var(--block-color-bg) calc(var(--stripe-scale) * 1px * calc(2))
+  );
+  border-image-slice: var(--stripe-scale);
+  border-image-repeat: round;
 }
 
-@mixin shadow($size: 0.25em) {
-  box-shadow: $size $size var(--shadow);
+.block-chevron {
+  --block-border-width: 0.5em;
+
+  border: calc(var(--block-border-width) / 2) solid var(--block-color-bg);
+  border-inline-start: var(--block-border-width) solid var(--block-color-fg);
+  padding-inline-start: 1em;
 }
 
-%block {
-  $scale: 12;
-  --stripe-scale: #{$scale};
-  --stripe-width: #{$scale}px;
+.block-red {
+  --block-color-bg: var(--ansi-white);
+  --block-color-fg: var(--ansi-red);
+  background-color: var(--ansi-red-bg);
 
-  margin-block: 1em;
-  margin-inline: 0;
-  padding: 1em;
+  &.iso7010 {
+    --block-color-fg: var(--iso-red);
+    background-color: var(--iso-red-bg);
+  }
+}
 
-  & > :first-child {
-    margin-block-start: 0;
-  }
-  & > :last-child {
-    margin-block-end: 0;
-  }
+.block-orange {
+  --block-color-bg: var(--ansi-black);
+  --block-color-fg: var(--ansi-orange);
+  background-color: var(--ansi-orange-bg);
 
-  & > * {
-    margin-inline: 0;
+  &.iso7010 {
+    --block-color-fg: var(--iso-orange);
+    background-color: var(--iso-orange-bg);
   }
+}
+
+.block-yellow {
+  --block-color-bg: var(--ansi-black);
+  --block-color-fg: var(--ansi-yellow);
+  background-color: var(--ansi-yellow-bg);
+
+  &.iso7010 {
+    --block-color-fg: var(--iso-yellow);
+    background-color: var(--iso-yellow-bg);
+  }
+}
+
+.block-green {
+  --block-color-bg: var(--ansi-white);
+  --block-color-fg: var(--ansi-green);
+  background-color: var(--ansi-green-bg);
+
+  &.iso7010 {
+    --block-color-fg: var(--iso-green);
+    background-color: var(--iso-green-bg);
+  }
+}
+
+.block-blue {
+  --block-color-bg: var(--ansi-white);
+  --block-color-fg: var(--ansi-blue);
+  background-color: var(--ansi-blue-bg);
+
+  &.iso7010 {
+    --block-color-fg: var(--iso-blue);
+    background-color: var(--iso-blue-bg);
+  }
+}
+
+.block-purple {
+  --block-color-bg: var(--ansi-white);
+  --block-color-fg: var(--ansi-purple);
+  background-color: var(--ansi-purple-bg);
+}
+
+.block-harm {
+  @extend .block-red;
+}
+
+.block-warn {
+  @extend .block-yellow;
+}
+
+.block-safe {
+  @extend .block-green;
+}
+
+.block-info {
+  @extend .block-blue;
 }

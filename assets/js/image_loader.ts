@@ -1,4 +1,5 @@
 export function load_images() {
+  console.group("loading images");
   let elems = Array.from(document.getElementsByClassName("async-image"))
     .map((elem) => elem as HTMLElement)
     .reverse();
@@ -7,6 +8,7 @@ export function load_images() {
   setTimeout(() => load_one(elems), 15);
   setTimeout(() => load_one(elems), 10);
   setTimeout(() => load_one(elems), 5);
+  console.groupEnd();
 }
 
 function load_one(elems: Array<HTMLElement>) {

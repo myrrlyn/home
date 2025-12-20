@@ -1,42 +1,38 @@
-@use "block";
+@use "../components";
+@use "../color";
+@use "../color/ansi";
+@use "../color/iso";
 @use "../color/langs";
 
-@mixin codeblock(
-  $lang,
-  $color-bg,
-  $color-fg: var(--text-fg),
-  $font: text-mono
-) {
+@mixin codeblock($lang, $color-bg, $color-fg: var(--text-fg), $font: null) {
   &.codeblock-#{$lang} {
+    --block-color-fg: #{$color-fg};
+    --block-color-bg: #{$color-bg};
     background-color: transparentize($color-bg, 0.85);
-    border-width: 0;
-    @include block.striped(
-      var(--text-fg),
-      $color-bg,
-      $side: "-inline-start",
-      $angle: -45deg
-    );
 
-    span.lang-marker {
+    .lang-marker {
       background-color: $color-bg;
       color: $color-fg;
     }
-  }
 
-  code,
-  code span {
-    @extend %#{$font};
+    @if ($font != null) {
+      code {
+        @extend %#{$font};
+      }
+    }
   }
 }
 
 & > .code-container {
-  @include block.shadow(0.5em);
+  @include components.shadow(0.5em);
 }
 
 .code-container {
   @extend %block;
+  @extend .block-stripe;
 
-  border-inline-start: 10px solid var(--charcoal);
+  --stripe-scale: 10;
+  border-width: 0 0 0 12px;
 
   // Allow .copy-icon to anchor to its enclosing .code-container
   position: relative;
@@ -54,32 +50,6 @@
     border-end-end-radius: var(--curve-radius);
   }
 
-  @include codeblock(c, $lang-c);
-  @include codeblock(console, $lang-console, $font: text-term);
-  @include codeblock(cosmos, $lang-cosmos, $font: text-term);
-  @include codeblock(cpp, $lang-cpp);
-  @include codeblock(css, $lang-css);
-  @include codeblock(elixir, $lang-elixir);
-  @include codeblock(erlang, $lang-erlang);
-  @include codeblock(html, $lang-html);
-  @include codeblock(js, $lang-js);
-  @include codeblock(md, $lang-md);
-  @include codeblock(rust, $lang-rust);
-  @include codeblock(ps1, $lang-pwsh, $color-fg: var(--iso-white));
-  @include codeblock(
-    rust_errors,
-    $iso-red,
-    $color-fg: var(--iso-white),
-    $font: text-term
-  );
-  @include codeblock(scss, $lang-scss);
-  @include codeblock(sh, $lang-shell, $font: text-term);
-  @include codeblock(shell, $lang-shell);
-  @include codeblock(toml, $lang-toml);
-  @include codeblock(xml, $lang-xml, $color-fg: var(--iso-white));
-
-  @include codeblock(plaintext, $lang-plaintext, $font: text-term);
-
   .copy-icon {
     height: 2em;
     aspect-ratio: 1;
@@ -92,11 +62,49 @@
 
   pre.codeblock {
     margin-block-start: 0;
-  }
-}
 
-div.code-container {
-  @extend %block;
+    code,
+    samp {
+      display: block;
+      padding: 1em;
+    }
+  }
+
+  @include codeblock(c, langs.$c);
+  @include codeblock(
+    console,
+    langs.$console,
+    $color-fg: var(--ansi-black),
+    $font: text-term
+  );
+  @include codeblock(cosmos, langs.$cosmos, $font: text-term);
+  @include codeblock(cpp, langs.$cpp);
+  @include codeblock(css, langs.$css);
+  @include codeblock(elixir, langs.$elixir);
+  @include codeblock(erlang, langs.$erlang);
+  @include codeblock(html, langs.$html);
+  @include codeblock(js, langs.$js, $color-fg: var(--ansi-black));
+  @include codeblock(md, langs.$md, $color-fg: var(--ansi-white));
+  @include codeblock(rust, langs.$rust, $color-fg: var(--ansi-black));
+  @include codeblock(ps1, langs.$pwsh, $color-fg: var(--ansi-white));
+  @include codeblock(
+    rust_errors,
+    ansi.$red,
+    $color-fg: var(--ansi-white),
+    $font: text-term
+  );
+  @include codeblock(scss, langs.$scss);
+  @include codeblock(
+    sh,
+    langs.$shell,
+    $color-fg: var(--ansi-black),
+    $font: text-term
+  );
+  @include codeblock(shell, langs.$shell);
+  @include codeblock(toml, langs.$toml);
+  @include codeblock(xml, langs.$xml, $color-fg: var(--ansi-white));
+
+  @include codeblock(text, langs.$text, $font: text-term);
 }
 
 pre {
@@ -104,8 +112,6 @@ pre {
 }
 
 pre.codeblock-console {
-  @extend %block;
-
-  background-color: var(--black);
-  color: var(--white);
+  background-color: black;
+  color: var(--ansi-white);
 }

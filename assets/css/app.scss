@@ -1,13 +1,15 @@
 /* This file is for your main application css. */
-@import "variables";
-@import "font";
-@import "color";
-@import "iso7010";
+@use "variables";
+@use "font";
+@use "color";
+@use "iso7010";
 
-@import "layout";
-@import "gravatar";
-@import "gallery";
-// @import "style";
+@use "layout";
+@use "gravatar";
+@use "gallery";
+@use "style";
+
+@use "components/block";
 
 :root {
   --current-page-left: "👉";
@@ -19,16 +21,16 @@ body.crate {
   --current-page-right: "⚙️";
 }
 
-@import "style";
-
 main article {
   @import "components/aside";
   @import "components/codeblock";
   @import "components/details";
   @import "components/dictionary";
+  @import "components/form";
   @import "components/highlight";
   @import "components/figure";
   @import "components/heading";
+  @import "components/table";
 }
 
 /* Alerts and form errors */
@@ -38,45 +40,9 @@ main article {
   border: 1px solid transparent;
   border-radius: 4px;
 
-  &-info {
-    // color: #31708f;
-
-    // color: var(--iso-blue);
-    // background-color: #d9edf7;
-    // border-color: #bce8f1;
-
-    @extend %sign-info;
-  }
-
-  &-warning {
-    // color: #8a6d3b;
-
-    // color: var(--iso-yellow);
-    // background-color: #fcf8e3;
-    // border-color: #faebcc;
-
-    @extend %sign-warn;
-  }
-
-  &-danger {
-    // color: #a94442;
-
-    // color: var(--iso-red);
-    // background-color: #f2dede;
-    // border-color: #ebccd1;
-
-    @extend %sign-harm;
-  }
-
   &:empty {
     display: none;
   }
-}
-
-.invalid-feedback {
-  color: #a94442;
-  display: block;
-  margin: -1rem 0 2rem;
 }
 
 body,

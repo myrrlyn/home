@@ -1,30 +1,9 @@
 <div id="page-logo" class="logo gravatar">
   <.link href="/">
     <svg id="gravatar" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
-      <image id="face" x="-80" y="-80" width="160" height="160" href={@src} />
+      <image id="face" x="-80px" y="-80px" width="160px" height="160px" href={@src} />
       <line id="minute" class="clock-hand" x1="0" y1="0" x2="0" y2="-25" />
       <line id="hour" class="clock-hand" x1="0" y1="0" x2="0" y2="-15" />
-      <script type="text/javascript" defer>
-        let min = document.getElementById("minute");
-        let hr = document.getElementById("hour");
-        function rotate_hands() {
-          let now = new Date;
-          let hour = now.getHours();
-          let minute = now.getMinutes();
-          let min_angle = minute * 6;
-          min.style.transform = `rotate(${minute * 6}deg) translateY(-55px)`;
-          let hr_angle = (hour * 15) + (minute * 0.25);
-          hr.style.transform = `rotate(${hr_angle}deg) translateY(-55px)`;
-          console.debug(`${hour}:${minute} => hour ${hr_angle}°, minute ${min_angle}°`);
-        }
-        rotate_hands();
-        let now = new Date;
-        let wait = 60 - now.getSeconds();
-        setTimeout(() => {
-          setInterval(rotate_hands, 60 * 1000);
-          rotate_hands();
-        }, wait * 1000);
-      </script>
     </svg>
     <%!-- <img id="gravatar" src={@src} alt="Gravatar" /> --%>
   </.link>

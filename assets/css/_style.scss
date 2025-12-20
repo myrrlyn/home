@@ -4,6 +4,10 @@
 
 // @import "normalize_op";
 
+:root {
+  font-size: 16px;
+}
+
 * {
   line-height: 1.25;
 }
@@ -11,6 +15,10 @@
 p {
   line-height: 1.5;
   margin: 1em 0;
+
+  &:empty {
+    display: none;
+  }
 }
 
 img,
@@ -47,12 +55,18 @@ kbd {
   margin: 0.25em 0;
   border: 1px solid var(--text-fg);
   border-radius: 0.25em;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
-    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2),
+    0 -2px 0 0 rgba(255, 255, 255, 0.7) inset;
   background-color: var(--keycap);
-  font-size: 75%;
+  font-size: 0.75em;
   position: relative;
-  top: -0.125em;
+  top: -2px;
+
+  &:hover,
+  &:active {
+    top: 0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  }
 }
 
 article img,
@@ -116,12 +130,13 @@ body:not(.general) .title {
 .title,
 .subtitle {
   text-align: center;
+  padding-inline: 0.25ch;
   line-height: revert;
 }
 
 .footnote {
   vertical-align: super;
-  font-size: 80%;
+  font-size: 0.8em;
 }
 
 kbd kbd {

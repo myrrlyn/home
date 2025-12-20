@@ -1,0 +1,131 @@
+@use "../font";
+
+form {
+  border: 4px double var(--text-fg);
+  padding: 1em 1ch;
+
+  &:focus-within {
+    border-color: var(--ansi-yellow);
+  }
+}
+
+fieldset {
+  border: 2px solid var(--text-fg);
+  // padding: 0.25em;
+
+  &:focus-within {
+    border-color: var(--ansi-yellow);
+  }
+}
+
+legend {
+  @extend %text-mono;
+
+  border: 2px solid var(--text-fg);
+  padding: 0.5ch 1ch;
+
+  font-variant: small-caps;
+  font-size: 1.2em;
+}
+
+input {
+  border: 1px solid var(--text-fg);
+  border-radius: 4px;
+  padding: 0.25em;
+
+  &:required:valid {
+    border-color: var(--ansi-green);
+  }
+
+  &:invalid {
+    border-color: var(--ansi-red);
+  }
+}
+
+label[for="textarea"] {
+  display: block;
+  padding-block-end: 1ch;
+}
+
+textarea {
+  display: block;
+  background-color: rgba(128, 128, 128, 0.1);
+  min-width: 40em;
+  max-width: 100%;
+  width: 40em;
+  min-height: 16em;
+  @extend %text-mono;
+}
+
+// Any label which encloses its input should display as a block so that the form
+// continues vertically.
+label:has(> input) {
+  display: block;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-inline-end: 1ch;
+  &:checked {
+    accent-color: var(--ansi-green);
+  }
+}
+
+input[type="radio"]:indeterminate {
+  outline-color: var(--ansi-red);
+  outline-style: solid;
+  animation: 2s linear infinite outline-pulse;
+  appearance: initial;
+}
+
+fieldset {
+  @for $num from 1 through 5 {
+    label:nth-of-type(5n + #{$num}) > input[type="radio"] {
+      animation-delay: #{($num - 1) * 0.2}s;
+    }
+  }
+}
+
+input[type="range"] {
+  accent-color: var(--ansi-blue);
+}
+
+@keyframes outline-pulse {
+  from {
+    outline-width: 2px;
+  }
+
+  20% {
+    outline-width: 6px;
+  }
+
+  40% {
+    outline-width: 2px;
+  }
+
+  to {
+    outline-width: 2px;
+  }
+}
+
+meter {
+  &::-moz-meter-bar:-moz-meter-optimum,
+  &::-webkit-meter-optimum-value {
+    background-color: var(--ansi-purple);
+  }
+
+  &::-moz-meter-bar:-moz-meter-sub-optimum,
+  &::-webkit-meter-suboptimum-value {
+    background-color: var(--ansi-blue);
+  }
+
+  &::-moz-meter-bar:-moz-meter-sub-sub-optimum,
+  &::-webkit-meter-even-less-good-value {
+    background-color: var(--ansi-yellow);
+  }
+}
+
+input[type="range"],
+progress {
+  accent-color: var(--ansi-purple);
+}

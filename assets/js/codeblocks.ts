@@ -24,13 +24,13 @@ let lang_dict: { [key: string]: string } = {
   rust_errors: "Rust compiler errors",
   scss: "Sass styling",
   sh: "UNIX shell session",
-  plain: "Plain text",
-  plaintext: "Plain text",
+  text: "Text",
   toml: "TOML configuration",
   xml: "XML",
 };
 
 export function mark_codeblocks() {
+  console.group("codeblocks");
   for (var node of document.querySelectorAll("pre.codeblock")) {
     var lang: string | null = null;
     for (var klass of node.classList) {
@@ -56,6 +56,7 @@ export function mark_codeblocks() {
       continue;
     }
 
+    console.log(`processing ${lang}`);
     // Console output has to change `<code>` to `<samp>`
     if (lang == "console") {
       let sampblk = document.createElement("samp");
@@ -64,9 +65,10 @@ export function mark_codeblocks() {
     }
     // Everything else gets looked up for highlighting
     else {
-      if (lang in ["term", "cosmos", "irc", "rust_errors"]) {
-        codeblk.classList.remove(`${lang}`, `lang-${lang}`, `language-${lang}`);
-        codeblk.classList.add("plaintext", "lang-plaintext", "language-plaintext");
+      let text_langs = ["ascii-art", "term", "cosmos", "irc", "rust_errors"];
+      if (text_langs.includes(lang)) {
+        codeblk.classList.remove(lang, `lang-${lang}`, `language-${lang}`);
+        codeblk.classList.add("text", "lang-text", "language-text");
       }
       hljs.highlightElement(codeblk as HTMLElement);
     }
@@ -87,5 +89,19 @@ export function mark_codeblocks() {
     // wrapper.appendChild(copy);
     node.replaceWith(wrapper);
     wrapper.appendChild(node);
+  }
+  console.groupEnd();
+}
+
+export function number_figures() {
+  var counter = 0;
+  for (let fig of document.querySelectorAll("main article figure")) {
+    counter += 1;
+    if (fig.id == "") {
+      fig.id = `fig-${counter}`;
+    }
+    if (fig.querySelector("figcaption") === null) {
+      fig.appendChild(document.createElement("figcaption"));
+    }
   }
 }

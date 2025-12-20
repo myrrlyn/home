@@ -1,3 +1,6 @@
+@use "ansi";
+@use "iso";
+
 // @import "prism-themes/themes/prism-atom-dark"; // needs line-height fix the other way
 // @import "prism-themes/themes/prism-vsc-dark-plus"; // needs line-height fix the other way // current
 // @import "prism-themes/themes/prism-solarized-dark-atom";
@@ -13,43 +16,53 @@
 @import "highlight.js/scss/github-dark";
 
 :root {
-  $ansi-red: lighten($ansi-red, 10%);
-  --ansi-red: #{$ansi-red};
-  --ansi-red-bg: #{transparentize($ansi-red, 0.65)};
+  // ansi.$red: lighten(ansi.$red, 10%);
+  --ansi-red: #{ansi.$red};
+  --ansi-red-bg: #{transparentize(ansi.$red, 0.75)};
 
-  --ansi-orange: #{$ansi-orange};
-  --ansi-orange-bg: #{transparentize($ansi-orange, 0.65)};
+  --ansi-orange: #{ansi.$orange};
+  --ansi-orange-bg: #{transparentize(ansi.$orange, 0.8)};
 
-  --ansi-yellow: #{$ansi-yellow};
-  --ansi-yellow-bg: #{transparentize($ansi-yellow, 0.65)};
+  --ansi-yellow: #{ansi.$yellow};
+  --ansi-yellow-bg: #{transparentize(ansi.$yellow, 0.8)};
 
-  --ansi-green: #{$ansi-green};
-  --ansi-green-bg: #{transparentize($ansi-green, 0.65)};
+  // ansi.$green: lighten(ansi.$green, 10%);
+  --ansi-green: #{ansi.$green};
+  --ansi-green-bg: #{transparentize(ansi.$green, 0.7)};
 
-  $ansi-blue: lighten($ansi-blue, 15%);
-  --ansi-blue: #{$ansi-blue};
-  --ansi-blue-bg: #{transparentize($ansi-blue, 0.65)};
+  // ansi.$blue: lighten(ansi.$blue, 15%);
+  --ansi-blue: #{ansi.$blue};
+  --ansi-blue-bg: #{transparentize(ansi.$blue, 0.75)};
 
-  $ansi-purple: lighten($ansi-purple, 20%);
-  --ansi-purple: #{$ansi-purple};
-  --ansi-purple-bg: #{transparentize($ansi-purple, 0.65)};
+  $purple: lighten(ansi.$purple, 5%);
+  --ansi-purple: #{$purple};
+  --ansi-purple-bg: #{transparentize($purple, 0.75)};
 
-  --iso-red: #{$iso-red};
-  --iso-red-bg: #{transparentize($iso-red, 0.85)};
+  --ansi-white: #{ansi.$white};
+  --ansi-black: #{ansi.$black};
 
-  --iso-yellow: #{$iso-yellow};
-  --iso-yellow-bg: #{transparentize($iso-yellow, 0.85)};
+  --iso-red: #{iso.$red};
+  --iso-red-bg: #{transparentize(iso.$red, 0.75)};
 
-  $iso-green: lighten($iso-green, 10%);
-  --iso-green: #{$iso-green};
-  --iso-green-bg: #{transparentize($iso-green, 0.85)};
+  --iso-orange: #{iso.$orange};
+  --iso-orange-bg: #{transparentize(iso.$orange, 0.75)};
 
-  $iso-blue: lighten($iso-blue, 20%);
-  --iso-blue: #{$iso-blue};
-  --iso-blue-bg: #{transparentize($iso-blue, 0.85)};
+  --iso-yellow: #{iso.$yellow};
+  --iso-yellow-bg: #{transparentize(iso.$yellow, 0.8)};
 
-  --iso-white: #{$iso-white};
-  --iso-black: #{$iso-black};
+  // iso.$green: lighten(iso.$green, 10%);
+  --iso-green: #{iso.$green};
+  --iso-green-bg: #{transparentize(iso.$green, 0.75)};
+
+  // iso.$blue: lighten(iso.$blue, 20%);
+  --iso-blue: #{iso.$blue};
+  --iso-blue-bg: #{transparentize(iso.$blue, 0.65)};
+
+  --iso-purple: #{iso.$purple};
+  --iso-purple-bg: #{transparentize(iso.$purple, 0.75)};
+
+  --iso-white: #{iso.$white};
+  --iso-black: #{iso.$black};
 
   --intl-aero-orange: #{$intl-aero-orange};
 
@@ -60,10 +73,11 @@
 
   $charcoal: lighten($charcoal, 10%);
   --charcoal: #{$charcoal};
-  --charcoal-bg: #{transparentize($charcoal, 0.85)};
+  --charcoal-bg: #{transparentize($charcoal, 0.8)};
 
-  --bg: var(--iso-black);
-  --text-fg: var(--iso-white);
+  --bg: #050508;
+  --text-fg: var(--ansi-white);
+  // --text-code: var(--ansi-orange);
   --header-color: #{$tyrian-purple};
 }
 
