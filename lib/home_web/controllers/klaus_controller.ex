@@ -11,7 +11,8 @@ defmodule HomeWeb.KlausController do
       classes: ["klaus", "no-index"],
       page: page,
       title: page.meta.title,
-      tab_title: page.meta.tab_title
+      tab_title: page.meta.tab_title,
+      frontmatter: page.meta
     )
   end
 end

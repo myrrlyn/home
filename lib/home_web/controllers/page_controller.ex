@@ -49,7 +49,7 @@ defmodule HomeWeb.PageController do
 
     case Home.PageCache.cached(filepath) do
       {:ok, page} ->
-        build(conn, page, classes)
+        build(conn, params, page, classes)
 
       {:error, _} ->
         error(conn, 404, params)
@@ -101,7 +101,7 @@ defmodule HomeWeb.PageController do
         gravatar: Home.Page.gravatar("self@myrrlyn.net")
       )
 
-  defp build(conn, page, classes \\ []) do
+  defp build(conn, params, page, classes \\ []) do
     conn
     |> render(:page,
       flavor: "app",

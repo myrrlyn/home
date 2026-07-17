@@ -10,7 +10,7 @@ defmodule HomeWeb.BlogController do
       grouped_by_category()
       |> Stream.reject(fn {_, _, pages} -> pages == [] end)
       |> Stream.map(fn {name, slug, pages} ->
-        case [@dir, slug, "index.md"] |> Path.join() |> Home.PageCache.cached() do
+        case [@root, slug, "index.md"] |> Path.join() |> Home.PageCache.cached() do
           {:ok, %Home.Page{meta: meta}} -> {meta.title, slug, meta.summary, pages}
           {:error, _} -> {name, slug, nil, pages}
         end
@@ -39,7 +39,7 @@ defmodule HomeWeb.BlogController do
 
   # Render a group index page
   def category(conn, %{"category" => group} = params) do
-    src_path = [@dir, group, "index.md"] |> Path.join()
+    src_path = [@root, group, "index.md"] |> Path.join()
 
     index = src_path |> Home.PageCache.cached()
     category = grouped_by_category(group) |> List.first()
@@ -289,6 +289,7 @@ defmodule HomeWeb.BlogController do
     |> Stream.map(fn p -> Path.join(["priv", "pages", p]) end)
     # Do not include filesystem-powered redirects.
     |> Stream.reject(&Home.symlink?/1)
+    |> Stream.map(&Path.relative_to(&1, "priv/pages"))
     # Kick off a cache load
     |> Home.PageCache.cached_many()
     # Discard any invalid entries. That’s my problem, not the viewer’s problem.
@@ -311,7 +312,7 @@ defmodule HomeWeb.BlogController do
   def url_to_path(group, name) do
     src_paths(group)
     |> Enum.find(fn path ->
-      Path.join("priv/pages", path) |> path_to_url() == [@root, group, name] |> Path.join()
+      path_to_url(path) == [@root, group, name] |> Path.join()
     end)
   end
 
@@ -320,7 +321,7 @@ defmodule HomeWeb.BlogController do
   """
   @spec path_to_url(Path.t()) :: Path.t()
   def path_to_url(path) do
-    case path |> Path.relative_to("priv/pages") |> Path.rootname() |> Path.split() do
+    case path |> Path.rootname() |> Path.split() do
       ["blog", group, filename] ->
         [_y, _m, _d, name] = filename |> String.split("-", parts: 4)
         [@root, group, name] |> Path.join()
@@ -345,7 +346,7 @@ defmodule HomeWeb.BlogController do
     # Discard subdirectories (should not exist with a .md suffix anyway)
     |> Stream.filter(&File.regular?/1)
     # Drop the content-directory prefix
-    |> Stream.map(&(&1 |> Path.relative_to("priv/pages")))
+    |> Stream.map(&Path.relative_to(&1, "priv/pages"))
   end
 
   defp get_gravatar(conn) do

@@ -38,8 +38,8 @@ defmodule Home.Page do
   @spec compile(Path.t(), Range.t()) :: Wyz.Maybe.result(t(), NotFoundException.t() | any())
   def compile(path, toc_filter \\ 2..3) do
     # The fly.io system shows decomposed filenames for some reason.
-    decomposed = path |> String.normalize(:nfkd)
-    composed = path |> String.normalize(:nfkc)
+    decomposed = String.normalize(path, :nfkd)
+    composed = String.normalize(path, :nfkc)
 
     path =
       cond do

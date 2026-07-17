@@ -79,7 +79,7 @@ defmodule Home.PageCache do
     # The path has never been loaded from the filesystem; attempt to do so.
     if page == nil do
       Logger.debug("Inserting #{path} for the first time")
-      throw(path |> load_from_fs(opts[:toc_filter]))
+      throw(load_from_fs(path, opts[:toc_filter]))
     end
 
     # Logger.debug("Found #{path}, last updated at #{page.updated_at}")
@@ -271,6 +271,13 @@ defmodule Home.PageCache do
   """
   @spec load_from_fs(Path.t(), Range.t()) :: {:ok, Home.Page.t()} | {:error, any}
   def load_from_fs(path, toc_filter \\ 2..3) do
+    path =
+      if String.starts_with?(path, "priv/pages") do
+        path
+      else
+        Path.join(["priv", "pages", path])
+      end
+
     case Home.Page.compile(path, toc_filter) do
       {:ok, page} ->
         Logger.debug("Caching #{path} from fs")
@@ -304,7 +311,7 @@ defmodule Home.PageCache do
   not, it returns `nil`.
   """
   @spec get(Path.t()) :: Home.Page.t() | nil
-  def get(path), do: Agent.get(__MODULE__, &(&1 |> Map.get(path)))
+  def get(path), do: Agent.get(__MODULE__, &Map.get(&1, path))
 
   @doc """
   Inserts a `Home.Page` object into the cache at `path`.
